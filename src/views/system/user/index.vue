@@ -27,7 +27,7 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <a-space>
-            <a v-permission="['system:user:edit']" @click="handleEdit(record)">编辑</a>
+            <a v-permission="['system:user:edit']" @click="handleEdit">编辑</a>
             <a-popconfirm title="确认删除?" @confirm="handleDelete(record.id)">
               <a v-permission="['system:user:delete']" class="text-red">删除</a>
             </a-popconfirm>
@@ -73,7 +73,7 @@ const handleAdd = () => {
   // 打开新增弹窗
 };
 
-const handleEdit = (record: any) => {
+const handleEdit = () => {
   // 打开编辑弹窗
 };
 
@@ -83,6 +83,7 @@ const handleDelete = async (id: string) => {
     message.success("删除成功");
     refresh();
   } catch (error) {
+    console.error("handleDelete error", error);
     message.error("删除失败");
   }
 };

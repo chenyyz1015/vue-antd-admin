@@ -29,6 +29,7 @@ router.beforeEach(async (to, from, next) => {
           accessRoutes.forEach((route) => router.addRoute(route));
           next({ ...to, replace: true });
         } catch (error) {
+          console.error("router beforeEach error", error);
           await userStore.logout();
           message.error("获取用户信息失败");
           next(`/login?redirect=${to.path}`);

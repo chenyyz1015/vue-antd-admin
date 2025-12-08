@@ -51,7 +51,7 @@ const userStore = useUserStore();
 
 const collapsed = computed({
   get: () => appStore.collapsed,
-  set: (val) => appStore.toggleCollapsed()
+  set: () => appStore.toggleCollapsed()
 });
 
 const toggleCollapsed = () => {

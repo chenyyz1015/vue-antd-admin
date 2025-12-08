@@ -50,6 +50,7 @@ const handleLogin = async () => {
     message.success("登录成功");
     router.push("/");
   } catch (error) {
+    console.error("handleLogin error", error);
     message.error("登录失败");
   } finally {
     loading.value = false;
