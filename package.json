@@ -8,10 +8,22 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "prepare": "husky",
+    "prepare": "husky install",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "npm run lint:fix",
+      "npm run format"
+    ],
+    "*.{css,scss,less,sass}": [
+      "npm run format"
+    ],
+    "*.{md,json}": [
+      "npm run format"
+    ]
   },
   "dependencies": {
     "@vueuse/core": "^14.1.0",
