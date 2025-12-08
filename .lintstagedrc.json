@@ -1,5 +1,0 @@
-{
-  "*.{js,ts,vue}": ["npm run lint:fix", "npm run format"],
-  "*.{css,scss,less,sass}": ["npm run format"],
-  "*.{md,json}": ["npm run format"]
-}
