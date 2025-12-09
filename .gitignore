@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Automatically generated types
+src/types/auto-imports.d.ts
+src/types/components.d.ts
+src/types/svg-component-global.d.ts
+src/types/svg-component.d.ts
