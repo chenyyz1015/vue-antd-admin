@@ -13,8 +13,6 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -28,3 +26,4 @@ src/types/auto-imports.d.ts
 src/types/components.d.ts
 src/types/svg-component-global.d.ts
 src/types/svg-component.d.ts
+.eslintrc-auto-import.json

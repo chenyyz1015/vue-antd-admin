@@ -1,3 +1,13 @@
 {
-  "recommendations": ["Vue.volar"]
+  "recommendations": [
+    "Vue.volar",
+    "antfu.unocss",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "EditorConfig.EditorConfig",
+    "jock.svg",
+    "lokalise.i18n-ally",
+    "redjue.git-commit-plugin",
+    "meganrogge.template-string-converter"
+  ]
 }
