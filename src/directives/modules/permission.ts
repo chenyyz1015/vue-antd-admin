@@ -1,8 +1,8 @@
-import type { Directive } from "vue";
 import { useUserStore } from "@/stores/modules/user";
+import type { Directive } from "vue";
 
-export const permission: Directive = {
-  mounted(el, binding) {
+const permission: Directive = {
+  mounted: (el, binding) => {
     const { value } = binding;
     const userStore = useUserStore();
     const permissions = userStore.permissions;
@@ -15,3 +15,5 @@ export const permission: Directive = {
     }
   }
 };
+
+export default permission;

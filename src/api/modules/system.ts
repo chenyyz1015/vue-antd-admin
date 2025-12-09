@@ -1,16 +1,8 @@
 import request from "../request";
-import type { PageParams, PageResult } from "../types";
+import type { PageParams, PageResult, User } from "../types";
 
-export interface User {
-  id: string;
-  username: string;
-  nickname: string;
-  status: number;
-  createTime: string;
-}
-
-export function getUserList(params: PageParams) {
-  return request<PageResult<User>>({
+export function getUserList(params: PageParams): Promise<PageResult<User>> {
+  return request({
     url: "/system/user/list",
     method: "get",
     params

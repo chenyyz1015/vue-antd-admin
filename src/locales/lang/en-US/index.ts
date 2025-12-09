@@ -1,2 +1,2 @@
-export * as common from "./modules/common";
-export * as menu from "./modules/menu";
+export * from "./modules/common";
+export * from "./modules/menu";

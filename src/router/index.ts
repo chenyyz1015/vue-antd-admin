@@ -1,61 +1,33 @@
-import { createRouter, createWebHistory } from "vue-router";
+import type { ModuleNamespace } from "vite/types/hot.js";
 import type { RouteRecordRaw } from "vue-router";
-import BasicLayout from "@/layouts/BasicLayout.vue";
+import { createRouter, createWebHistory } from "vue-router";
 
-export const constantRoutes: RouteRecordRaw[] = [
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("@/views/login/index.vue"),
-    meta: { title: "登录", hidden: true }
-  },
-  {
-    path: "/",
-    component: BasicLayout,
-    redirect: "/dashboard",
-    children: [
-      {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
-        meta: { title: "首页", icon: "dashboard", affix: true }
-      }
-    ]
-  }
-];
+// 静态路由
+const staticModules = import.meta.glob<ModuleNamespace>("./modules/static/**/*.{js,ts}", { eager: true });
+export const staticModuleRoutes: RouteRecordRaw[] = Object.entries(staticModules)
+  .map(([, mod]) => mod.default)
+  .flat();
+console.log("staticModuleRoutes", staticModuleRoutes);
 
-export const asyncRoutes: RouteRecordRaw[] = [
-  {
-    path: "/system",
-    component: BasicLayout,
-    redirect: "/system/user",
-    meta: { title: "系统管理", icon: "system", permissions: ["system:view"] },
-    children: [
-      {
-        path: "user",
-        name: "SystemUser",
-        component: () => import("@/views/system/user/index.vue"),
-        meta: { title: "用户管理", permissions: ["system:user:view"] }
-      },
-      {
-        path: "role",
-        name: "SystemRole",
-        component: () => import("@/views/system/role/index.vue"),
-        meta: { title: "角色管理", permissions: ["system:role:view"] }
-      }
-    ]
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "NotFound",
-    component: () => import("@/views/error/404.vue"),
-    meta: { hidden: true }
-  }
-];
+// 扩展路由(非内部使用 -> 供外部跳转)
+const extensionalModules = import.meta.glob<ModuleNamespace>("./modules/extensional/**/*.{js,ts}", { eager: true });
+export const extensionalModuleRoutes: RouteRecordRaw[] = Object.entries(extensionalModules)
+  .map(([, mod]) => mod.default)
+  .flat();
+console.log("extensionalModuleRoutes", extensionalModuleRoutes);
+
+// 动态路由
+const dynamicModules = import.meta.glob<ModuleNamespace>("./modules/dynamic/**/*.{js,ts}", { eager: true });
+export const dynamicModuleRoutes: RouteRecordRaw[] = Object.entries(dynamicModules)
+  .map(([, mod]) => mod.default)
+  .flat();
+// 添加非注册路由异常匹配
+dynamicModuleRoutes.push({ path: "/:pathMatch(.*)*", redirect: "/404" });
+console.log("dynamicModuleRoutes", dynamicModuleRoutes);
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: constantRoutes,
+  history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),
+  routes: staticModuleRoutes.concat(extensionalModuleRoutes),
   scrollBehavior: () => ({ left: 0, top: 0 })
 });
 

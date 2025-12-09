@@ -1,12 +1,14 @@
-import axios from "axios";
-import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from "axios";
-import { message } from "ant-design-vue";
-import { useUserStore } from "@/stores/modules/user";
 import router from "@/router";
+import { useUserStore } from "@/stores/modules/user";
+import { message } from "ant-design-vue";
+import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const request: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 15000
+  baseURL: import.meta.env.VITE_APP_BASE_API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 // 请求拦截器

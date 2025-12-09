@@ -39,11 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-import { PlusOutlined } from "@ant-design/icons-vue";
-import { getUserList, deleteUser } from "@/api/modules/system";
+import { deleteUser, getUserList } from "@/api/modules";
 import { useTable } from "@/composables/useTable";
+import { PlusOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import { reactive } from "vue";
 
 const searchForm = reactive({
   username: ""

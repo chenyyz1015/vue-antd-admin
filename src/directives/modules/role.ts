@@ -1,8 +1,8 @@
-import type { Directive } from "vue";
 import { useUserStore } from "@/stores/modules/user";
+import type { Directive } from "vue";
 
-export const role: Directive = {
-  mounted(el, binding) {
+const role: Directive = {
+  mounted: (el, binding) => {
     const { value } = binding;
     const userStore = useUserStore();
     const roles = userStore.roles;
@@ -15,3 +15,5 @@ export const role: Directive = {
     }
   }
 };
+
+export default role;

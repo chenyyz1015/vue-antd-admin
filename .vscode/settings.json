@@ -12,7 +12,6 @@
     "source.organizeImports": "always"
   },
   "eslint.enable": true,
-  "GitCommitPlugin.MaxSubjectCharacters": 50,
   "GitCommitPlugin.ShowEmoji": false,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[svg]": {

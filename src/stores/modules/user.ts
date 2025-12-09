@@ -1,8 +1,8 @@
+import { getUserInfo, login as loginApi, logout as logoutApi } from "@/api/modules/user";
+import router from "@/router";
+import { removeToken, setToken } from "@/utils/auth";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { login as loginApi, getUserInfo, logout as logoutApi } from "@/api/modules/user";
-import { setToken, removeToken } from "@/utils/auth";
-import router from "@/router";
 
 export interface UserInfo {
   id: string;
@@ -59,7 +59,7 @@ export const useUserStore = defineStore(
   },
   {
     persist: {
-      paths: ["token"]
+      pick: ["token"]
     }
   }
 );

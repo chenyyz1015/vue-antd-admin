@@ -1,8 +1,8 @@
+import { dynamicModuleRoutes, extensionalModuleRoutes, staticModuleRoutes } from "@/router";
+import { hasPermission } from "@/utils/permission";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { RouteRecordRaw } from "vue-router";
-import { constantRoutes, asyncRoutes } from "@/router";
-import { hasPermission } from "@/utils/permission";
 
 function filterAsyncRoutes(routes: RouteRecordRaw[], permissions: string[]): RouteRecordRaw[] {
   const result: RouteRecordRaw[] = [];
@@ -29,13 +29,13 @@ export const usePermissionStore = defineStore("permission", () => {
       let accessedRoutes: RouteRecordRaw[];
 
       if (permissions.includes("*:*:*")) {
-        accessedRoutes = asyncRoutes || [];
+        accessedRoutes = dynamicModuleRoutes || [];
       } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, permissions);
+        accessedRoutes = filterAsyncRoutes(dynamicModuleRoutes, permissions);
       }
 
       addRoutes.value = accessedRoutes;
-      routes.value = constantRoutes.concat(accessedRoutes);
+      routes.value = staticModuleRoutes.concat(extensionalModuleRoutes).concat(accessedRoutes);
       resolve(accessedRoutes);
     });
   };

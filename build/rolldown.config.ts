@@ -1,5 +1,5 @@
-import type { RolldownOptions } from "rolldown";
 import path from "path";
+import type { RolldownOptions } from "rolldown";
 
 /** 从 node_modules 路径提取 package 名（用于动态 chunk 名） */
 const extractPackageName = (id: string): string | null => {
@@ -11,12 +11,6 @@ const extractPackageName = (id: string): string | null => {
 
 const rOpts: RolldownOptions = {
   output: {
-    minify: {
-      compress: {
-        dropConsole: process.env.NODE_ENV === "production",
-        dropDebugger: process.env.NODE_ENV === "production"
-      }
-    },
     advancedChunks: {
       // 是否把被匹配模块的依赖也一并包含在同一chunk
       includeDependenciesRecursively: true,

@@ -1,9 +1,9 @@
-import router from "./index";
-import { useUserStore } from "@/stores/modules/user";
 import { usePermissionStore } from "@/stores/modules/permission";
+import { useUserStore } from "@/stores/modules/user";
 import { message } from "ant-design-vue";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import router from "./index";
 
 NProgress.configure({ showSpinner: false });
 
@@ -11,8 +11,6 @@ const whiteList = ["/login"];
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
-
-  document.title = to.meta.title ? `${to.meta.title} - Vue Antd Admin` : "Vue Antd Admin";
 
   const userStore = useUserStore();
   const permissionStore = usePermissionStore();
@@ -49,6 +47,8 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-router.afterEach(() => {
+router.afterEach((to) => {
   NProgress.done();
+
+  document.title = to.meta.title ? `${to.meta.title} - Vue Antd Admin` : "Vue Antd Admin";
 });

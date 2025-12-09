@@ -1,16 +1,16 @@
 import request from "../request";
 import type { LoginParams, LoginResult, UserInfoResult } from "../types";
 
-export function login(data: LoginParams) {
-  return request<LoginResult>({
+export function login(data: LoginParams): Promise<LoginResult> {
+  return request({
     url: "/auth/login",
     method: "post",
     data
   });
 }
 
-export function getUserInfo() {
-  return request<UserInfoResult>({
+export function getUserInfo(): Promise<UserInfoResult> {
+  return request({
     url: "/auth/userInfo",
     method: "get"
   });
