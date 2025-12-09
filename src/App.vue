@@ -8,8 +8,6 @@ const appStore = useAppStore();
 const locale = computed(() => {
   return appStore.locale === "zh-CN" ? zhCN : enUS;
 });
-
-const a = ref();
 </script>
 
 <template>
