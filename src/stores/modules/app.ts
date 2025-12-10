@@ -47,7 +47,5 @@ export const useAppStore = defineStore(
       toggleCollapsed
     };
   },
-  {
-    persist: true
-  }
+  { persist: true }
 );

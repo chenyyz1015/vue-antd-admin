@@ -1,6 +1,6 @@
 import { useUserStore } from "@/stores/modules/user";
 
-export function usePermission() {
+export const usePermission = () => {
   const userStore = useUserStore();
 
   const hasPermission = (permission: string | string[]) => {
@@ -10,6 +10,7 @@ export function usePermission() {
     if (Array.isArray(permission)) {
       return permission.some((p) => permissions.includes(p));
     }
+
     return permissions.includes(permission);
   };
 
@@ -20,11 +21,9 @@ export function usePermission() {
     if (Array.isArray(role)) {
       return role.some((r) => roles.includes(r));
     }
+
     return roles.includes(role);
   };
 
-  return {
-    hasPermission,
-    hasRole
-  };
-}
+  return { hasPermission, hasRole };
+};

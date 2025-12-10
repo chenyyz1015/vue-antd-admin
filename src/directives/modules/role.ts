@@ -1,17 +1,14 @@
-import { useUserStore } from "@/stores/modules/user";
+import { usePermission } from "@/composables";
 import type { Directive } from "vue";
 
 const role: Directive = {
   mounted: (el, binding) => {
     const { value } = binding;
-    const userStore = useUserStore();
-    const roles = userStore.roles;
+    const { hasRole } = usePermission();
+    const flag = hasRole(value);
 
-    if (value && value instanceof Array) {
-      const hasRole = roles.some((r) => value.includes(r) || r === "admin");
-      if (!hasRole) {
-        el.style.display = "none";
-      }
+    if (!flag) {
+      el.style.display = "none";
     }
   }
 };

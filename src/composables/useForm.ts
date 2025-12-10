@@ -1,8 +1,8 @@
-import { ref } from "vue";
 import type { FormInstance } from "ant-design-vue";
 import { message } from "ant-design-vue";
+import { ref } from "vue";
 
-export function useForm() {
+export const useForm = () => {
   const formRef = ref<FormInstance>();
   const loading = ref(false);
   const formData = ref<Record<string, any>>({});
@@ -32,4 +32,4 @@ export function useForm() {
     handleSubmit,
     handleReset
   };
-}
+};

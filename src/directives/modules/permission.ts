@@ -1,17 +1,14 @@
-import { useUserStore } from "@/stores/modules/user";
+import { usePermission } from "@/composables";
 import type { Directive } from "vue";
 
 const permission: Directive = {
   mounted: (el, binding) => {
     const { value } = binding;
-    const userStore = useUserStore();
-    const permissions = userStore.permissions;
+    const { hasPermission } = usePermission();
+    const flag = hasPermission(value);
 
-    if (value && value instanceof Array) {
-      const hasPermission = permissions.some((p) => value.includes(p) || p === "*:*:*");
-      if (!hasPermission) {
-        el.style.display = "none";
-      }
+    if (!flag) {
+      el.style.display = "none";
     }
   }
 };

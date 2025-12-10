@@ -1,10 +1,11 @@
+import { usePermission } from "@/composables";
 import { dynamicModuleRoutes, extensionalModuleRoutes, staticModuleRoutes } from "@/router";
-import { hasPermission } from "@/utils/permission";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { RouteRecordRaw } from "vue-router";
 
-function filterAsyncRoutes(routes: RouteRecordRaw[], permissions: string[]): RouteRecordRaw[] {
+const filterAsyncRoutes = (routes: RouteRecordRaw[], permissions: string[]): RouteRecordRaw[] => {
+  const { hasPermission } = usePermission();
   const result: RouteRecordRaw[] = [];
 
   routes.forEach((route) => {
@@ -18,7 +19,7 @@ function filterAsyncRoutes(routes: RouteRecordRaw[], permissions: string[]): Rou
   });
 
   return result;
-}
+};
 
 export const usePermissionStore = defineStore("permission", () => {
   const routes = ref<RouteRecordRaw[]>([]);

@@ -1,7 +1,7 @@
-import { ref, reactive } from "vue";
 import type { TableProps } from "ant-design-vue";
+import { reactive, ref } from "vue";
 
-export function useTable<T = any>(api: (params: any) => Promise<any>) {
+export const useTable = <T = any>(api: (params: any) => Promise<any>) => {
   const loading = ref(false);
   const dataSource = ref<T[]>([]);
   const pagination = reactive({
@@ -49,4 +49,4 @@ export function useTable<T = any>(api: (params: any) => Promise<any>) {
     handleTableChange,
     refresh
   };
-}
+};
