@@ -1,6 +1,3 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-
 export type LayoutMode = "side" | "top" | "mix";
 export type ThemeMode = "light" | "dark";
 
@@ -49,3 +46,7 @@ export const useAppStore = defineStore(
   },
   { persist: true }
 );
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot));
+}

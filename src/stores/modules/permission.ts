@@ -1,7 +1,5 @@
 import { usePermission } from "@/composables";
 import { dynamicModuleRoutes, extensionalModuleRoutes, staticModuleRoutes } from "@/router";
-import { defineStore } from "pinia";
-import { ref } from "vue";
 import type { RouteRecordRaw } from "vue-router";
 
 const filterAsyncRoutes = (routes: RouteRecordRaw[], permissions: string[]): RouteRecordRaw[] => {
@@ -47,3 +45,7 @@ export const usePermissionStore = defineStore("permission", () => {
     generateRoutes
   };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePermissionStore, import.meta.hot));
+}

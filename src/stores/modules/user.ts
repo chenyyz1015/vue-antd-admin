@@ -1,8 +1,6 @@
 import { getUserInfo, login as loginApi, logout as logoutApi } from "@/api/modules/user";
 import router from "@/router";
 import { removeToken, setToken } from "@/utils/auth";
-import { defineStore } from "pinia";
-import { ref } from "vue";
 
 export interface UserInfo {
   id: string;
@@ -63,3 +61,7 @@ export const useUserStore = defineStore(
     }
   }
 );
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));
+}

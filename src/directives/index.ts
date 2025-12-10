@@ -1,12 +1,14 @@
 import type { ModuleNamespace } from "vite/types/hot.js";
 import type { Directive, Plugin } from "vue";
 
+type DirectiveMap = Record<string, Directive>;
+
 const plugin: Plugin = {
   install: (app) => {
     // 同步加载指令模块
     const modules = import.meta.glob<ModuleNamespace>("./modules/**/*.{js,ts}", { eager: true });
-    const map: Record<string, Directive> = {};
-    const directiveMap: Record<string, Directive> = Object.entries(modules).reduce((map, [filePath, mod]) => {
+    const map: DirectiveMap = {};
+    const directiveMap: DirectiveMap = Object.entries(modules).reduce((map, [filePath, mod]) => {
       const fileName = filePath
         .split("/")
         .pop()!

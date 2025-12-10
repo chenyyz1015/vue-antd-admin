@@ -2,28 +2,41 @@ import type { ModuleNamespace } from "vite/types/hot.js";
 import type { RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 
+type RouteModule = "static" | "extensional" | "dynamic";
+
+/**
+ * 加载路由模块
+ * @param {RouteModule} mod
+ * @returns {RouteRecordRaw[]}
+ */
+const loadSyncRoutes = (mod: RouteModule): RouteRecordRaw[] => {
+  const staticModule = import.meta.glob<ModuleNamespace>("./modules/static/**/*.{js,ts}", { eager: true });
+  const extensionalModule = import.meta.glob<ModuleNamespace>("./modules/extensional/**/*.{js,ts}", { eager: true });
+  const dynamicModule = import.meta.glob<ModuleNamespace>("./modules/dynamic/**/*.{js,ts}", { eager: true });
+  const routeModuleMap: Record<string, Record<string, ModuleNamespace>> = {
+    static: staticModule,
+    extensional: extensionalModule,
+    dynamic: dynamicModule
+  };
+  const module = routeModuleMap[mod];
+  if (module) {
+    return Object.entries(module)
+      .map(([, mod]) => mod.default)
+      .flat();
+  }
+  return [];
+};
+
 // 静态路由
-const staticModules = import.meta.glob<ModuleNamespace>("./modules/static/**/*.{js,ts}", { eager: true });
-export const staticModuleRoutes: RouteRecordRaw[] = Object.entries(staticModules)
-  .map(([, mod]) => mod.default)
-  .flat();
-console.log("staticModuleRoutes", staticModuleRoutes);
-
+export const staticModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("static");
 // 扩展路由(非内部使用 -> 供外部跳转)
-const extensionalModules = import.meta.glob<ModuleNamespace>("./modules/extensional/**/*.{js,ts}", { eager: true });
-export const extensionalModuleRoutes: RouteRecordRaw[] = Object.entries(extensionalModules)
-  .map(([, mod]) => mod.default)
-  .flat();
-console.log("extensionalModuleRoutes", extensionalModuleRoutes);
-
+export const extensionalModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("extensional");
 // 动态路由
-const dynamicModules = import.meta.glob<ModuleNamespace>("./modules/dynamic/**/*.{js,ts}", { eager: true });
-export const dynamicModuleRoutes: RouteRecordRaw[] = Object.entries(dynamicModules)
-  .map(([, mod]) => mod.default)
-  .flat();
-// 添加非注册路由异常匹配
-dynamicModuleRoutes.push({ path: "/:pathMatch(.*)*", redirect: "/404" });
-console.log("dynamicModuleRoutes", dynamicModuleRoutes);
+export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic").concat({
+  // 非注册路由添加异常匹配
+  path: "/:pathMatch(.*)*",
+  redirect: "/404"
+});
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),
