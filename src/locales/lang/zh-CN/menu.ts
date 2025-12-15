@@ -1,6 +1,6 @@
 export default {
-  dashboard: "首页",
-  system: "系统管理",
-  user: "用户管理",
-  role: "角色管理"
+  "menu.dashboard": "首页",
+  "menu.system": "系统管理",
+  "menu.user": "用户管理",
+  "menu.role": "角色管理"
 };

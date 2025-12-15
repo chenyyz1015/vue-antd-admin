@@ -1,6 +1,6 @@
 export default {
-  dashboard: "Dashboard",
-  system: "System",
-  user: "User",
-  role: "Role"
+  "menu.dashboard": "Dashboard",
+  "menu.system": "System",
+  "menu.user": "User",
+  "menu.role": "Role"
 };

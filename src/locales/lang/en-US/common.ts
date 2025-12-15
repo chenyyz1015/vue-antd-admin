@@ -1,9 +1,9 @@
 export default {
-  add: "Add",
-  edit: "Edit",
-  delete: "Delete",
-  search: "Search",
-  reset: "Reset",
-  confirm: "Confirm",
-  cancel: "Cancel"
+  "common.add": "Add",
+  "common.edit": "Edit",
+  "common.delete": "Delete",
+  "common.search": "Search",
+  "common.reset": "Reset",
+  "common.confirm": "Confirm",
+  "common.cancel": "Cancel"
 };

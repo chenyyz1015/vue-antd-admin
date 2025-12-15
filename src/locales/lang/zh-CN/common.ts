@@ -1,9 +1,9 @@
 export default {
-  add: "新增",
-  edit: "编辑",
-  delete: "删除",
-  search: "查询",
-  reset: "重置",
-  confirm: "确认",
-  cancel: "取消"
+  "common.add": "新增",
+  "common.edit": "编辑",
+  "common.delete": "删除",
+  "common.search": "查询",
+  "common.reset": "重置",
+  "common.confirm": "确认",
+  "common.cancel": "取消"
 };
