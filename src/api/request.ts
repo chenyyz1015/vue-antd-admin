@@ -1,3 +1,4 @@
+import i18n from "@/locales";
 import { useUserStore } from "@/stores/modules/user";
 import { message } from "ant-design-vue";
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
@@ -5,6 +6,8 @@ import axios from "axios";
 import { HTTP_STATUS_MAP } from "./constant";
 import { handleErrorMessage, handleUnauthorized } from "./handler";
 import type { ResponseData } from "./types";
+
+const { t } = i18n.global;
 
 const request: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API_URL,
@@ -24,7 +27,6 @@ request.interceptors.request.use(
     return config;
   },
   (error) => {
-    const { t } = useI18n();
     console.error("Request error:", error);
     message.error(t(HTTP_STATUS_MAP.config));
     return Promise.reject(error);
@@ -34,7 +36,6 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: AxiosResponse<ResponseData>) => {
-    const { t } = useI18n();
     const { code, data, message: msg } = response.data;
     // 业务状态码处理
     if (code === 200) {
@@ -48,7 +49,6 @@ request.interceptors.response.use(
     }
   },
   (error) => {
-    const { t } = useI18n();
     if (error.response) {
       // 请求已发出,但服务器响应状态码不在 2xx 范围
       const { status, data } = error.response;

@@ -1,4 +1,4 @@
-import { getUserInfo, login as loginApi, logout as logoutApi } from "@/api/modules/user";
+import * as userApi from "@/api/modules/user";
 import router from "@/router";
 import { removeToken, setToken } from "@/utils/auth";
 
@@ -18,14 +18,14 @@ export const useUserStore = defineStore(
     const roles = ref<string[]>([]);
 
     const login = async (data: { username: string; password: string }) => {
-      const res = await loginApi(data);
+      const res = await userApi.login(data);
       token.value = res.token;
       setToken(res.token);
       return res;
     };
 
     const getInfo = async () => {
-      const res = await getUserInfo();
+      const res = await userApi.getUserInfo();
       userInfo.value = res.user;
       permissions.value = res.permissions || [];
       roles.value = res.roles || [];
@@ -34,7 +34,7 @@ export const useUserStore = defineStore(
 
     const logout = async () => {
       try {
-        await logoutApi();
+        await userApi.logout();
       } finally {
         token.value = "";
         userInfo.value = {} as UserInfo;

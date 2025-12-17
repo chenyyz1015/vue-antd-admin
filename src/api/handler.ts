@@ -1,7 +1,10 @@
+import i18n from "@/locales";
 import router from "@/router";
 import { useUserStore } from "@/stores";
 import { message } from "ant-design-vue";
 import { HTTP_STATUS_MAP } from "./constant";
+
+const { t } = i18n.global;
 
 /**
  * 获取错误消息
@@ -10,7 +13,6 @@ import { HTTP_STATUS_MAP } from "./constant";
  * @returns 错误消息
  */
 export const handleErrorMessage = (status: string | number, customMsg?: string): void => {
-  const { t } = useI18n();
   if (customMsg) {
     message.error(customMsg);
   } else {
@@ -23,7 +25,6 @@ export const handleErrorMessage = (status: string | number, customMsg?: string):
  * 处理未授权错误
  */
 export const handleUnauthorized = (): void => {
-  const { t } = useI18n();
   message.error(t(HTTP_STATUS_MAP[401]));
   const userStore = useUserStore();
   userStore.logout();

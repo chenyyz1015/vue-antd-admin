@@ -2,10 +2,10 @@
   <div class="exception-page">
     <div class="exception-content">
       <div class="exception-icon">
-        <file-unknown-outlined />
+        <warning-outlined />
       </div>
-      <h1 class="exception-title">404</h1>
-      <p class="exception-desc">抱歉，你访问的页面不存在</p>
+      <h1 class="exception-title">500</h1>
+      <p class="exception-desc">抱歉，服务器出错了</p>
       <a-space>
         <a-button @click="goBack">返回上一页</a-button>
         <a-button type="primary" @click="goHome">返回首页</a-button>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { FileUnknownOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -42,7 +42,7 @@ const goHome = () => {
 
     .exception-icon {
       font-size: 120px;
-      color: #1890ff;
+      color: #ff4d4f;
       margin-bottom: 24px;
     }
 

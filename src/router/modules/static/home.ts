@@ -1,20 +1,19 @@
-import BasicLayout from "@/layouts/BasicLayout.vue";
 import type { RouteRecordRaw } from "vue-router";
 
-const authRoutes: RouteRecordRaw[] = [
+const homeRoutes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: BasicLayout,
+    component: () => import("@/layouts/index.vue"),
     redirect: "/dashboard",
     children: [
       {
         path: "dashboard",
         name: "Dashboard",
         component: () => import("@/views/dashboard/index.vue"),
-        meta: { title: "首页", icon: "dashboard", affix: true }
+        meta: { title: "首页", icon: "HomeOutlined", affix: true }
       }
     ]
   }
 ];
 
-export default authRoutes;
+export default homeRoutes;

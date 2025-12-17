@@ -6,6 +6,7 @@ import UnpluginSvgComponent from "unplugin-svg-component/vite";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
+import { viteMockServe as MockServe } from "vite-plugin-mock";
 import rolldownOptions from "./build/rolldown.config";
 
 export default defineConfig(({ mode }) => {
@@ -15,6 +16,7 @@ export default defineConfig(({ mode }) => {
   const {
     VITE_APP_BASE_URL,
     VITE_APP_BASE_API_URL,
+    VITE_APP_USE_MOCK,
     VITE_DEV_PORT,
     VITE_DEV_OPEN,
     VITE_DROP_CONSOLE,
@@ -40,6 +42,11 @@ export default defineConfig(({ mode }) => {
         iconDir: ["src/assets/svgs"],
         dts: true,
         dtsDir: "src/types"
+      }),
+      MockServe({
+        mockPath: "src/mock",
+        enable: VITE_APP_USE_MOCK === "true",
+        logger: VITE_APP_USE_MOCK === "true"
       })
     ],
     resolve: {
@@ -83,7 +90,7 @@ export default defineConfig(({ mode }) => {
       open: VITE_DEV_OPEN === "true",
       proxy: {
         [VITE_APP_BASE_API_URL]: {
-          target: "http://localhost:8080",
+          target: "http://localhost:9527",
           changeOrigin: true,
           rewrite: (path) => path.replace(new RegExp(`^${VITE_APP_BASE_API_URL}`), "")
         }
