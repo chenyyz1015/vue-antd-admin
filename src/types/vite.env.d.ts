@@ -17,6 +17,11 @@ interface ImportMetaEnv {
   readonly VITE_APP_BASE_API_URL: string;
 
   /**
+   * 接口超时时间
+   */
+  readonly VITE_APP_BASE_API_TIMEOUT: string;
+
+  /**
    * 是否开启 Mock
    */
   readonly VITE_APP_USE_MOCK: "true" | "false";

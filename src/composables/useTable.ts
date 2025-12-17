@@ -6,7 +6,7 @@ export const useTable = <T = any>(api: (params: any) => Promise<any>) => {
   const dataSource = ref<T[]>([]);
   const pagination = reactive({
     current: 1,
-    pageSize: 10,
+    size: 10,
     total: 0,
     showSizeChanger: true,
     showQuickJumper: true,
@@ -18,7 +18,7 @@ export const useTable = <T = any>(api: (params: any) => Promise<any>) => {
     try {
       const res = await api({
         page: pagination.current,
-        pageSize: pagination.pageSize,
+        size: pagination.size,
         ...params
       });
       dataSource.value = res.records;
@@ -32,7 +32,7 @@ export const useTable = <T = any>(api: (params: any) => Promise<any>) => {
 
   const handleTableChange: TableProps["onChange"] = (pag) => {
     pagination.current = pag.current!;
-    pagination.pageSize = pag.pageSize!;
+    pagination.size = pag.pageSize!;
     fetchData();
   };
 
