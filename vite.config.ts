@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => {
         }
       }),
       Components({
+        dirs: ["src/components", "src/layouts"],
         resolvers: [AntDesignVueResolver({ importStyle: false })],
         dts: "src/types/components.d.ts"
       }),
