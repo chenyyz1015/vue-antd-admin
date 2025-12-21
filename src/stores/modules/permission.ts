@@ -33,7 +33,7 @@ export const usePermissionStore = defineStore("permission", () => {
       }
       // 重定向路由
       const redirectRoutes: RouteRecordRaw[] = [
-        { path: "/", redirect: "/dashboard" },
+        { path: "/", redirect: "/project" },
         { path: "/:pathMatch(.*)*", redirect: "/404" }
       ];
       addRoutes.value = accessedRoutes;
