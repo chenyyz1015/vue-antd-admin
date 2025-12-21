@@ -2,15 +2,15 @@ import { usePermission } from "@/composables";
 import { dynamicModuleRoutes, extensionalModuleRoutes, staticModuleRoutes } from "@/router";
 import type { RouteRecordRaw } from "vue-router";
 
-const filterAsyncRoutes = (routes: RouteRecordRaw[], permissions: string[]): RouteRecordRaw[] => {
-  const { hasPermission } = usePermission();
+const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]): RouteRecordRaw[] => {
+  const { hasRole } = usePermission();
   const result: RouteRecordRaw[] = [];
 
   routes.forEach((route) => {
     const tmp = { ...route };
-    if (!tmp.meta?.permissions || hasPermission(tmp.meta.permissions as string[])) {
+    if (!tmp.meta?.roles || hasRole(tmp.meta.roles)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, permissions);
+        tmp.children = filterAsyncRoutes(tmp.children, roles);
       }
       result.push(tmp);
     }
@@ -23,19 +23,22 @@ export const usePermissionStore = defineStore("permission", () => {
   const routes = ref<RouteRecordRaw[]>([]);
   const addRoutes = ref<RouteRecordRaw[]>([]);
 
-  const generateRoutes = (permissions: string[]): Promise<RouteRecordRaw[]> => {
+  const generateRoutes = (roles: string[]): Promise<RouteRecordRaw[]> => {
     return new Promise((resolve) => {
       let accessedRoutes: RouteRecordRaw[];
-
-      if (permissions.includes("*:*:*")) {
-        accessedRoutes = dynamicModuleRoutes || [];
+      if (roles.includes("admin")) {
+        accessedRoutes = dynamicModuleRoutes;
       } else {
-        accessedRoutes = filterAsyncRoutes(dynamicModuleRoutes, permissions);
+        accessedRoutes = filterAsyncRoutes(dynamicModuleRoutes, roles);
       }
-
+      // 重定向路由
+      const redirectRoutes: RouteRecordRaw[] = [
+        { path: "/", redirect: "/dashboard" },
+        { path: "/:pathMatch(.*)*", redirect: "/404" }
+      ];
       addRoutes.value = accessedRoutes;
-      routes.value = staticModuleRoutes.concat(extensionalModuleRoutes).concat(accessedRoutes);
-      resolve(accessedRoutes);
+      routes.value = [...staticModuleRoutes, ...extensionalModuleRoutes, ...accessedRoutes, ...redirectRoutes];
+      resolve([...accessedRoutes, ...redirectRoutes]);
     });
   };
 

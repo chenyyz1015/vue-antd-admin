@@ -3,12 +3,14 @@ import type { RouteRecordRaw } from "vue-router";
 const systemRoutes: RouteRecordRaw[] = [
   {
     path: "/system",
-    component: () => import("@/layouts/index.vue"),
+    name: "System",
+    component: () => import("@/layouts/AdminLayout.vue"),
     redirect: "/system/user",
     meta: {
       title: "系统管理",
-      icon: "SettingOutlined",
-      permissions: ["system:view"]
+      icon: "menu",
+      roles: ["admin"],
+      requiresAuth: true
     },
     children: [
       {
@@ -17,8 +19,9 @@ const systemRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/system/user/index.vue"),
         meta: {
           title: "用户管理",
-          icon: "UserOutlined",
-          permissions: ["system:user:view"]
+          icon: "user",
+          roles: ["admin"],
+          requiresAuth: true
         }
       },
       {
@@ -27,8 +30,9 @@ const systemRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/system/role/index.vue"),
         meta: {
           title: "角色管理",
-          icon: "TeamOutlined",
-          permissions: ["system:role:view"]
+          icon: "role",
+          roles: ["admin"],
+          requiresAuth: true
         }
       }
     ]

@@ -32,11 +32,7 @@ export const staticModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("static");
 // 扩展路由(非内部使用 -> 供外部跳转)
 export const extensionalModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("extensional");
 // 动态路由
-export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic").concat({
-  // 非注册路由添加异常匹配
-  path: "/:pathMatch(.*)*",
-  redirect: "/404"
-});
+export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),

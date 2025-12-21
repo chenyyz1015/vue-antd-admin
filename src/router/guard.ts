@@ -1,5 +1,4 @@
-import { usePermissionStore } from "@/stores/modules/permission";
-import { useUserStore } from "@/stores/modules/user";
+import { usePermissionStore, useUserStore } from "@/stores";
 import { message } from "ant-design-vue";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -7,7 +6,7 @@ import router from "./index";
 
 NProgress.configure({ showSpinner: false });
 
-const whiteList = ["/login"];
+const whiteList = ["/auth/login", "/auth/register"];
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
@@ -16,21 +15,21 @@ router.beforeEach(async (to, from, next) => {
   const permissionStore = usePermissionStore();
 
   if (userStore.token) {
-    if (to.path === "/login") {
+    if (to.path === "/auth/login") {
       next("/");
       NProgress.done();
     } else {
-      if (userStore.permissions.length === 0) {
+      if (userStore.roles.length === 0) {
         try {
           await userStore.getInfo();
-          const accessRoutes = await permissionStore.generateRoutes(userStore.permissions);
+          const accessRoutes = await permissionStore.generateRoutes(userStore.roles);
           accessRoutes.forEach((route) => router.addRoute(route));
           next({ ...to, replace: true });
         } catch (error) {
           console.error("router beforeEach error", error);
           await userStore.logout();
           message.error("获取用户信息失败");
-          next(`/login?redirect=${to.path}`);
+          next({ path: "/auth/login", query: { redirect: to.fullPath } });
           NProgress.done();
         }
       } else {
@@ -41,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.path)) {
       next();
     } else {
-      next(`/login?redirect=${to.path}`);
+      next({ path: "/auth/login", query: { redirect: to.fullPath } });
       NProgress.done();
     }
   }

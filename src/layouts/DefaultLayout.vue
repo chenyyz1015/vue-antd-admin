@@ -1,5 +1,5 @@
 <template>
-  <div>角色管理</div>
+  <router-view />
 </template>
 
 <script setup lang="ts"></script>
