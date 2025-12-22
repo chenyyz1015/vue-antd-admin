@@ -1,2 +1,32 @@
 @use "./reset.scss" as *;
+@use "./transition.scss" as *;
 @use "./antdv/index.scss" as *;
+
+// 主题色变量
+:root {
+  --primary-color: #1890ff;
+}
+
+// 色弱模式
+html.color-weak {
+  filter: invert(80%);
+}
+
+// 灰色模式
+html.gray-mode {
+  filter: grayscale(100%);
+}
+
+html[data-theme="light"] {
+  color: #313131;
+}
+
+html[data-theme="dark"] {
+  color: #ffffff;
+}
+
+// 定宽内容
+.content-width-fixed {
+  max-width: 1200px;
+  margin: 0 auto;
+}

@@ -41,7 +41,7 @@ export const useUserStore = defineStore(
         permissions.value = [];
         roles.value = [];
         removeToken();
-        router.push("/login");
+        router.push({ path: "/auth/login" });
       }
     };
 

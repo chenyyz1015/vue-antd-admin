@@ -8,29 +8,29 @@ const systemRoutes: RouteRecordRaw[] = [
     redirect: "/system/user",
     meta: {
       title: "系统管理",
-      icon: "menu",
+      icon: "menu/common",
       roles: ["admin"],
       requiresAuth: true
     },
     children: [
       {
-        path: "user",
+        path: "/system/user",
         name: "SystemUser",
         component: () => import("@/views/system/user/index.vue"),
         meta: {
           title: "用户管理",
-          icon: "user",
+          icon: "menu/user",
           roles: ["admin"],
           requiresAuth: true
         }
       },
       {
-        path: "role",
+        path: "/system/role",
         name: "SystemRole",
         component: () => import("@/views/system/role/index.vue"),
         meta: {
           title: "角色管理",
-          icon: "role",
+          icon: "menu/role",
           roles: ["admin"],
           requiresAuth: true
         }

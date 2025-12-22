@@ -85,13 +85,18 @@ vue-antd-admin/
 ├── .husky/                             # Git hooks
 │   ├── commit-msg
 │   └── pre-commit
+├── .vscode/                            # vscode项目配置
+│   └── ...
+├── build/                              # 打包配置
+│   └── ...
 ├── public/
 │   └── favicon.ico
 ├── src/
 │   ├── api/                            # API接口
 │   │   ├── modules/
 │   │   │   ├── user.ts
-│   │   │   └── system.ts
+│   │   │   ├── system.ts
+│   │   │   └── ...
 │   │   ├── types/
 │   │   └── index.ts
 │   ├── assets/                         # 静态资源
@@ -110,60 +115,61 @@ vue-antd-admin/
 │   ├── components/                     # 全局组件
 │   │   └── ...
 │   ├── composables/                    # 组合式函数
-│   │   ├── useTable.ts
-│   │   ├── useForm.ts
-│   │   └── usePermission.ts
+│   │   ├── usePermission.ts
+│   │   └── ...
 │   ├── directives/                     # 自定义指令
-│   │   ├── permission.ts
+│   │   ├── modules/
+│   │   │   ├── permission.ts
+│   │   │   ├── role.ts
+│   │   │   └── ...
 │   │   └── index.ts
 │   ├── layouts/                        # 布局
-│   │   ├── components/
-│   │   │   ├── Header.vue
-│   │   │   ├── Sidebar.vue
-│   │   │   └── Tabs.vue
-│   │   ├── BasicLayout.vue
-│   │   └── BlankLayout.vue
+│   │   ├── AdminLayout.vue
+│   │   ├── AuthLayout.vue
+│   │   ├── DefaultLayout.vue
+│   │   └── ...
 │   ├── locales/                        # 国际化
 │   │   ├── lang/
 │   │   │   ├── zh-CN.ts
 │   │   │   └── en-US.ts
+│   │   │   └── ...
 │   │   └── index.ts
 │   ├── router/                         # 路由
 │   │   ├── modules/
-│   │   │   └── system.ts
+│   │   │   ├── dynamic                 # 动态路由
+│   │   │   └── static                  # 静态路由
 │   │   ├── guard.ts
 │   │   └── index.ts
 │   ├── stores/                         # 状态管理
 │   │   ├── modules/
 │   │   │   ├── user.ts
 │   │   │   ├── app.ts
-│   │   │   └── permission.ts
+│   │   │   ├── permission.ts
+│   │   │   └── ...
 │   │   └── index.ts
 │   ├── types/                          # 类型定义
+│   │   ├── vite.env.d.ts
+│   │   ├── router.d.ts
 │   │   ├── svg-component-global.d.ts
 │   │   ├── svg-component.d.ts
 │   │   ├── auto-imports.d.ts
-│   │   └── components.d.ts
+│   │   ├── components.d.ts
+│   │   └── ...
 │   ├── utils/                          # 工具函数
-│   │   ├── request.ts
 │   │   ├── storage.ts
 │   │   ├── auth.ts
-│   │   └── permission.ts
+│   │   ├── permission.ts
+│   │   └── ...
 │   ├── views/                          # 页面
-│   │   ├── dashboard/
-│   │   │   └── index.vue
-│   │   ├── system/
-│   │   │   └── user/
-│   │   │       └── index.vue
-│   │   └── login/
-│   │       └── index.vue
+│   │   └── ...
 │   ├── App.vue
 │   ├── main.ts
-│   └── vite-env.d.ts
+│   └── ...
 ├── .editorconfig
-├── .env.staging
 ├── .env.development
 ├── .env.production
+├── .env.staging
+├── .env.test
 ├── .gitignore
 ├── .prettierrc.json
 ├── .prettierignore

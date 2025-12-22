@@ -1,7 +1,7 @@
 {
-  "name": "vue-antd-admin",
+  "name": "lalp-admin-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "A modern vue admin panel built with Vue3, Ant Design Vue, Vite, TypeScript, and Monorepo. It's fast!",
   "scripts": {

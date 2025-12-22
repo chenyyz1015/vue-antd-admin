@@ -33,6 +33,11 @@ export const staticModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("static");
 export const extensionalModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("extensional");
 // 动态路由
 export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic");
+// 重定向路由
+export const redirectRoutes: RouteRecordRaw[] = [
+  { path: "/", redirect: "/project" },
+  { path: "/:pathMatch(.*)*", redirect: "/404" }
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),

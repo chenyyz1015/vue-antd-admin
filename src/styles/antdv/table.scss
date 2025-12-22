@@ -1,0 +1,36 @@
+.ant-table-wrapper {
+  width: 100%;
+  height: 0;
+  flex: 1 1 auto;
+
+  .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
+
+    .ant-spin-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .ant-table {
+        width: 100%;
+        height: 0;
+        flex: 1 1 auto;
+
+        .ant-table-container {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .ant-table-body {
+            width: 100%;
+            height: 0;
+            flex: 1 1 auto;
+          }
+        }
+      }
+    }
+  }
+}

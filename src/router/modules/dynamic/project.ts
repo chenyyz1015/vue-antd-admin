@@ -9,18 +9,18 @@ const projectRoutes: RouteRecordRaw[] = [
     redirect: "/project/list",
     meta: {
       title: "项目管理",
-      icon: "menu",
+      icon: "menu/common",
       roles: ["admin"],
       requiresAuth: true
     },
     children: [
       {
-        path: "list",
+        path: "/project/list",
         name: "ProjectList",
         component: () => import("@/views/project/list/index.vue"),
         meta: {
-          title: "项目列表",
-          icon: "menu",
+          title: "项目中心",
+          icon: "menu/project",
           roles: ["admin"],
           requiresAuth: true
         }

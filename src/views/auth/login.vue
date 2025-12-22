@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h2>Vue Antd Admin</h2>
+      <h2>{{ appStore.title }}</h2>
       <a-form :model="formData" @finish="handleLogin">
         <a-form-item name="username" :rules="[{ required: true, message: '请输入用户名' }]">
           <a-input v-model:value="formData.username" placeholder="用户名">
@@ -28,13 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/stores/modules/user";
-import { LockOutlined, UserOutlined } from "@ant-design/icons-vue";
+import { useAppStore, useUserStore } from "@/stores";
 import { message } from "ant-design-vue";
-import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
+const appStore = useAppStore();
 const userStore = useUserStore();
 
 const loading = ref(false);
@@ -58,7 +56,7 @@ const handleLogin = async () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .login-container {
   width: 100%;
   height: 100%;
@@ -70,6 +68,7 @@ const handleLogin = async () => {
     width: 400px;
     padding: 40px;
     background: #fff;
+    color: #313131;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 

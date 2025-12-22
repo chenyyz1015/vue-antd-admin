@@ -116,6 +116,14 @@ const systemApplications = [
   }
 ];
 
+// 管理员账号列表
+const adminAccountList = [
+  { id: "1", username: "zhangsan", nickname: "张三" },
+  { id: "2", username: "lisi", nickname: "李四" },
+  { id: "3", username: "wangwu", nickname: "王五" },
+  { id: "4", username: "zhaoliu", nickname: "赵六" }
+];
+
 export default [
   {
     url: "/project/list",
@@ -266,6 +274,36 @@ export default [
         code: 200,
         message: "更新成功",
         data: null
+      };
+    }
+  },
+  {
+    url: "/admin/accounts",
+    method: "get",
+    response: () => {
+      return {
+        code: 200,
+        message: "获取成功",
+        data: adminAccountList
+      };
+    }
+  },
+  {
+    url: "/admin/account/add",
+    method: "post",
+    response: ({ body }: any) => {
+      const newAccount = {
+        id: String(adminAccountList.length + 1),
+        username: body.username,
+        nickname: body.nickname
+        // 注意：实际场景中密码不应该返回给前端
+        // password: body.password
+      };
+      adminAccountList.push(newAccount);
+      return {
+        code: 200,
+        message: "添加成功",
+        data: newAccount
       };
     }
   }

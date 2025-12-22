@@ -1,0 +1,503 @@
+<template>
+  <a-drawer
+    :open="visible"
+    title="布局设置"
+    placement="right"
+    :width="320"
+    :body-style="{ padding: '16px' }"
+    @update:open="$emit('update:visible', $event)"
+  >
+    <div class="settings-content">
+      <!-- 布局模式 -->
+      <a-divider orientation="left">
+        <span class="divider-title">整体风格</span>
+      </a-divider>
+
+      <div class="setting-item">
+        <div class="setting-title">导航模式</div>
+        <div class="layout-mode-wrapper">
+          <div
+            v-for="mode in layoutModes"
+            :key="mode.value"
+            class="layout-mode-item"
+            :class="{ active: layoutMode === mode.value }"
+            @click="handleLayoutModeChange(mode.value)"
+          >
+            <div class="mode-preview" :class="mode.value">
+              <div v-if="mode.value === 'side'" class="preview-content">
+                <div class="preview-sider"></div>
+                <div class="preview-main">
+                  <div class="preview-header"></div>
+                  <div class="preview-body"></div>
+                </div>
+              </div>
+              <div v-else-if="mode.value === 'top'" class="preview-content">
+                <div class="preview-header"></div>
+                <div class="preview-body"></div>
+              </div>
+              <div v-else class="preview-content">
+                <div class="preview-header"></div>
+                <div class="preview-main">
+                  <div class="preview-sider"></div>
+                  <div class="preview-body"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mode-label">{{ mode.label }}</div>
+            <check-circle-filled v-if="layoutMode === mode.value" class="mode-check" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 主题设置 -->
+      <a-divider orientation="left">
+        <span class="divider-title">主题设置</span>
+      </a-divider>
+
+      <div class="setting-item">
+        <div class="setting-title">主题模式</div>
+        <a-segmented
+          :value="themeMode"
+          :options="[
+            { label: '亮色', value: 'light' },
+            { label: '暗色', value: 'dark' }
+          ]"
+          block
+          @change="handleThemeModeChange"
+        />
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-title">主题色</div>
+        <div class="color-picker-wrapper">
+          <div
+            v-for="color in presetColors"
+            :key="color.value"
+            class="color-block"
+            :class="{ active: primaryColor === color.value }"
+            :style="{ background: color.value }"
+            @click="handlePrimaryColorChange(color.value)"
+          >
+            <check-outlined v-if="primaryColor === color.value" class="check-icon" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 界面显示 -->
+      <a-divider orientation="left">
+        <span class="divider-title">界面显示</span>
+      </a-divider>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>显示标签页</span>
+          <span class="switch-desc">开启后显示多标签页</span>
+        </div>
+        <a-switch :checked="showTabs" @change="handleShowTabsChange" />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>固定顶栏</span>
+          <span class="switch-desc">固定顶部导航栏</span>
+        </div>
+        <a-switch :checked="fixedHeader" @change="handleFixedHeaderChange" />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>显示底栏</span>
+          <span class="switch-desc">显示底部版权信息</span>
+        </div>
+        <a-switch :checked="showFooter" @change="handleShowFooterChange" />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>显示面包屑</span>
+          <span class="switch-desc">显示页面路径导航（顶部布局不支持）</span>
+        </div>
+        <a-switch
+          :checked="showBreadcrumb"
+          :disabled="appStore.layoutMode === 'top'"
+          @change="handleShowBreadcrumbChange"
+        />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>侧栏展开</span>
+          <span class="switch-desc">默认展开侧边栏（顶部布局不支持）</span>
+        </div>
+        <a-switch :checked="!collapsed" :disabled="appStore.layoutMode === 'top'" @change="handleCollapsedChange" />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>色弱模式</span>
+          <span class="switch-desc">开启色弱模式</span>
+        </div>
+        <a-switch :checked="colorWeak" @change="handleColorWeakChange" />
+      </div>
+
+      <div class="setting-item switch-item">
+        <div class="switch-label">
+          <span>灰色模式</span>
+          <span class="switch-desc">开启灰度模式</span>
+        </div>
+        <a-switch :checked="grayMode" @change="handleGrayModeChange" />
+      </div>
+
+      <!-- 其他设置 -->
+      <a-divider orientation="left">
+        <span class="divider-title">其他设置</span>
+      </a-divider>
+
+      <div class="setting-item">
+        <div class="setting-title">语言设置</div>
+        <a-select :value="locale" style="width: 100%" @change="handleLocaleChange">
+          <a-select-option value="zh-CN">
+            <span>简体中文</span>
+          </a-select-option>
+          <a-select-option value="en-US">
+            <span>English</span>
+          </a-select-option>
+        </a-select>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-title">内容区域宽度</div>
+        <a-segmented
+          :value="contentWidth"
+          :options="[
+            { label: '流式', value: 'fluid' },
+            { label: '定宽', value: 'fixed' }
+          ]"
+          block
+          @change="handleContentWidthChange"
+        />
+      </div>
+
+      <!-- 操作按钮 -->
+      <a-divider />
+
+      <a-space direction="vertical" style="width: 100%">
+        <a-button block @click="$emit('copy-settings')">
+          <template #icon>
+            <copy-outlined />
+          </template>
+          拷贝设置
+        </a-button>
+
+        <a-button block danger @click="$emit('reset')">
+          <template #icon>
+            <redo-outlined />
+          </template>
+          重置设置
+        </a-button>
+      </a-space>
+    </div>
+  </a-drawer>
+</template>
+
+<script setup lang="ts">
+import { useAppStore } from "@/stores";
+import type { SegmentedValue } from "ant-design-vue/es/segmented/src/segmented";
+import type { SelectValue } from "ant-design-vue/es/select";
+
+type CheckedType = boolean | string | number;
+
+interface Props {
+  visible: boolean;
+  layoutMode: "side" | "top" | "mix";
+  themeMode: "light" | "dark";
+  primaryColor: string;
+  showTabs: boolean;
+  fixedHeader: boolean;
+  showBreadcrumb: boolean;
+  showFooter: boolean;
+  collapsed: boolean;
+  colorWeak: boolean;
+  grayMode: boolean;
+  locale: string;
+  contentWidth: "fluid" | "fixed";
+}
+
+interface Emits {
+  (e: "update:visible", value: boolean): void;
+  (e: "update:layoutMode", value: string): void;
+  (e: "update:themeMode", value: string): void;
+  (e: "update:primaryColor", value: string): void;
+  (e: "update:showTabs", value: boolean): void;
+  (e: "update:fixedHeader", value: boolean): void;
+  (e: "update:showBreadcrumb", value: boolean): void;
+  (e: "update:showFooter", value: boolean): void;
+  (e: "update:collapsed", value: boolean): void;
+  (e: "update:colorWeak", value: boolean): void;
+  (e: "update:grayMode", value: boolean): void;
+  (e: "update:locale", value: string): void;
+  (e: "update:contentWidth", value: string): void;
+  (e: "reset"): void;
+  (e: "copy-settings"): void;
+}
+
+defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const appStore = useAppStore();
+
+// 布局模式选项
+const layoutModes = [
+  { label: "侧边布局", value: "side" },
+  { label: "顶部布局", value: "top" },
+  { label: "混合布局", value: "mix" }
+];
+
+// 预设颜色
+const presetColors = [
+  { label: "拂晓蓝", value: "#1890ff" },
+  { label: "薄暮", value: "#f5222d" },
+  { label: "火山", value: "#fa541c" },
+  { label: "日暮", value: "#faad14" },
+  { label: "明青", value: "#13c2c2" },
+  { label: "极光绿", value: "#52c41a" },
+  { label: "极客蓝", value: "#2f54eb" },
+  { label: "酱紫", value: "#722ed1" }
+];
+
+// 布局模式切换
+const handleLayoutModeChange = (mode: string) => {
+  emit("update:layoutMode", mode);
+};
+
+// 主题模式
+const handleThemeModeChange = (value: SegmentedValue) => {
+  emit("update:themeMode", value.toString());
+};
+
+// 主题色
+const handlePrimaryColorChange = (value: string) => {
+  emit("update:primaryColor", value);
+};
+
+// 显示标签页
+const handleShowTabsChange = (checked: CheckedType) => {
+  emit("update:showTabs", checked as boolean);
+};
+
+// 国定顶部
+const handleFixedHeaderChange = (checked: CheckedType) => {
+  emit("update:fixedHeader", checked as boolean);
+};
+
+// 显示面包屑
+const handleShowBreadcrumbChange = (checked: CheckedType) => {
+  emit("update:showBreadcrumb", checked as boolean);
+};
+
+// 显示底栏
+const handleShowFooterChange = (checked: CheckedType) => {
+  emit("update:showFooter", checked as boolean);
+};
+
+// 侧栏展开
+const handleCollapsedChange = (checked: CheckedType) => {
+  emit("update:collapsed", checked as boolean);
+};
+
+// 色弱模式
+const handleColorWeakChange = (checked: CheckedType) => {
+  emit("update:colorWeak", checked as boolean);
+};
+
+// 灰色模式
+const handleGrayModeChange = (checked: CheckedType) => {
+  emit("update:grayMode", checked as boolean);
+};
+
+// 语言切换
+const handleLocaleChange = (value: SelectValue) => {
+  emit("update:locale", value?.toString() || "zh-CN");
+};
+
+// 内容区域宽度
+const handleContentWidthChange = (value: SegmentedValue) => {
+  emit("update:contentWidth", value.toString());
+};
+</script>
+
+<style lang="scss" scoped>
+.settings-content {
+  .divider-title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .setting-item {
+    margin-bottom: 24px;
+
+    .setting-title {
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    // 布局模式预览
+    .layout-mode-wrapper {
+      display: flex;
+      gap: 16px;
+
+      .layout-mode-item {
+        position: relative;
+        flex: 1;
+        cursor: pointer;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        padding: 8px;
+        transition: all 0.3s;
+
+        &:hover {
+          border-color: #1890ff;
+        }
+
+        &.active {
+          border-color: #1890ff;
+          box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .mode-preview {
+          height: 60px;
+          border-radius: 2px;
+          overflow: hidden;
+          background: #f0f2f5;
+
+          .preview-content {
+            display: flex;
+            height: 100%;
+
+            .preview-sider {
+              width: 30%;
+              background: #001529;
+            }
+
+            .preview-header {
+              height: 20%;
+              background: #fff;
+              box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+            }
+
+            .preview-main {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .preview-body {
+              flex: 1;
+              background: #fff;
+              margin: 4px;
+              border-radius: 2px;
+            }
+          }
+
+          &.top .preview-content {
+            flex-direction: column;
+          }
+
+          &.mix .preview-content {
+            flex-direction: column;
+
+            .preview-main {
+              flex-direction: row;
+            }
+          }
+        }
+
+        .mode-label {
+          color: #313131;
+          margin-top: 8px;
+          text-align: center;
+          font-size: 12px;
+        }
+
+        .mode-check {
+          position: absolute;
+          top: 4px;
+          right: 4px;
+          color: #1890ff;
+          font-size: 16px;
+        }
+      }
+    }
+
+    // 颜色选择器
+    .color-picker-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .color-block {
+        width: 44px;
+        height: 44px;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e8e8e8;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &.active {
+          box-shadow:
+            0 0 0 2px #fff,
+            0 0 0 4px currentColor;
+        }
+
+        &.custom {
+          border: 1px dashed #d9d9d9;
+          background: #fafafa;
+          font-size: 20px;
+          color: #999;
+
+          &:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+          }
+        }
+
+        .check-icon {
+          color: #fff;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    // 开关项
+    &.switch-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+
+      .switch-label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        color: #313131;
+
+        .switch-desc {
+          font-size: 12px;
+          color: rgba(0, 0, 0, 0.45);
+        }
+      }
+    }
+  }
+}
+</style>

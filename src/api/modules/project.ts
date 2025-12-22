@@ -1,11 +1,17 @@
-// src/api/modules/project.ts
 import request from "../request";
 import type { PageParams, PageResult } from "../types";
-import type { Project, ProjectApplication, ProjectFormData, ResourceRecord } from "../types/project";
+import type {
+  AddAdminAccountParams,
+  AdminAccount,
+  Project,
+  ProjectApplication,
+  ProjectFormData,
+  ResourceRecord
+} from "../types/project";
 
 // 获取项目列表
-export function getProjectList(params: PageParams) {
-  return request<PageResult<Project>>({
+export function getProjectList(params: PageParams): Promise<PageResult<Project>> {
+  return request({
     url: "/project/list",
     method: "get",
     params
@@ -39,8 +45,8 @@ export function deleteProject(id: string) {
 }
 
 // 获取项目详情
-export function getProjectDetail(id: string) {
-  return request<Project>({
+export function getProjectDetail(id: string): Promise<Project> {
+  return request({
     url: `/project/detail/${id}`,
     method: "get"
   });
@@ -56,16 +62,16 @@ export function updateProjectResource(id: string, data: any) {
 }
 
 // 获取资源操作记录
-export function getResourceRecords(projectId: string) {
-  return request<ResourceRecord[]>({
+export function getResourceRecords(projectId: string): Promise<ResourceRecord[]> {
+  return request({
     url: `/project/resource/records/${projectId}`,
     method: "get"
   });
 }
 
 // 获取项目应用列表
-export function getProjectApplications(projectId: string) {
-  return request<ProjectApplication>({
+export function getProjectApplications(projectId: string): Promise<ProjectApplication> {
+  return request({
     url: `/project/applications/${projectId}`,
     method: "get"
   });
@@ -76,6 +82,23 @@ export function updateProjectApplications(projectId: string, data: any) {
   return request({
     url: `/project/applications/${projectId}`,
     method: "put",
+    data
+  });
+}
+
+// 获取管理员账号列表
+export function getAdminAccounts(): Promise<AdminAccount[]> {
+  return request({
+    url: "/admin/accounts",
+    method: "get"
+  });
+}
+
+// 新增管理员账号
+export function addAdminAccount(data: AddAdminAccountParams): Promise<AdminAccount> {
+  return request({
+    url: "/admin/account/add",
+    method: "post",
     data
   });
 }

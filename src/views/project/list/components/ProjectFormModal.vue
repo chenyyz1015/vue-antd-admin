@@ -75,130 +75,14 @@
         </a-form>
       </div>
 
-      <!-- 步骤2: 资源配置 -->
+      <!-- 步骤2: 资源配置 (使用复用组件) -->
       <div v-show="current === 1 && mode === 'add'" class="step-content">
-        <a-form
-          ref="resourceFormRef"
-          :model="formData"
-          :rules="resourceRules"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 16 }"
-        >
-          <a-form-item label="物流柜授权" name="cabinetAuth">
-            <a-input v-model:value="formData.cabinetAuth" type="number" placeholder="请输入台数" style="width: 200px" />
-            <a-space style="margin-left: 10px">
-              <a-button size="small" @click="formData.cabinetAuth = 1">一台</a-button>
-              <a-button size="small" @click="formData.cabinetAuth = 3">三台</a-button>
-              <a-button size="small" @click="formData.cabinetAuth = 5">五台</a-button>
-              <a-button size="small" @click="formData.cabinetAuth = 10">十台</a-button>
-              <a-button size="small" @click="formData.cabinetAuth = -1">不限制</a-button>
-            </a-space>
-          </a-form-item>
-          <a-form-item label="无人机授权" name="droneAuth">
-            <a-input v-model:value="formData.droneAuth" type="number" placeholder="请输入台数" style="width: 200px" />
-            <a-space style="margin-left: 10px">
-              <a-button size="small" @click="formData.droneAuth = 1">一台</a-button>
-              <a-button size="small" @click="formData.droneAuth = 3">三台</a-button>
-              <a-button size="small" @click="formData.droneAuth = 5">五台</a-button>
-              <a-button size="small" @click="formData.droneAuth = 10">十台</a-button>
-              <a-button size="small" @click="formData.droneAuth = -1">不限制</a-button>
-            </a-space>
-          </a-form-item>
-          <a-form-item label="存储上限" name="storageLimit">
-            <a-input
-              v-model:value="formData.storageLimit"
-              type="number"
-              placeholder="请输入容量"
-              style="width: 200px"
-              addon-after="G"
-            />
-            <a-space style="margin-left: 10px">
-              <a-button size="small" @click="formData.storageLimit = 200">200G</a-button>
-              <a-button size="small" @click="formData.storageLimit = 400">400G</a-button>
-              <a-button size="small" @click="formData.storageLimit = 600">600G</a-button>
-              <a-button size="small" @click="formData.storageLimit = 1000">1000G</a-button>
-              <a-button size="small" @click="formData.storageLimit = -1">不限制</a-button>
-            </a-space>
-          </a-form-item>
-          <a-form-item label="短信上限" name="smsLimit">
-            <a-input
-              v-model:value="formData.smsLimit"
-              type="number"
-              placeholder="请输入条数"
-              style="width: 200px"
-              addon-after="条"
-            />
-            <a-space style="margin-left: 10px">
-              <a-button size="small" @click="formData.smsLimit = 2000">2000</a-button>
-              <a-button size="small" @click="formData.smsLimit = 5000">5000</a-button>
-              <a-button size="small" @click="formData.smsLimit = 10000">10000</a-button>
-              <a-button size="small" @click="formData.smsLimit = 20000">20000</a-button>
-              <a-button size="small" @click="formData.smsLimit = -1">不限制</a-button>
-            </a-space>
-          </a-form-item>
-          <a-form-item label="提醒规则" name="reminderRule">
-            <a-radio-group v-model:value="formData.reminderRule">
-              <a-radio value="not_limit">不提醒不限制</a-radio>
-              <a-radio value="limit_not_remind">提醒不限制</a-radio>
-              <a-radio value="remind_limit">提醒且限制</a-radio>
-            </a-radio-group>
-          </a-form-item>
-          <a-form-item label="项目到期日" name="expiryType">
-            <a-radio-group v-model:value="formData.expiryType" @change="handleExpiryTypeChange">
-              <a-radio value="limited">限期</a-radio>
-              <a-radio value="unlimited">不限制</a-radio>
-            </a-radio-group>
-            <a-date-picker
-              v-model:value="formData.expiryDate"
-              show-time
-              format="YYYY.MM.DD HH:mm:ss"
-              style="margin-left: 10px; width: 200px"
-              :disabled="formData.expiryType === 'unlimited'"
-            />
-          </a-form-item>
-        </a-form>
+        <ResourceConfigForm ref="resourceFormRef" v-model="resourceData" />
       </div>
 
-      <!-- 步骤3: 功能信息（应用管理） -->
+      <!-- 步骤3: 功能信息（应用管理，使用复用组件） -->
       <div v-show="current === 2 && mode === 'add'" class="step-content">
-        <div class="application-content">
-          <div class="toolbar">
-            <a-button type="primary" @click="handleAddCustomApp">
-              <template #icon><plus-outlined /></template>
-              新增应用
-            </a-button>
-          </div>
-
-          <a-table :columns="appColumns" :data-source="formData.applications" :pagination="false" row-key="id">
-            <template #bodyCell="{ column, record }">
-              <template v-if="column.key === 'status'">
-                <a-switch v-model:checked="record.status" :checked-value="1" :unchecked-value="0" />
-              </template>
-              <template v-if="column.key === 'appIcon'">
-                <span style="font-size: 24px">{{ record.appIcon }}</span>
-              </template>
-              <template v-if="column.key === 'source'">
-                <a-tag :color="record.appType === 'system' ? 'blue' : 'green'">
-                  {{ record.source }}
-                </a-tag>
-              </template>
-              <template v-if="column.key === 'action'">
-                <a-space>
-                  <a-button type="link" size="small" @click="handleEditApp(record)">编辑</a-button>
-                  <a-button
-                    v-if="record.appType === 'custom'"
-                    type="link"
-                    size="small"
-                    danger
-                    @click="handleDeleteApp(record)"
-                  >
-                    删除
-                  </a-button>
-                </a-space>
-              </template>
-            </template>
-          </a-table>
-        </div>
+        <ApplicationManageTable v-model="formData.applications" />
       </div>
 
       <!-- 步骤4: 完成 -->
@@ -239,77 +123,21 @@
       </div>
     </div>
 
-    <!-- 应用编辑/新增弹窗 -->
-    <a-modal
-      v-model:open="appModalVisible"
-      :title="appModalMode === 'add' ? '新增应用' : '编辑应用'"
-      width="600px"
-      @ok="handleAppModalOk"
-      @cancel="handleAppModalCancel"
-    >
-      <a-form
-        ref="appFormRef"
-        :model="appFormData"
-        :rules="appFormRules"
-        :label-col="{ span: 6 }"
-        :wrapper-col="{ span: 16 }"
-      >
-        <a-form-item label="应用名称" name="appName">
-          <a-input v-model:value="appFormData.appName" placeholder="请输入应用名称" />
-        </a-form-item>
-        <a-form-item label="应用图标" name="appIcon">
-          <a-input v-model:value="appFormData.appIcon" placeholder="请输入图标(emoji)" />
-        </a-form-item>
-        <a-form-item label="是否启用" name="status">
-          <a-switch v-model:checked="appFormData.status" :checked-value="1" :unchecked-value="0" />
-        </a-form-item>
-        <a-form-item label="路由地址" name="routeUrl">
-          <a-input
-            v-model:value="appFormData.routeUrl"
-            placeholder="请输入路由地址"
-            :disabled="appModalMode === 'edit' && currentApp?.appType === 'system'"
-          />
-        </a-form-item>
-        <a-form-item label="备注" name="remark">
-          <a-textarea v-model:value="appFormData.remark" placeholder="请输入备注" :rows="3" />
-        </a-form-item>
-      </a-form>
-    </a-modal>
-
     <!-- 新增管理员账号弹窗 -->
-    <a-modal
-      v-model:open="accountModalVisible"
-      title="新增管理员账号"
-      width="500px"
-      @ok="handleAccountModalOk"
-      @cancel="handleAccountModalCancel"
-    >
-      <a-form
-        ref="accountFormRef"
-        :model="accountFormData"
-        :rules="accountFormRules"
-        :label-col="{ span: 6 }"
-        :wrapper-col="{ span: 16 }"
-      >
-        <a-form-item label="用户名" name="username">
-          <a-input v-model:value="accountFormData.username" placeholder="请输入用户名" />
-        </a-form-item>
-        <a-form-item label="姓名" name="nickname">
-          <a-input v-model:value="accountFormData.nickname" placeholder="请输入姓名" />
-        </a-form-item>
-      </a-form>
-    </a-modal>
+    <AdminAccountFormModal v-model:visible="accountModalVisible" @success="handleAccountSuccess" />
   </a-modal>
 </template>
 
 <script setup lang="ts">
-import { addProject, getProjectDetail, updateProject } from "@/api/modules/project";
-import type { Application } from "@/api/types/project";
-import { CheckCircleOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import { addProject, getAdminAccounts, getProjectDetail, updateProject } from "@/api/modules/project";
+import type { AdminAccount, Application } from "@/api/types/project";
+import { PlusOutlined } from "@ant-design/icons-vue";
 import type { FormInstance } from "ant-design-vue";
-import { message, Modal } from "ant-design-vue";
+import { message } from "ant-design-vue";
 import dayjs, { Dayjs } from "dayjs";
-import { h, reactive, ref, watch } from "vue";
+import AdminAccountFormModal from "./AdminAccountFormModal.vue";
+import ApplicationManageTable from "./ApplicationManageTable.vue";
+import ResourceConfigForm from "./ResourceConfigForm.vue";
 
 const props = defineProps<{
   visible: boolean;
@@ -327,9 +155,9 @@ const visible = computed({
 const current = ref(0);
 const submitLoading = ref(false);
 const basicFormRef = ref<FormInstance>();
-const resourceFormRef = ref<FormInstance>();
+const resourceFormRef = ref<InstanceType<typeof ResourceConfigForm>>();
 
-// 表单数据
+// 基本信息表单数据
 const formData = reactive({
   projectName: "",
   contractProjectName: "",
@@ -341,65 +169,25 @@ const formData = reactive({
   phone: "",
   adminAccounts: [] as string[],
   projectCenter: "",
+  applications: [] as Application[]
+});
+
+// 资源配置数据（使用独立对象）
+const resourceData = reactive({
   cabinetAuth: 2,
   droneAuth: 1,
   storageLimit: 200,
   smsLimit: 1000,
   reminderRule: "not_limit",
   expiryType: "limited" as "limited" | "unlimited",
-  expiryDate: dayjs(),
-  features: [] as string[],
-  applications: [] as Application[]
+  expiryDate: dayjs()
 });
 
 // 管理员账号选项
-const adminAccountOptions = ref<{ label: string; value: string }[]>([
-  { label: "张三 (zhangsan)", value: "zhangsan" },
-  { label: "李四 (lisi)", value: "lisi" },
-  { label: "王五 (wangwu)", value: "wangwu" }
-]);
+const adminAccountOptions = ref<{ label: string; value: string }[]>([]);
 
 // 新增管理员账号相关
 const accountModalVisible = ref(false);
-const accountFormRef = ref<FormInstance>();
-const accountFormData = reactive({
-  username: "",
-  nickname: ""
-});
-
-const accountFormRules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-  nickname: [{ required: true, message: "请输入姓名", trigger: "blur" }]
-};
-
-// 应用管理相关
-const appModalVisible = ref(false);
-const appModalMode = ref<"add" | "edit">("add");
-const appFormRef = ref<FormInstance>();
-const currentApp = ref<Application | null>(null);
-
-const appFormData = reactive({
-  appName: "",
-  appIcon: "",
-  status: 1,
-  routeUrl: "",
-  remark: ""
-});
-
-const appFormRules = {
-  appName: [{ required: true, message: "请输入应用名称", trigger: "blur" }],
-  routeUrl: [{ required: true, message: "请输入路由地址", trigger: "blur" }]
-};
-
-const appColumns = [
-  { title: "状态", key: "status", dataIndex: "status", width: 80 },
-  { title: "应用名称", dataIndex: "appName", width: 150 },
-  { title: "应用图标", key: "appIcon", width: 100 },
-  { title: "应用来源", key: "source", width: 120 },
-  { title: "路由地址", dataIndex: "routeUrl", width: 200 },
-  { title: "备注", dataIndex: "remark" },
-  { title: "操作", key: "action", width: 150, fixed: "right" }
-];
 
 // 创建成功后的项目信息
 const createdProject = ref({
@@ -436,17 +224,26 @@ const basicRules = {
   projectCenter: [{ required: true, message: "请输入项目中心", trigger: "blur" }]
 };
 
-const resourceRules = {
-  cabinetAuth: [{ required: true, message: "请输入物流柜授权台数", trigger: "blur" }],
-  droneAuth: [{ required: true, message: "请输入无人机授权台数", trigger: "blur" }],
-  storageLimit: [{ required: true, message: "请输入存储上限", trigger: "blur" }],
-  smsLimit: [{ required: true, message: "请输入短信上限", trigger: "blur" }]
+// 加载管理员账号列表
+const loadAdminAccounts = async () => {
+  try {
+    const accounts = await getAdminAccounts();
+    adminAccountOptions.value = accounts.map((account) => ({
+      label: `${account.nickname} (${account.username})`,
+      value: account.username
+    }));
+  } catch (error) {
+    console.error("加载管理员账号失败:", error);
+  }
 };
 
 watch(
   () => props.visible,
   async (val) => {
     if (val) {
+      // 加载管理员账号列表
+      await loadAdminAccounts();
+
       if (props.mode === "edit" && props.projectId) {
         await loadProjectDetail();
       } else {
@@ -475,7 +272,6 @@ const loadProjectDetail = async () => {
       projectCenter: res.projectCenter
     });
   } catch (error) {
-    console.error("error", error);
     message.error("加载项目详情失败");
   }
 };
@@ -520,15 +316,6 @@ const loadSystemApplications = () => {
   formData.applications = [...systemApps];
 };
 
-// 处理到期类型变化
-const handleExpiryTypeChange = () => {
-  if (formData.expiryType === "unlimited") {
-    formData.expiryDate = dayjs("2099-12-31 23:59:59");
-  } else {
-    formData.expiryDate = dayjs();
-  }
-};
-
 const handlePrev = () => {
   current.value--;
 };
@@ -567,7 +354,8 @@ const handleSubmit = async () => {
 
     const data = {
       ...formData,
-      expiryDate: (formData.expiryDate as Dayjs).format("YYYY.MM.DD HH:mm:ss"),
+      ...resourceData,
+      expiryDate: (resourceData.expiryDate as Dayjs).format("YYYY.MM.DD HH:mm:ss"),
       features,
       applications: formData.applications
     };
@@ -638,97 +426,6 @@ const handleCopyInfo = () => {
   });
 };
 
-// 应用管理相关方法
-const handleAddCustomApp = () => {
-  appModalMode.value = "add";
-  currentApp.value = null;
-  resetAppForm();
-  appModalVisible.value = true;
-};
-
-const handleEditApp = (record: Application) => {
-  appModalMode.value = "edit";
-  currentApp.value = record;
-  Object.assign(appFormData, {
-    appName: record.appName,
-    appIcon: record.appIcon,
-    status: record.status,
-    routeUrl: record.routeUrl,
-    remark: record.remark
-  });
-  appModalVisible.value = true;
-};
-
-const handleDeleteApp = (record: Application) => {
-  Modal.confirm({
-    title: "确认删除",
-    content: `确定要删除应用"${record.appName}"吗？`,
-    onOk: () => {
-      const index = formData.applications.findIndex((app) => app.id === record.id);
-      if (index > -1) {
-        formData.applications.splice(index, 1);
-        message.success("删除成功");
-      }
-    }
-  });
-};
-
-const handleAppModalOk = async () => {
-  try {
-    await appFormRef.value?.validate();
-
-    if (appModalMode.value === "add") {
-      const newApp: Application = {
-        id: String(Date.now()),
-        appName: appFormData.appName,
-        appCode: `custom_${Date.now()}`,
-        appIcon: appFormData.appIcon,
-        appType: "custom",
-        status: appFormData.status,
-        routeUrl: appFormData.routeUrl,
-        remark: appFormData.remark,
-        source: "自定义应用"
-      };
-      formData.applications.push(newApp);
-      message.success("添加成功");
-    } else if (currentApp.value) {
-      const index = formData.applications.findIndex((app) => app.id === currentApp.value?.id);
-      if (index > -1) {
-        formData.applications[index] = {
-          ...formData.applications[index],
-          appName: appFormData.appName,
-          appIcon: appFormData.appIcon,
-          status: appFormData.status,
-          routeUrl:
-            currentApp.value.appType === "system" ? formData.applications[index].routeUrl : appFormData.routeUrl,
-          remark: appFormData.remark
-        };
-        message.success("更新成功");
-      }
-    }
-
-    appModalVisible.value = false;
-  } catch (error) {
-    console.error("表单验证失败", error);
-  }
-};
-
-const handleAppModalCancel = () => {
-  appModalVisible.value = false;
-  resetAppForm();
-};
-
-const resetAppForm = () => {
-  Object.assign(appFormData, {
-    appName: "",
-    appIcon: "",
-    status: 1,
-    routeUrl: "",
-    remark: ""
-  });
-  appFormRef.value?.resetFields();
-};
-
 // 下拉框自定义渲染（添加新增账号按钮）
 const dropdownRender = ({ menuNode }: any) => {
   return h("div", [
@@ -750,38 +447,17 @@ const dropdownRender = ({ menuNode }: any) => {
   ]);
 };
 
-// 新增管理员账号相关方法
-const handleAccountModalOk = async () => {
-  try {
-    await accountFormRef.value?.validate();
+// 新增管理员账号成功后的处理
+const handleAccountSuccess = (newAccount: AdminAccount) => {
+  // 添加到选项列表
+  const newOption = {
+    label: `${newAccount.nickname} (${newAccount.username})`,
+    value: newAccount.username
+  };
+  adminAccountOptions.value.push(newOption);
 
-    const newAccount = {
-      label: `${accountFormData.nickname} (${accountFormData.username})`,
-      value: accountFormData.username
-    };
-
-    adminAccountOptions.value.push(newAccount);
-    formData.adminAccounts.push(accountFormData.username);
-
-    message.success("添加成功");
-    accountModalVisible.value = false;
-    resetAccountForm();
-  } catch (error) {
-    console.error("表单验证失败", error);
-  }
-};
-
-const handleAccountModalCancel = () => {
-  accountModalVisible.value = false;
-  resetAccountForm();
-};
-
-const resetAccountForm = () => {
-  Object.assign(accountFormData, {
-    username: "",
-    nickname: ""
-  });
-  accountFormRef.value?.resetFields();
+  // 自动选中新添加的账号
+  formData.adminAccounts.push(newAccount.username);
 };
 
 const handleCancel = () => {
@@ -802,15 +478,16 @@ const resetForm = () => {
     phone: "",
     adminAccounts: [],
     projectCenter: "",
+    applications: []
+  });
+  Object.assign(resourceData, {
     cabinetAuth: 2,
     droneAuth: 1,
     storageLimit: 200,
     smsLimit: 1000,
     reminderRule: "not_limit",
     expiryType: "limited",
-    expiryDate: dayjs(),
-    features: [],
-    applications: []
+    expiryDate: dayjs()
   });
   basicFormRef.value?.resetFields();
   resourceFormRef.value?.resetFields();
@@ -826,12 +503,6 @@ const resetForm = () => {
   .step-content {
     min-height: 400px;
     padding: 20px 0;
-  }
-
-  .application-content {
-    .toolbar {
-      margin-bottom: 16px;
-    }
   }
 
   .success-content {

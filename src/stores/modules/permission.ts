@@ -1,5 +1,5 @@
 import { usePermission } from "@/composables";
-import { dynamicModuleRoutes, extensionalModuleRoutes, staticModuleRoutes } from "@/router";
+import { dynamicModuleRoutes, extensionalModuleRoutes, redirectRoutes, staticModuleRoutes } from "@/router";
 import type { RouteRecordRaw } from "vue-router";
 
 const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]): RouteRecordRaw[] => {
@@ -31,11 +31,6 @@ export const usePermissionStore = defineStore("permission", () => {
       } else {
         accessedRoutes = filterAsyncRoutes(dynamicModuleRoutes, roles);
       }
-      // 重定向路由
-      const redirectRoutes: RouteRecordRaw[] = [
-        { path: "/", redirect: "/project" },
-        { path: "/:pathMatch(.*)*", redirect: "/404" }
-      ];
       addRoutes.value = accessedRoutes;
       routes.value = [...staticModuleRoutes, ...extensionalModuleRoutes, ...accessedRoutes, ...redirectRoutes];
       resolve([...accessedRoutes, ...redirectRoutes]);

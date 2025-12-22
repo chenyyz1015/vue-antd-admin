@@ -1,4 +1,3 @@
-// src/api/types/project.d.ts
 export interface Project {
   id: string;
   projectId: string;
@@ -78,4 +77,11 @@ export interface AdminAccount {
   id: string;
   username: string;
   nickname: string;
+}
+
+// 新增管理员账号请求参数
+export interface AddAdminAccountParams {
+  username: string;
+  nickname: string;
+  password: string;
 }

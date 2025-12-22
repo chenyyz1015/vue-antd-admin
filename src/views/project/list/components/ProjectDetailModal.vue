@@ -57,7 +57,6 @@
 import { getProjectDetail } from "@/api/modules/project";
 import type { Project } from "@/api/types/project";
 import { message } from "ant-design-vue";
-import { ref, watch } from "vue";
 
 const props = defineProps<{
   visible: boolean;
@@ -88,7 +87,6 @@ const loadDetail = async () => {
   try {
     project.value = await getProjectDetail(props.projectId);
   } catch (error) {
-    console.error("error", error);
     message.error("加载详情失败");
   } finally {
     loading.value = false;

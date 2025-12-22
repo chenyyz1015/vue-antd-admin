@@ -15,9 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { FileUnknownOutlined } from "@ant-design/icons-vue";
-import { useRouter } from "vue-router";
-
 const router = useRouter();
 
 const goBack = () => {

@@ -7,4 +7,5 @@ export default pinia;
 
 export * from "./modules/app";
 export * from "./modules/permission";
+export * from "./modules/tabs";
 export * from "./modules/user";

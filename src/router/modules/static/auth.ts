@@ -9,13 +9,13 @@ const authRoutes: RouteRecordRaw[] = [
     meta: { title: "认证", requiresAuth: false },
     children: [
       {
-        path: "login",
+        path: "/auth/login",
         name: "Login",
         component: () => import("@/views/auth/login.vue"),
         meta: { title: "登录", requiresAuth: false }
       },
       {
-        path: "register",
+        path: "/auth/register",
         name: "Register",
         component: () => import("@/views/auth/register.vue"),
         meta: { title: "注册", requiresAuth: false }

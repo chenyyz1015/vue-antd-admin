@@ -1,82 +1,106 @@
 <template>
-  <div class="project-management">
-    <a-card :bordered="false">
-      <!-- 搜索区域 -->
-      <a-form layout="inline" :model="searchForm" class="search-form">
-        <a-form-item label="项目名称">
-          <a-input v-model:value="searchForm.projectName" placeholder="请输入项目名称" allow-clear />
-        </a-form-item>
-        <a-form-item label="项目ID">
-          <a-input v-model:value="searchForm.projectId" placeholder="请输入项目ID" allow-clear />
-        </a-form-item>
-        <a-form-item label="项目类型">
-          <a-select v-model:value="searchForm.projectType" placeholder="请选择" style="width: 150px" allow-clear>
-            <a-select-option value="城市安全">城市安全</a-select-option>
-            <a-select-option value="智慧社区">智慧社区</a-select-option>
-            <a-select-option value="园区管理">园区管理</a-select-option>
-            <a-select-option value="校园安防">校园安防</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="项目状态">
-          <a-select v-model:value="searchForm.status" placeholder="请选择" style="width: 120px" allow-clear>
-            <a-select-option :value="1">启用</a-select-option>
-            <a-select-option :value="0">禁用</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-space>
-            <a-button type="primary" @click="handleSearch">
-              <template #icon><search-outlined /></template>
-              查询
-            </a-button>
-            <a-button @click="handleReset">重置</a-button>
-          </a-space>
-        </a-form-item>
-      </a-form>
+  <div class="project-container">
+    <!-- 搜索区域 -->
+    <a-form layout="inline" :model="searchForm" class="search-form">
+      <a-form-item label="项目名称">
+        <a-input v-model:value="searchForm.projectName" placeholder="请输入项目名称" allow-clear />
+      </a-form-item>
+      <a-form-item label="项目ID">
+        <a-input v-model:value="searchForm.projectId" placeholder="请输入项目ID" allow-clear />
+      </a-form-item>
+      <a-form-item label="项目类型">
+        <a-select v-model:value="searchForm.projectType" placeholder="请选择" style="width: 150px" allow-clear>
+          <a-select-option value="城市安全">城市安全</a-select-option>
+          <a-select-option value="智慧社区">智慧社区</a-select-option>
+          <a-select-option value="园区管理">园区管理</a-select-option>
+          <a-select-option value="校园安防">校园安防</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="项目状态">
+        <a-select v-model:value="searchForm.status" placeholder="请选择" style="width: 120px" allow-clear>
+          <a-select-option :value="1">启用</a-select-option>
+          <a-select-option :value="0">禁用</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item>
+        <a-space>
+          <a-button type="primary" @click="handleSearch">
+            <template #icon><search-outlined /></template>
+            查询
+          </a-button>
+          <a-button @click="handleReset">重置</a-button>
+        </a-space>
+      </a-form-item>
+    </a-form>
 
-      <!-- 操作按钮 -->
-      <div class="table-operations">
-        <a-button type="primary" @click="handleAdd">
-          <template #icon><plus-outlined /></template>
-          新增项目
-        </a-button>
-      </div>
+    <!-- 操作按钮 -->
+    <div class="table-operations">
+      <a-button type="primary" @click="handleAdd">
+        <template #icon><plus-outlined /></template>
+        新增项目
+      </a-button>
+    </div>
 
-      <!-- 表格 -->
-      <a-table
-        :columns="columns"
-        :data-source="dataSource"
-        :loading="loading"
-        :pagination="pagination"
-        :scroll="{ x: 1500 }"
-        row-key="id"
-        @change="handleTableChange"
-      >
-        <template #bodyCell="{ column, record, index }">
-          <template v-if="column.key === 'index'">
-            {{ (pagination.current - 1) * pagination.pageSize + index + 1 }}
-          </template>
-          <template v-if="column.key === 'status'">
-            <a-switch
-              v-model:checked="record.status"
-              :checked-value="1"
-              :unchecked-value="0"
-              @change="handleStatusChange(record)"
-            />
-          </template>
-          <template v-if="column.key === 'action'">
-            <a-space>
-              <a-button type="link" size="small" @click="handleDetail(record)">详情</a-button>
-              <a-button type="link" size="small" @click="handleEdit(record)">编辑</a-button>
-              <a-button type="link" size="small" @click="handleCopy(record)">复制</a-button>
-              <a-button type="link" size="small" @click="handleResource(record)">资源管理</a-button>
-              <a-button type="link" size="small" @click="handleApplication(record)">应用管理</a-button>
-              <a-button type="link" size="small" danger @click="handleDelete(record)">删除</a-button>
-            </a-space>
-          </template>
+    <!-- 表格 -->
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      :loading="loading"
+      :pagination="pagination"
+      :scroll="{ x: '100%', y: 'none' }"
+      row-key="id"
+      @change="handleTableChange"
+    >
+      <template #bodyCell="{ column, record, index }">
+        <template v-if="column.key === 'index'">
+          {{ (pagination.current - 1) * pagination.pageSize + index + 1 }}
         </template>
-      </a-table>
-    </a-card>
+        <template v-if="column.key === 'status'">
+          <a-switch
+            v-model:checked="record.status"
+            :checked-value="1"
+            :unchecked-value="0"
+            @change="handleStatusChange(record)"
+          />
+        </template>
+        <template v-if="column.key === 'action'">
+          <a-space>
+            <a-button type="link" size="small" @click="handleEdit(record)">编辑</a-button>
+            <a-dropdown>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item key="detail" @click="handleDetail(record)">
+                    <eye-outlined />
+                    详情
+                  </a-menu-item>
+                  <a-menu-item key="copy" @click="handleCopy(record)">
+                    <copy-outlined />
+                    复制
+                  </a-menu-item>
+                  <a-menu-item key="resource" @click="handleResource(record)">
+                    <database-outlined />
+                    资源管理
+                  </a-menu-item>
+                  <a-menu-item key="application" @click="handleApplication(record)">
+                    <appstore-outlined />
+                    应用管理
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item key="delete" danger @click="handleDelete(record)">
+                    <delete-outlined />
+                    删除
+                  </a-menu-item>
+                </a-menu>
+              </template>
+              <a-button type="link" size="small">
+                更多
+                <down-outlined />
+              </a-button>
+            </a-dropdown>
+          </a-space>
+        </template>
+      </template>
+    </a-table>
 
     <!-- 新增/编辑弹窗 -->
     <ProjectFormModal
@@ -107,9 +131,8 @@
 <script setup lang="ts">
 import { getProjectList } from "@/api/modules/project";
 import type { Project } from "@/api/types/project";
-import { PlusOutlined, SearchOutlined } from "@ant-design/icons-vue";
+import type { TableColumnType } from "ant-design-vue";
 import { message } from "ant-design-vue";
-import { reactive, ref } from "vue";
 import ApplicationManageModal from "./components/ApplicationManageModal.vue";
 import ProjectDeleteModal from "./components/ProjectDeleteModal.vue";
 import ProjectDetailModal from "./components/ProjectDetailModal.vue";
@@ -144,18 +167,18 @@ const formMode = ref<"add" | "edit">("add");
 const currentProjectId = ref("");
 const currentProject = ref<Project | null>(null);
 
-const columns = [
+const columns: TableColumnType[] = [
   { title: "序号", key: "index", width: 70, fixed: "left" },
   { title: "状态", key: "status", dataIndex: "status", width: 80, fixed: "left" },
-  { title: "项目ID", dataIndex: "projectId", width: 130 },
-  { title: "项目名称", dataIndex: "projectName", width: 200 },
-  { title: "项目区域", dataIndex: "region", width: 200 },
-  { title: "项目类型", dataIndex: "projectType", width: 120 },
-  { title: "项目负责人", dataIndex: "responsible", width: 120 },
-  { title: "手机号", dataIndex: "phone", width: 130 },
-  { title: "物流柜授权(台)", dataIndex: "cabinetAuth", width: 120 },
-  { title: "无人机授权(台)", dataIndex: "droneAuth", width: 120 },
-  { title: "操作", key: "action", width: 400, fixed: "right" }
+  { title: "项目ID", dataIndex: "projectId", width: 140 },
+  { title: "项目名称", dataIndex: "projectName", width: 200, ellipsis: true },
+  { title: "项目区域", dataIndex: "region", width: 300, ellipsis: true },
+  { title: "项目类型", dataIndex: "projectType", width: 140 },
+  { title: "项目负责人", dataIndex: "responsible", width: 140 },
+  { title: "手机号", dataIndex: "phone", width: 140 },
+  { title: "物流柜授权(台)", dataIndex: "cabinetAuth", width: 140 },
+  { title: "无人机授权(台)", dataIndex: "droneAuth", width: 140 },
+  { title: "操作", key: "action", width: 140, fixed: "right" }
 ];
 
 const fetchData = async () => {
@@ -214,6 +237,9 @@ const handleDetail = (record: Project) => {
 };
 
 const handleDelete = (record: Project) => {
+  if (record.status === 1) {
+    return message.warning("项目启用中，不可删除");
+  }
   currentProject.value = record;
   deleteModalVisible.value = true;
 };
@@ -284,13 +310,21 @@ fetchData();
 </script>
 
 <style lang="scss" scoped>
-.project-management {
+.project-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
   .search-form {
-    margin-bottom: 16px;
+    width: 100%;
+    height: auto;
   }
 
   .table-operations {
-    margin-bottom: 16px;
+    width: 100%;
+    height: auto;
   }
 }
 </style>
