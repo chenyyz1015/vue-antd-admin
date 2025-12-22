@@ -1,5 +1,5 @@
 <template>
-  <a-layout-footer class="layout-footer">Copyright © 2024 LALP Admin UI</a-layout-footer>
+  <a-layout-footer class="layout-footer">Copyright © 2024 Vue Antd Admin</a-layout-footer>
 </template>
 
 <script setup lang="ts"></script>
