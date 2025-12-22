@@ -1,6 +1,6 @@
 <template>
-  <div class="layout-logo">
-    <svg-icon name="vite" :size="32" />
+  <div class="layout-logo" @click="goHome">
+    <svg-icon name="preserve-color/logo" :size="32" class="logo-icon" />
     <span v-if="!collapsed" class="logo-title">{{ title }}</span>
   </div>
 </template>
@@ -12,19 +12,28 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const router = useRouter();
+
+const goHome = () => {
+  router.push({ path: "/" });
+};
 </script>
 
 <style lang="scss" scoped>
 .layout-logo {
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 15px;
   cursor: pointer;
-  transition: all 0.3s;
+
+  .logo-icon {
+    font-size: 20px;
+  }
 
   .logo-title {
-    margin-left: 12px;
     font-size: 18px;
     font-weight: 600;
     color: #1890ff;

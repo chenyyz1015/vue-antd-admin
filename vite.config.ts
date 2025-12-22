@@ -28,21 +28,22 @@ export default defineConfig(({ mode }) => {
       UnoCSS(),
       AutoImport({
         imports: ["vue", "vue-router", "pinia", "vue-i18n", "@vueuse/core"],
-        dts: "src/types/auto-imports.d.ts",
+        dts: path.resolve(__dirname, "src/types/auto-imports.d.ts"),
         eslintrc: {
           enabled: true,
-          filepath: "./.eslintrc-auto-import.json"
+          filepath: path.resolve(__dirname, "./.eslintrc-auto-import.json")
         }
       }),
       Components({
-        dirs: ["src/components", "src/layouts"],
+        dirs: [path.resolve(__dirname, "src/components"), path.resolve(__dirname, "src/layouts")],
         resolvers: [AntDesignVueResolver({ importStyle: false })],
-        dts: "src/types/components.d.ts"
+        dts: path.resolve(__dirname, "src/types/components.d.ts")
       }),
       UnpluginSvgComponent({
-        iconDir: ["src/assets/svgs"],
+        iconDir: [path.resolve(__dirname, "src/assets/svgs")],
+        preserveColor: path.resolve(__dirname, "src/assets/svgs/preserve-color"),
         dts: true,
-        dtsDir: "src/types"
+        dtsDir: path.resolve(__dirname, "src/types")
       }),
       MockServe({
         mockPath: "src/mock",

@@ -86,18 +86,15 @@ vue-antd-admin/
 │   ├── commit-msg
 │   └── pre-commit
 ├── .vscode/                            # vscode项目配置
-│   └── ...
 ├── build/                              # 打包配置
-│   └── ...
-├── public/
-│   └── favicon.ico
+├── public/                             # 公共目录
 ├── src/
 │   ├── api/                            # API接口
 │   │   ├── modules/
 │   │   │   ├── user.ts
 │   │   │   ├── system.ts
 │   │   │   └── ...
-│   │   ├── types/
+│   │   ├── types/                      # 接口类型定义
 │   │   └── index.ts
 │   ├── assets/                         # 静态资源
 │   │   ├── svgs/                       # SVG图标

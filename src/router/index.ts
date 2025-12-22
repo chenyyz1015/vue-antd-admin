@@ -35,7 +35,7 @@ export const extensionalModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("extensi
 export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic");
 // 重定向路由
 export const redirectRoutes: RouteRecordRaw[] = [
-  { path: "/", redirect: "/project" },
+  { path: "/", redirect: "/dashboard" },
   { path: "/:pathMatch(.*)*", redirect: "/404" }
 ];
 
