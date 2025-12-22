@@ -17,7 +17,6 @@
     v-model:theme-mode="appStore.themeMode"
     v-model:primary-color="appStore.primaryColor"
     v-model:show-tabs="appStore.showTabs"
-    v-model:fixed-header="appStore.fixedHeader"
     v-model:show-breadcrumb="appStore.showBreadcrumb"
     v-model:show-footer="appStore.showFooter"
     v-model:collapsed="appStore.collapsed"
@@ -104,7 +103,6 @@ const handleResetSettings = () => {
       appStore.setPrimaryColor("#1890ff");
       appStore.setLocale("zh-CN");
       appStore.showTabs = true;
-      appStore.fixedHeader = true;
       appStore.showBreadcrumb = true;
       appStore.contentWidth = "fluid";
       appStore.setColorWeak(false);
@@ -123,7 +121,6 @@ const handleCopySettings = () => {
     primaryColor: appStore.primaryColor,
     locale: appStore.locale,
     showTabs: appStore.showTabs,
-    fixedHeader: appStore.fixedHeader,
     showBreadcrumb: appStore.showBreadcrumb,
     contentWidth: appStore.contentWidth,
     colorWeak: appStore.colorWeak,

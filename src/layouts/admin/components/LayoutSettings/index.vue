@@ -98,14 +98,6 @@
 
       <div class="setting-item switch-item">
         <div class="switch-label">
-          <span>固定顶栏</span>
-          <span class="switch-desc">固定顶部导航栏</span>
-        </div>
-        <a-switch :checked="fixedHeader" @change="handleFixedHeaderChange" />
-      </div>
-
-      <div class="setting-item switch-item">
-        <div class="switch-label">
           <span>显示底栏</span>
           <span class="switch-desc">显示底部版权信息</span>
         </div>
@@ -126,10 +118,10 @@
 
       <div class="setting-item switch-item">
         <div class="switch-label">
-          <span>侧栏展开</span>
+          <span>侧栏收起</span>
           <span class="switch-desc">默认展开侧边栏（顶部布局不支持）</span>
         </div>
-        <a-switch :checked="!collapsed" :disabled="appStore.layoutMode === 'top'" @change="handleCollapsedChange" />
+        <a-switch :checked="collapsed" :disabled="appStore.layoutMode === 'top'" @change="handleCollapsedChange" />
       </div>
 
       <div class="setting-item switch-item">
@@ -213,7 +205,6 @@ interface Props {
   themeMode: "light" | "dark";
   primaryColor: string;
   showTabs: boolean;
-  fixedHeader: boolean;
   showBreadcrumb: boolean;
   showFooter: boolean;
   collapsed: boolean;
@@ -229,7 +220,6 @@ interface Emits {
   (e: "update:themeMode", value: string): void;
   (e: "update:primaryColor", value: string): void;
   (e: "update:showTabs", value: boolean): void;
-  (e: "update:fixedHeader", value: boolean): void;
   (e: "update:showBreadcrumb", value: boolean): void;
   (e: "update:showFooter", value: boolean): void;
   (e: "update:collapsed", value: boolean): void;
@@ -283,11 +273,6 @@ const handlePrimaryColorChange = (value: string) => {
 // 显示标签页
 const handleShowTabsChange = (checked: CheckedType) => {
   emit("update:showTabs", checked as boolean);
-};
-
-// 国定顶部
-const handleFixedHeaderChange = (checked: CheckedType) => {
-  emit("update:fixedHeader", checked as boolean);
 };
 
 // 显示面包屑

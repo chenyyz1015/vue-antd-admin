@@ -4,7 +4,7 @@
     <a-layout-header class="layout-header">
       <div class="header-left">
         <!-- Logo -->
-        <Logo :title="appStore.title" :collapsed="appStore.collapsed" style="width: 220px" />
+        <Logo :title="appStore.title" :collapsed="appStore.collapsed" :collapseable="false" style="width: 220px" />
 
         <!-- 一级菜单 -->
         <div class="header-menu">

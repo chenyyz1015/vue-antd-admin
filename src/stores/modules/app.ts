@@ -15,7 +15,6 @@ export const useAppStore = defineStore(
     // 布局配置
     const collapsed = ref(false);
     const showTabs = ref(true);
-    const fixedHeader = ref(true);
     const showBreadcrumb = ref(true);
     const showFooter = ref(true);
     const contentWidth = ref<ContentWidth>("fluid");
@@ -88,7 +87,6 @@ export const useAppStore = defineStore(
       locale,
       collapsed,
       showTabs,
-      fixedHeader,
       showBreadcrumb,
       showFooter,
       contentWidth,
@@ -113,7 +111,6 @@ export const useAppStore = defineStore(
         "primaryColor",
         "locale",
         "showTabs",
-        "fixedHeader",
         "showBreadcrumb",
         "contentWidth",
         "colorWeak",

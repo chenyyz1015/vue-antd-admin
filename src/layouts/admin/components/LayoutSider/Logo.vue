@@ -1,7 +1,7 @@
 <template>
   <div class="layout-logo" @click="goHome">
     <svg-icon name="preserve-color/logo" :size="32" class="logo-icon" />
-    <span v-if="!collapsed" class="logo-title">{{ title }}</span>
+    <span v-if="!collapseable || !collapsed" class="logo-title">{{ title }}</span>
   </div>
 </template>
 
@@ -9,9 +9,12 @@
 interface Props {
   title: string;
   collapsed: boolean;
+  collapseable?: boolean;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  collapseable: true
+});
 
 const router = useRouter();
 
