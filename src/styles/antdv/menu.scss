@@ -3,6 +3,10 @@
     .ant-menu-submenu-title {
       display: flex;
       align-items: center;
+
+      .ant-menu-item-icon {
+        min-width: 18px;
+      }
     }
   }
 

@@ -13,10 +13,8 @@
         :closable="tab.closable !== false && tabsStore.tabs.length > 1"
       >
         <template #tab>
-          <span>
-            <svg-icon v-if="tab.icon" :name="tab.icon" :size="14" style="margin-right: 4px" />
-            {{ tab.title }}
-          </span>
+          <svg-icon v-if="tab.icon" :name="tab.icon" :size="18" style="font-size: 18px" />
+          <span>{{ tab.title }}</span>
         </template>
       </a-tab-pane>
     </a-tabs>
