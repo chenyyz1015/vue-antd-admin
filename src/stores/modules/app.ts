@@ -1,5 +1,6 @@
 export type LayoutMode = "side" | "top" | "mix";
 export type ThemeMode = "light" | "dark";
+export type TransitionName = "fade" | "fade-slide";
 export type ContentWidth = "fluid" | "fixed";
 
 export const useAppStore = defineStore(
@@ -9,6 +10,7 @@ export const useAppStore = defineStore(
     const title = ref(import.meta.env.VITE_APP_TITLE);
     const layoutMode = ref<LayoutMode>("side");
     const themeMode = ref<ThemeMode>("light");
+    const transitionName = ref<TransitionName>("fade-slide");
     const primaryColor = ref("#1890ff");
     const locale = ref("zh-CN");
 
@@ -46,6 +48,10 @@ export const useAppStore = defineStore(
     const toggleTheme = () => {
       const newTheme = themeMode.value === "light" ? "dark" : "light";
       setThemeMode(newTheme);
+    };
+
+    const setTransitionName = (name: TransitionName) => {
+      transitionName.value = name;
     };
 
     const setPrimaryColor = (color: string) => {
@@ -92,6 +98,7 @@ export const useAppStore = defineStore(
       title,
       layoutMode,
       themeMode,
+      transitionName,
       primaryColor,
       locale,
       collapsed,
@@ -105,6 +112,7 @@ export const useAppStore = defineStore(
       setLayoutMode,
       setThemeMode,
       toggleTheme,
+      setTransitionName,
       setPrimaryColor,
       setLocale,
       setCollapsed,
