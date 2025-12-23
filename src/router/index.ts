@@ -36,12 +36,12 @@ export const dynamicModuleRoutes: RouteRecordRaw[] = loadSyncRoutes("dynamic");
 // 重定向路由
 export const redirectRoutes: RouteRecordRaw[] = [
   { path: "/", redirect: "/dashboard" },
-  { path: "/:pathMatch(.*)*", redirect: "/404" }
+  { path: "/:pathMatch(.*)*", redirect: "/exception/404" }
 ];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_APP_BASE_URL),
-  routes: staticModuleRoutes.concat(extensionalModuleRoutes),
+  routes: [...staticModuleRoutes, ...extensionalModuleRoutes],
   scrollBehavior: () => ({ left: 0, top: 0 })
 });
 

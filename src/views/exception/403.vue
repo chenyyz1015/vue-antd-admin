@@ -1,60 +1,17 @@
 <template>
-  <div class="exception-page">
-    <div class="exception-content">
-      <div class="exception-icon">
-        <stop-outlined />
-      </div>
-      <h1 class="exception-title">403</h1>
-      <p class="exception-desc">抱歉，你无权访问该页面</p>
-      <a-space>
-        <a-button @click="goBack">返回上一页</a-button>
-        <a-button type="primary" @click="goHome">返回首页</a-button>
-      </a-space>
-    </div>
-  </div>
+  <a-result status="403" title="403" sub-title="Sorry, you are not authorized to access this page.">
+    <template #extra>
+      <a-button type="primary" @click="goHome">Back Home</a-button>
+    </template>
+  </a-result>
 </template>
 
 <script setup lang="ts">
 const router = useRouter();
-
-const goBack = () => {
-  router.back();
-};
 
 const goHome = () => {
   router.push("/");
 };
 </script>
 
-<style scoped lang="scss">
-.exception-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #f0f2f5;
-
-  .exception-content {
-    text-align: center;
-
-    .exception-icon {
-      font-size: 120px;
-      color: #faad14;
-      margin-bottom: 24px;
-    }
-
-    .exception-title {
-      font-size: 72px;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.85);
-      margin-bottom: 16px;
-    }
-
-    .exception-desc {
-      font-size: 18px;
-      color: rgba(0, 0, 0, 0.45);
-      margin-bottom: 32px;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>
