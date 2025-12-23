@@ -10,14 +10,11 @@
         <div class="header-menu">
           <a-menu
             v-model:selected-keys="topMenuKeys"
+            :items="topMenuItems"
             mode="horizontal"
             :theme="appStore.themeMode === 'dark' ? 'dark' : 'light'"
             @click="handleTopMenuClick"
           >
-            <a-menu-item v-for="item in topMenuItems" :key="item.key">
-              <svg-icon v-if="item.icon" :name="item.icon" :size="18" style="margin-right: 8px" />
-              {{ item.label }}
-            </a-menu-item>
           </a-menu>
         </div>
       </div>
@@ -47,9 +44,9 @@
         <a-menu
           v-model:selected-keys="selectedKeys"
           v-model:open-keys="openKeys"
+          :items="sideMenuItems"
           mode="inline"
           :theme="appStore.themeMode"
-          :items="sideMenuItems"
           @click="handleSideMenuClick"
         />
       </a-layout-sider>
@@ -105,7 +102,7 @@ const topMenuItems = computed(() => {
     .map((route) => ({
       key: route.path,
       label: route.meta?.title,
-      icon: route.meta?.icon
+      icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
     }));
 });
 
@@ -125,7 +122,7 @@ const sideMenuItems = computed<ItemType[]>(() => {
           key: route.path,
           label: route.meta?.title,
           title: route.meta?.title,
-          icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, size: 18 }) : undefined
+          icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
         };
 
         if (route.children && route.children.length > 0) {
@@ -201,6 +198,7 @@ html[data-theme="dark"] {
     padding: 0 20px 0 0;
     display: flex;
     align-items: center;
+    gap: 15px;
     border-bottom: 1px solid #eeeeee;
 
     .header-left {
@@ -209,6 +207,12 @@ html[data-theme="dark"] {
       height: auto;
       display: flex;
       align-items: center;
+
+      .header-menu {
+        flex: 1 1 auto;
+        width: 0;
+        height: auto;
+      }
     }
 
     .header-right {

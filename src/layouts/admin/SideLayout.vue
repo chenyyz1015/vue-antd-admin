@@ -1,12 +1,7 @@
 <template>
   <a-layout class="side-layout">
     <!-- 侧边栏 -->
-    <LayoutSider
-      v-model:collapsed="appStore.collapsed"
-      :title="appStore.title"
-      :theme="appStore.themeMode"
-      :is-mobile="isMobile"
-    />
+    <LayoutSider :is-mobile="isMobile" />
 
     <a-layout>
       <!-- 顶部栏 -->

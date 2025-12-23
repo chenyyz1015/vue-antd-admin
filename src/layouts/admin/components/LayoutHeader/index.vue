@@ -62,10 +62,13 @@ html[data-theme="dark"] {
   padding: 0 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
   border-bottom: 1px solid #eeeeee;
 
   .header-left {
+    flex: 1 1 auto;
+    width: 0;
+    height: auto;
     display: flex;
     align-items: center;
 

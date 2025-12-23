@@ -38,7 +38,7 @@ const generateMenuItems = (routes: RouteRecordRaw[]): ItemType[] => {
         key: route.path,
         label: route.meta?.title,
         title: route.meta?.title,
-        icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, size: 18 }) : undefined
+        icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
       };
 
       // 递归处理子路由

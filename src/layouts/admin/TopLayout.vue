@@ -75,6 +75,7 @@ html[data-theme="dark"] {
     padding: 0 20px;
     display: flex;
     align-items: center;
+    gap: 15px;
     border-bottom: 1px solid #eeeeee;
 
     .header-left {
@@ -84,6 +85,12 @@ html[data-theme="dark"] {
       display: flex;
       align-items: center;
       gap: 15px;
+
+      .header-menu {
+        flex: 1 1 auto;
+        width: 0;
+        height: auto;
+      }
     }
 
     .header-right {
