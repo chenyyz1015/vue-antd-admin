@@ -8,21 +8,12 @@
       :is-mobile="isMobile"
     />
 
-    <!-- 移动端遮罩 -->
-    <div v-if="isMobile && !appStore.collapsed" class="layout-mask" @click="appStore.toggleCollapsed" />
-
     <a-layout>
       <!-- 顶部栏 -->
       <LayoutHeader
-        :collapsed="appStore.collapsed"
-        :theme-mode="appStore.themeMode"
         :is-fullscreen="isFullscreen"
         :is-mobile="isMobile"
-        :show-breadcrumb="appStore.showBreadcrumb"
-        @toggle-collapsed="appStore.toggleCollapsed"
-        @toggle-theme="$emit('toggle-theme')"
         @toggle-fullscreen="$emit('toggle-fullscreen')"
-        @locale-change="$emit('locale-change', $event)"
         @open-settings="$emit('open-settings')"
       />
 
@@ -48,9 +39,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: "toggle-theme"): void;
   (e: "toggle-fullscreen"): void;
-  (e: "locale-change", locale: string): void;
   (e: "open-settings"): void;
 }
 

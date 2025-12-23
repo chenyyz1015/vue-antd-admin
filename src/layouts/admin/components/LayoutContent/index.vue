@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content class="layout-content">
+  <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showFooter }">
     <div class="content-wrapper">
       <router-view v-slot="{ Component, route }">
         <transition name="fade-slide" mode="out-in">
@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "@/stores";
+
 interface Props {
   cachedViews?: string[];
 }
@@ -20,11 +22,17 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   cachedViews: () => []
 });
+
+const appStore = useAppStore();
 </script>
 
 <style lang="scss" scoped>
 .layout-content {
   padding: 20px;
+
+  &.has-footer {
+    padding: 20px 20px 0;
+  }
 
   .content-wrapper {
     width: 100%;
@@ -32,12 +40,6 @@ withDefaults(defineProps<Props>(), {
     padding: 20px;
     background: #ffffff;
     border-radius: 5px;
-  }
-}
-
-:deep([data-theme="dark"]) {
-  .layout-content .content-wrapper {
-    background: #141414;
   }
 }
 </style>

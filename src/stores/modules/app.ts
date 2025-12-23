@@ -43,6 +43,11 @@ export const useAppStore = defineStore(
       }
     };
 
+    const toggleTheme = () => {
+      const newTheme = themeMode.value === "light" ? "dark" : "light";
+      setThemeMode(newTheme);
+    };
+
     const setPrimaryColor = (color: string) => {
       primaryColor.value = color;
       // 更新 CSS 变量
@@ -51,6 +56,10 @@ export const useAppStore = defineStore(
 
     const setLocale = (lang: string) => {
       locale.value = lang;
+    };
+
+    const setCollapsed = (value: boolean) => {
+      collapsed.value = value;
     };
 
     const toggleCollapsed = () => {
@@ -95,8 +104,10 @@ export const useAppStore = defineStore(
       setTitle,
       setLayoutMode,
       setThemeMode,
+      toggleTheme,
       setPrimaryColor,
       setLocale,
+      setCollapsed,
       toggleCollapsed,
       setContentWidth,
       setColorWeak,

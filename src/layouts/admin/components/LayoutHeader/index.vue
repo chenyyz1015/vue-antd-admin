@@ -1,19 +1,16 @@
 <template>
   <a-layout-header class="layout-header">
     <div class="header-left">
-      <menu-unfold-outlined v-if="collapsed" class="trigger" @click="$emit('toggle-collapsed')" />
-      <menu-fold-outlined v-else class="trigger" @click="$emit('toggle-collapsed')" />
-      <Breadcrumb v-if="!isMobile && showBreadcrumb" />
+      <menu-unfold-outlined v-if="appStore.collapsed" class="trigger" @click="appStore.toggleCollapsed" />
+      <menu-fold-outlined v-else class="trigger" @click="appStore.toggleCollapsed" />
+      <Breadcrumb v-if="!isMobile && appStore.showBreadcrumb" />
     </div>
 
     <div class="header-right">
       <HeaderActions
-        :theme-mode="themeMode"
         :is-fullscreen="isFullscreen"
         :is-mobile="isMobile"
-        @toggle-theme="$emit('toggle-theme')"
         @toggle-fullscreen="$emit('toggle-fullscreen')"
-        @locale-change="$emit('locale-change', $event)"
         @open-settings="$emit('open-settings')"
       />
       <UserDropdown :is-mobile="isMobile" />
@@ -22,32 +19,25 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from "./Breadcrumb.vue";
-import HeaderActions from "./HeaderActions.vue";
-import UserDropdown from "./UserDropdown.vue";
+import { useAppStore } from "@/stores";
 
 interface Props {
-  collapsed: boolean;
-  themeMode: "light" | "dark";
   isFullscreen: boolean;
   isMobile?: boolean;
-  showBreadcrumb?: boolean;
 }
 
 interface Emits {
-  (e: "toggle-collapsed"): void;
-  (e: "toggle-theme"): void;
   (e: "toggle-fullscreen"): void;
-  (e: "locale-change", locale: string): void;
   (e: "open-settings"): void;
 }
 
 withDefaults(defineProps<Props>(), {
-  isMobile: false,
-  showBreadcrumb: true
+  isMobile: false
 });
 
 defineEmits<Emits>();
+
+const appStore = useAppStore();
 </script>
 
 <style lang="scss">

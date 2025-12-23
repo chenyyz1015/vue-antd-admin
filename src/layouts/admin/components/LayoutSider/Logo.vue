@@ -1,22 +1,23 @@
 <template>
   <div class="layout-logo" @click="goHome">
     <svg-icon name="preserve-color/logo" :size="32" class="logo-icon" />
-    <span v-if="!collapseable || !collapsed" class="logo-title">{{ title }}</span>
+    <span v-if="!collapsible || !appStore.collapsed" class="logo-title">{{ appStore.title }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "@/stores";
+
 interface Props {
-  title: string;
-  collapsed: boolean;
-  collapseable?: boolean;
+  collapsible?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
-  collapseable: true
+  collapsible: true
 });
 
 const router = useRouter();
+const appStore = useAppStore();
 
 const goHome = () => {
   router.push({ path: "/" });

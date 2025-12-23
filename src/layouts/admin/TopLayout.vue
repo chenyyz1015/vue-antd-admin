@@ -4,22 +4,19 @@
     <a-layout-header class="layout-header">
       <div class="header-left">
         <!-- Logo -->
-        <Logo :title="appStore.title" :collapsed="appStore.collapsed" />
+        <Logo />
 
         <!-- 顶部菜单 -->
         <div class="header-menu">
-          <Menu :theme="appStore.themeMode" mode="horizontal" />
+          <Menu mode="horizontal" />
         </div>
       </div>
 
       <div class="header-right">
         <HeaderActions
-          :theme-mode="appStore.themeMode"
           :is-fullscreen="isFullscreen"
           :is-mobile="isMobile"
-          @toggle-theme="$emit('toggle-theme')"
           @toggle-fullscreen="$emit('toggle-fullscreen')"
-          @locale-change="$emit('locale-change', $event)"
           @open-settings="$emit('open-settings')"
         />
         <UserDropdown :is-mobile="isMobile" />
@@ -49,9 +46,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: "toggle-theme"): void;
   (e: "toggle-fullscreen"): void;
-  (e: "locale-change", locale: string): void;
   (e: "open-settings"): void;
 }
 

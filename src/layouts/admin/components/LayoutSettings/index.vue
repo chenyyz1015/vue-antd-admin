@@ -20,7 +20,7 @@
             v-for="mode in layoutModes"
             :key="mode.value"
             class="layout-mode-item"
-            :class="{ active: layoutMode === mode.value }"
+            :class="{ active: appStore.layoutMode === mode.value }"
             @click="handleLayoutModeChange(mode.value)"
           >
             <div class="mode-preview" :class="mode.value">
@@ -44,7 +44,7 @@
               </div>
             </div>
             <div class="mode-label">{{ mode.label }}</div>
-            <check-circle-filled v-if="layoutMode === mode.value" class="mode-check" />
+            <check-circle-filled v-if="appStore.layoutMode === mode.value" class="mode-check" />
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <div class="setting-item">
         <div class="setting-title">主题模式</div>
         <a-segmented
-          :value="themeMode"
+          :value="appStore.themeMode"
           :options="[
             { label: '亮色', value: 'light' },
             { label: '暗色', value: 'dark' }
@@ -74,11 +74,11 @@
             v-for="color in presetColors"
             :key="color.value"
             class="color-block"
-            :class="{ active: primaryColor === color.value }"
+            :class="{ active: appStore.primaryColor === color.value }"
             :style="{ background: color.value }"
             @click="handlePrimaryColorChange(color.value)"
           >
-            <check-outlined v-if="primaryColor === color.value" class="check-icon" />
+            <check-outlined v-if="appStore.primaryColor === color.value" class="check-icon" />
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
           <span>显示标签页</span>
           <span class="switch-desc">开启后显示多标签页</span>
         </div>
-        <a-switch :checked="showTabs" @change="handleShowTabsChange" />
+        <a-switch :checked="appStore.showTabs" @change="handleShowTabsChange" />
       </div>
 
       <div class="setting-item switch-item">
@@ -101,17 +101,17 @@
           <span>显示底栏</span>
           <span class="switch-desc">显示底部版权信息</span>
         </div>
-        <a-switch :checked="showFooter" @change="handleShowFooterChange" />
+        <a-switch :checked="appStore.showFooter" @change="handleShowFooterChange" />
       </div>
 
       <div class="setting-item switch-item">
         <div class="switch-label">
           <span>显示面包屑</span>
-          <span class="switch-desc">显示页面路径导航（顶部布局不支持）</span>
+          <span class="switch-desc">显示页面路径导航（仅侧边布局支持）</span>
         </div>
         <a-switch
-          :checked="showBreadcrumb"
-          :disabled="appStore.layoutMode === 'top'"
+          :checked="appStore.showBreadcrumb"
+          :disabled="appStore.layoutMode !== 'side'"
           @change="handleShowBreadcrumbChange"
         />
       </div>
@@ -121,7 +121,11 @@
           <span>侧栏收起</span>
           <span class="switch-desc">默认展开侧边栏（顶部布局不支持）</span>
         </div>
-        <a-switch :checked="collapsed" :disabled="appStore.layoutMode === 'top'" @change="handleCollapsedChange" />
+        <a-switch
+          :checked="appStore.collapsed"
+          :disabled="appStore.layoutMode === 'top'"
+          @change="handleCollapsedChange"
+        />
       </div>
 
       <div class="setting-item switch-item">
@@ -129,7 +133,7 @@
           <span>色弱模式</span>
           <span class="switch-desc">开启色弱模式</span>
         </div>
-        <a-switch :checked="colorWeak" @change="handleColorWeakChange" />
+        <a-switch :checked="appStore.colorWeak" @change="handleColorWeakChange" />
       </div>
 
       <div class="setting-item switch-item">
@@ -137,7 +141,7 @@
           <span>灰色模式</span>
           <span class="switch-desc">开启灰度模式</span>
         </div>
-        <a-switch :checked="grayMode" @change="handleGrayModeChange" />
+        <a-switch :checked="appStore.grayMode" @change="handleGrayModeChange" />
       </div>
 
       <!-- 其他设置 -->
@@ -147,7 +151,7 @@
 
       <div class="setting-item">
         <div class="setting-title">语言设置</div>
-        <a-select :value="locale" style="width: 100%" @change="handleLocaleChange">
+        <a-select :value="appStore.locale" style="width: 100%" @change="handleLocaleChange">
           <a-select-option value="zh-CN">
             <span>简体中文</span>
           </a-select-option>
@@ -160,7 +164,7 @@
       <div class="setting-item">
         <div class="setting-title">内容区域宽度</div>
         <a-segmented
-          :value="contentWidth"
+          :value="appStore.contentWidth"
           :options="[
             { label: '流式', value: 'fluid' },
             { label: '定宽', value: 'fixed' }
@@ -174,14 +178,14 @@
       <a-divider />
 
       <a-space direction="vertical" style="width: 100%">
-        <a-button block @click="$emit('copy-settings')">
+        <a-button block @click="handleCopySettings">
           <template #icon>
             <copy-outlined />
           </template>
           拷贝设置
         </a-button>
 
-        <a-button block danger @click="$emit('reset')">
+        <a-button block danger @click="handleResetSettings">
           <template #icon>
             <redo-outlined />
           </template>
@@ -193,58 +197,47 @@
 </template>
 
 <script setup lang="ts">
+import type { ContentWidth, LayoutMode, ThemeMode } from "@/stores";
 import { useAppStore } from "@/stores";
+import { Modal, message } from "ant-design-vue";
 import type { SegmentedValue } from "ant-design-vue/es/segmented/src/segmented";
 import type { SelectValue } from "ant-design-vue/es/select";
 
 type CheckedType = boolean | string | number;
 
+interface LayoutModeItem {
+  label: string;
+  value: LayoutMode;
+}
+
+interface PresetColorItem {
+  label: string;
+  value: string;
+}
+
 interface Props {
   visible: boolean;
-  layoutMode: "side" | "top" | "mix";
-  themeMode: "light" | "dark";
-  primaryColor: string;
-  showTabs: boolean;
-  showBreadcrumb: boolean;
-  showFooter: boolean;
-  collapsed: boolean;
-  colorWeak: boolean;
-  grayMode: boolean;
-  locale: string;
-  contentWidth: "fluid" | "fixed";
 }
 
 interface Emits {
   (e: "update:visible", value: boolean): void;
-  (e: "update:layoutMode", value: string): void;
-  (e: "update:themeMode", value: string): void;
-  (e: "update:primaryColor", value: string): void;
-  (e: "update:showTabs", value: boolean): void;
-  (e: "update:showBreadcrumb", value: boolean): void;
-  (e: "update:showFooter", value: boolean): void;
-  (e: "update:collapsed", value: boolean): void;
-  (e: "update:colorWeak", value: boolean): void;
-  (e: "update:grayMode", value: boolean): void;
-  (e: "update:locale", value: string): void;
-  (e: "update:contentWidth", value: string): void;
-  (e: "reset"): void;
-  (e: "copy-settings"): void;
 }
 
 defineProps<Props>();
-const emit = defineEmits<Emits>();
+defineEmits<Emits>();
 
+const { locale } = useI18n();
 const appStore = useAppStore();
 
 // 布局模式选项
-const layoutModes = [
+const layoutModes: LayoutModeItem[] = [
   { label: "侧边布局", value: "side" },
   { label: "顶部布局", value: "top" },
   { label: "混合布局", value: "mix" }
 ];
 
 // 预设颜色
-const presetColors = [
+const presetColors: PresetColorItem[] = [
   { label: "拂晓蓝", value: "#1890ff" },
   { label: "薄暮", value: "#f5222d" },
   { label: "火山", value: "#fa541c" },
@@ -256,58 +249,104 @@ const presetColors = [
 ];
 
 // 布局模式切换
-const handleLayoutModeChange = (mode: string) => {
-  emit("update:layoutMode", mode);
+const handleLayoutModeChange = (mode: LayoutMode) => {
+  appStore.setLayoutMode(mode);
 };
 
 // 主题模式
 const handleThemeModeChange = (value: SegmentedValue) => {
-  emit("update:themeMode", value.toString());
+  appStore.setThemeMode(value.toString() as ThemeMode);
 };
 
 // 主题色
 const handlePrimaryColorChange = (value: string) => {
-  emit("update:primaryColor", value);
+  appStore.setPrimaryColor(value);
 };
 
 // 显示标签页
 const handleShowTabsChange = (checked: CheckedType) => {
-  emit("update:showTabs", checked as boolean);
+  appStore.showTabs = checked as boolean;
 };
 
 // 显示面包屑
 const handleShowBreadcrumbChange = (checked: CheckedType) => {
-  emit("update:showBreadcrumb", checked as boolean);
+  appStore.showBreadcrumb = checked as boolean;
 };
 
 // 显示底栏
 const handleShowFooterChange = (checked: CheckedType) => {
-  emit("update:showFooter", checked as boolean);
+  appStore.showFooter = checked as boolean;
 };
 
 // 侧栏展开
 const handleCollapsedChange = (checked: CheckedType) => {
-  emit("update:collapsed", checked as boolean);
+  appStore.setCollapsed(checked as boolean);
 };
 
 // 色弱模式
 const handleColorWeakChange = (checked: CheckedType) => {
-  emit("update:colorWeak", checked as boolean);
+  appStore.setColorWeak(checked as boolean);
 };
 
 // 灰色模式
 const handleGrayModeChange = (checked: CheckedType) => {
-  emit("update:grayMode", checked as boolean);
+  appStore.setGrayMode(checked as boolean);
 };
 
 // 语言切换
 const handleLocaleChange = (value: SelectValue) => {
-  emit("update:locale", value?.toString() || "zh-CN");
+  appStore.setLocale(value?.toString() || "zh-CN");
 };
 
 // 内容区域宽度
 const handleContentWidthChange = (value: SegmentedValue) => {
-  emit("update:contentWidth", value.toString());
+  appStore.setContentWidth(value as ContentWidth);
+};
+
+// 重置设置
+const handleResetSettings = () => {
+  Modal.confirm({
+    title: "提示",
+    content: "确定要重置所有设置吗？",
+    onOk: () => {
+      appStore.setLayoutMode("side");
+      appStore.setThemeMode("light");
+      appStore.setPrimaryColor("#1890ff");
+      appStore.setLocale("zh-CN");
+      appStore.showTabs = true;
+      appStore.showBreadcrumb = true;
+      appStore.showFooter = true;
+      appStore.setContentWidth("fluid");
+      appStore.setColorWeak(false);
+      appStore.setGrayMode(false);
+      locale.value = "zh-CN";
+      message.success("设置已重置");
+    }
+  });
+};
+
+// 拷贝设置
+const handleCopySettings = () => {
+  const settings = {
+    layoutMode: appStore.layoutMode,
+    themeMode: appStore.themeMode,
+    primaryColor: appStore.primaryColor,
+    locale: appStore.locale,
+    showTabs: appStore.showTabs,
+    showBreadcrumb: appStore.showBreadcrumb,
+    contentWidth: appStore.contentWidth,
+    colorWeak: appStore.colorWeak,
+    grayMode: appStore.grayMode
+  };
+
+  navigator.clipboard
+    .writeText(JSON.stringify(settings, null, 2))
+    .then(() => {
+      message.success("设置已复制到剪贴板");
+    })
+    .catch(() => {
+      message.error("复制失败");
+    });
 };
 </script>
 

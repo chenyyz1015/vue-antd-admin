@@ -4,7 +4,7 @@
     <a-layout-header class="layout-header">
       <div class="header-left">
         <!-- Logo -->
-        <Logo :title="appStore.title" :collapsed="appStore.collapsed" :collapseable="false" style="width: 220px" />
+        <Logo :collapsible="false" style="width: 220px" />
 
         <!-- 一级菜单 -->
         <div class="header-menu">
@@ -24,12 +24,9 @@
 
       <div class="header-right">
         <HeaderActions
-          :theme-mode="appStore.themeMode"
           :is-fullscreen="isFullscreen"
           :is-mobile="isMobile"
-          @toggle-theme="$emit('toggle-theme')"
           @toggle-fullscreen="$emit('toggle-fullscreen')"
-          @locale-change="$emit('locale-change', $event)"
           @open-settings="$emit('open-settings')"
         />
         <UserDropdown :is-mobile="isMobile" />
@@ -44,7 +41,6 @@
         :trigger="null"
         collapsible
         :width="220"
-        class="layout-sider"
         :theme="appStore.themeMode"
         :collapsed-width="isMobile ? 0 : 80"
       >
@@ -57,9 +53,6 @@
           @click="handleSideMenuClick"
         />
       </a-layout-sider>
-
-      <!-- 移动端遮罩 -->
-      <div v-if="isMobile && !appStore.collapsed" class="layout-mask" @click="appStore.toggleCollapsed" />
 
       <a-layout>
         <!-- 标签页 -->
@@ -89,9 +82,7 @@ interface Props {
 }
 
 interface Emits {
-  (e: "toggle-theme"): void;
   (e: "toggle-fullscreen"): void;
-  (e: "locale-change", locale: string): void;
   (e: "open-settings"): void;
 }
 

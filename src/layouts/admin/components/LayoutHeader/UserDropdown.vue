@@ -8,11 +8,11 @@
     </div>
     <template #overlay>
       <a-menu>
-        <a-menu-item key="profile" class="action-item">
+        <a-menu-item key="profile" class="action-item" @click="goAccountProfile">
           <user-outlined />
           <span>个人中心</span>
         </a-menu-item>
-        <a-menu-item key="settings" class="action-item">
+        <a-menu-item key="settings" class="action-item" @click="goAccountSetting">
           <setting-outlined />
           <span>个人设置</span>
         </a-menu-item>
@@ -42,6 +42,10 @@ const router = useRouter();
 const userStore = useUserStore();
 
 const userInfo = computed(() => userStore.userInfo);
+
+const goAccountProfile = () => {};
+
+const goAccountSetting = () => {};
 
 const handleLogout = () => {
   Modal.confirm({

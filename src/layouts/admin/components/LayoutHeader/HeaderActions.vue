@@ -1,9 +1,9 @@
 <template>
   <div class="header-actions">
     <!-- 主题切换 -->
-    <a-tooltip :title="themeMode === 'dark' ? '切换为亮色模式' : '切换为暗色模式'">
-      <span class="header-action" @click="$emit('toggle-theme')">
-        <bulb-outlined v-if="themeMode === 'light'" />
+    <a-tooltip :title="appStore.themeMode === 'dark' ? '切换为亮色模式' : '切换为暗色模式'">
+      <span class="header-action" @click="appStore.toggleTheme">
+        <bulb-outlined v-if="appStore.themeMode === 'light'" />
         <bulb-filled v-else />
       </span>
     </a-tooltip>
@@ -43,18 +43,16 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "@/stores";
 import type { MenuInfo } from "ant-design-vue/es/menu/src/interface";
 
 interface Props {
-  themeMode: "light" | "dark";
   isFullscreen: boolean;
   isMobile?: boolean;
 }
 
 interface Emits {
-  (e: "toggle-theme"): void;
   (e: "toggle-fullscreen"): void;
-  (e: "locale-change", locale: string): void;
   (e: "open-settings"): void;
 }
 
@@ -62,10 +60,14 @@ withDefaults(defineProps<Props>(), {
   isMobile: false
 });
 
-const emit = defineEmits<Emits>();
+defineEmits<Emits>();
+
+const { locale } = useI18n();
+const appStore = useAppStore();
 
 const handleLocaleChange = ({ key }: MenuInfo) => {
-  emit("locale-change", key.toString());
+  appStore.setLocale(key.toString());
+  locale.value = key.toString();
 };
 </script>
 

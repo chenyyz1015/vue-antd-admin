@@ -1,44 +1,30 @@
 <template>
   <a-layout-sider
-    v-model:collapsed="localCollapsed"
+    v-model:collapsed="appStore.collapsed"
     :trigger="null"
     collapsible
     :width="220"
     class="layout-sider"
-    :theme="theme"
+    :theme="appStore.themeMode"
     :collapsed-width="isMobile ? 0 : 80"
   >
-    <Logo :title="title" :collapsed="localCollapsed" />
-    <Menu :theme="theme" />
+    <Logo />
+    <Menu mode="inline" />
   </a-layout-sider>
 </template>
 
 <script setup lang="ts">
-import Logo from "./Logo.vue";
-import Menu from "./Menu.vue";
+import { useAppStore } from "@/stores";
 
 interface Props {
-  collapsed: boolean;
-  title: string;
-  theme?: "light" | "dark";
   isMobile?: boolean;
 }
 
-interface Emits {
-  (e: "update:collapsed", value: boolean): void;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  theme: "light",
+withDefaults(defineProps<Props>(), {
   isMobile: false
 });
 
-const emit = defineEmits<Emits>();
-
-const localCollapsed = computed({
-  get: () => props.collapsed,
-  set: (value) => emit("update:collapsed", value)
-});
+const appStore = useAppStore();
 </script>
 
 <style lang="scss">

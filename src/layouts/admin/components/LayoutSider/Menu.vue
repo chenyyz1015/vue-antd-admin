@@ -1,33 +1,24 @@
 <template>
   <a-menu
+    v-bind="$attrs"
     v-model:selected-keys="selectedKeys"
     v-model:open-keys="openKeys"
-    :mode="mode"
-    :theme="theme"
     :items="menuItems"
+    :theme="appStore.themeMode"
     @click="handleMenuClick"
   />
 </template>
 
 <script setup lang="ts">
-import { usePermissionStore } from "@/stores";
-import type { ItemType, MenuMode, MenuTheme } from "ant-design-vue";
+import { useAppStore, usePermissionStore } from "@/stores";
+import type { ItemType } from "ant-design-vue";
 import type { MenuInfo, SubMenuType } from "ant-design-vue/es/menu/src/interface";
 import type { RouteRecordRaw } from "vue-router";
 import SvgIcon from "~virtual/svg-component";
 
-interface Props {
-  theme?: MenuTheme;
-  mode?: MenuMode;
-}
-
-withDefaults(defineProps<Props>(), {
-  theme: "light",
-  mode: "inline"
-});
-
 const route = useRoute();
 const router = useRouter();
+const appStore = useAppStore();
 const permissionStore = usePermissionStore();
 
 const selectedKeys = ref<string[]>([]);
@@ -72,9 +63,13 @@ watch(
   () => route.path,
   (path) => {
     selectedKeys.value = [path];
-    // 自动展开父级菜单
-    const matched = route.matched;
-    openKeys.value = matched.slice(0, -1).map((item) => item.path);
+    if (appStore.collapsed || appStore.layoutMode === "top") {
+      openKeys.value = [];
+    } else {
+      // 自动展开父级菜单
+      const matched = route.matched;
+      openKeys.value = matched.slice(0, -1).map((item) => item.path);
+    }
   },
   { immediate: true }
 );
