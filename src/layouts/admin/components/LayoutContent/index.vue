@@ -2,7 +2,7 @@
   <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showFooter }">
     <div class="content-wrapper">
       <router-view v-slot="{ Component, route }">
-        <transition name="fade-slide" mode="out-in">
+        <transition :name="appStore.transitionName" mode="out-in">
           <keep-alive :include="cachedViews">
             <component :is="Component" :key="route.path" />
           </keep-alive>
