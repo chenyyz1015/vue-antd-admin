@@ -1,7 +1,7 @@
 <template>
   <a-dropdown>
     <div class="user-info">
-      <a-avatar :src="userInfo.avatar" :size="32">
+      <a-avatar :src="userInfo.avatar || DefaultAvatar" :size="32">
         {{ userInfo.nickname?.charAt(0) }}
       </a-avatar>
       <span v-if="!isMobile" class="user-name">{{ userInfo.nickname }}</span>
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import DefaultAvatar from "@/assets/images/avatar.svg";
 import { useUserStore } from "@/stores";
 import { Modal } from "ant-design-vue";
 

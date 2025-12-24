@@ -7,6 +7,16 @@ interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
 
   /**
+   * 版权所有
+   */
+  readonly VITE_APP_COPYRIGHT: string;
+
+  /**
+   * 备案号
+   */
+  readonly VITE_APP_ICP: string;
+
+  /**
    * 部署路径
    */
   readonly VITE_APP_BASE_URL: string;

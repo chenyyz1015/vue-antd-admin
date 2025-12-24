@@ -19,7 +19,7 @@
       <LayoutContent :cached-views="cachedViews" />
 
       <!-- 底部 -->
-      <LayoutFooter v-if="appStore.showFooter" />
+      <LayoutFooter v-if="appStore.showCopyright" />
     </a-layout>
   </a-layout>
 </template>

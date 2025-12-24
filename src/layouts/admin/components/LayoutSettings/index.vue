@@ -1,12 +1,5 @@
 <template>
-  <a-drawer
-    :open="visible"
-    title="布局设置"
-    placement="right"
-    :width="320"
-    :body-style="{ padding: '16px' }"
-    @update:open="$emit('update:visible', $event)"
-  >
+  <a-drawer v-model:open="visible" title="布局设置" placement="right" :width="320" :body-style="{ padding: '16px' }">
     <div class="settings-content">
       <!-- 布局模式 -->
       <a-divider orientation="left">
@@ -101,7 +94,7 @@
           <span>显示底栏</span>
           <span class="switch-desc">显示底部版权信息</span>
         </div>
-        <a-switch :checked="appStore.showFooter" @change="handleShowFooterChange" />
+        <a-switch :checked="appStore.showCopyright" @change="handleShowFooterChange" />
       </div>
 
       <div class="setting-item switch-item">
@@ -215,16 +208,7 @@ interface PresetColorItem {
   value: string;
 }
 
-interface Props {
-  visible: boolean;
-}
-
-interface Emits {
-  (e: "update:visible", value: boolean): void;
-}
-
-defineProps<Props>();
-defineEmits<Emits>();
+const visible = defineModel<boolean>("visible", { required: true });
 
 const { locale } = useI18n();
 const appStore = useAppStore();
@@ -238,13 +222,13 @@ const layoutModes: LayoutModeItem[] = [
 
 // 预设颜色
 const presetColors: PresetColorItem[] = [
-  { label: "拂晓蓝", value: "#1890ff" },
+  { label: "极客蓝", value: "#2f54eb" },
   { label: "薄暮", value: "#f5222d" },
   { label: "火山", value: "#fa541c" },
   { label: "日暮", value: "#faad14" },
   { label: "明青", value: "#13c2c2" },
   { label: "极光绿", value: "#52c41a" },
-  { label: "极客蓝", value: "#2f54eb" },
+  { label: "拂晓蓝", value: "#1890ff" },
   { label: "酱紫", value: "#722ed1" }
 ];
 
@@ -275,7 +259,7 @@ const handleShowBreadcrumbChange = (checked: CheckedType) => {
 
 // 显示底栏
 const handleShowFooterChange = (checked: CheckedType) => {
-  appStore.showFooter = checked as boolean;
+  appStore.showCopyright = checked as boolean;
 };
 
 // 侧栏展开
@@ -311,11 +295,11 @@ const handleResetSettings = () => {
     onOk: () => {
       appStore.setLayoutMode("side");
       appStore.setThemeMode("light");
-      appStore.setPrimaryColor("#1890ff");
+      appStore.setPrimaryColor("#2f54eb");
       appStore.setLocale("zh-CN");
       appStore.showTabs = true;
       appStore.showBreadcrumb = true;
-      appStore.showFooter = true;
+      appStore.showCopyright = true;
       appStore.setContentWidth("fluid");
       appStore.setColorWeak(false);
       appStore.setGrayMode(false);
@@ -330,10 +314,13 @@ const handleCopySettings = () => {
   const settings = {
     layoutMode: appStore.layoutMode,
     themeMode: appStore.themeMode,
+    transitionName: appStore.transitionName,
     primaryColor: appStore.primaryColor,
     locale: appStore.locale,
+    collapsed: appStore.collapsed,
     showTabs: appStore.showTabs,
     showBreadcrumb: appStore.showBreadcrumb,
+    showCopyright: appStore.showCopyright,
     contentWidth: appStore.contentWidth,
     colorWeak: appStore.colorWeak,
     grayMode: appStore.grayMode
@@ -382,11 +369,11 @@ const handleCopySettings = () => {
         transition: all 0.3s;
 
         &:hover {
-          border-color: #1890ff;
+          border-color: var(--primary-color);
         }
 
         &.active {
-          border-color: #1890ff;
+          border-color: var(--primary-color);
           box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
         }
 
@@ -449,7 +436,7 @@ const handleCopySettings = () => {
           position: absolute;
           top: 4px;
           right: 4px;
-          color: #1890ff;
+          color: var(--primary-color);
           font-size: 16px;
         }
       }
@@ -490,8 +477,8 @@ const handleCopySettings = () => {
           color: #999;
 
           &:hover {
-            border-color: #1890ff;
-            color: #1890ff;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
           }
         }
 

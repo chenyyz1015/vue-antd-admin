@@ -59,7 +59,7 @@
         <LayoutContent :cached-views="cachedViews" />
 
         <!-- 底部 -->
-        <LayoutFooter v-if="appStore.showFooter" />
+        <LayoutFooter v-if="appStore.showCopyright" />
       </a-layout>
     </a-layout>
   </a-layout>
@@ -99,6 +99,7 @@ const openKeys = ref<string[]>([]);
 const topMenuItems = computed(() => {
   return permissionStore.addRoutes
     .filter((route) => route.meta?.title && route.meta?.hidden !== true)
+    .sort((a, b) => (a.meta?.sort || 1) - (b.meta?.sort || 1))
     .map((route) => ({
       key: route.path,
       label: route.meta?.title,
@@ -117,6 +118,7 @@ const sideMenuItems = computed<ItemType[]>(() => {
   const generateMenuItems = (routes: RouteRecordRaw[]): ItemType[] => {
     return routes
       .filter((route) => route.meta?.title && route.meta?.hidden !== true)
+      .sort((a, b) => (a.meta?.sort || 1) - (b.meta?.sort || 1))
       .map((route) => {
         const item: ItemType = {
           key: route.path,

@@ -11,23 +11,19 @@ export const useAppStore = defineStore(
     const layoutMode = ref<LayoutMode>("side");
     const themeMode = ref<ThemeMode>("light");
     const transitionName = ref<TransitionName>("fade-slide");
-    const primaryColor = ref("#1890ff");
+    const primaryColor = ref("#2f54eb");
     const locale = ref("zh-CN");
 
     // 布局配置
     const collapsed = ref(false);
     const showTabs = ref(true);
     const showBreadcrumb = ref(true);
-    const showFooter = ref(true);
+    const showCopyright = ref(true);
     const contentWidth = ref<ContentWidth>("fluid");
 
     // 特殊模式
     const colorWeak = ref(false);
     const grayMode = ref(false);
-
-    const setTitle = (value: string) => {
-      title.value = value;
-    };
 
     const setLayoutMode = (mode: LayoutMode) => {
       layoutMode.value = mode;
@@ -104,11 +100,10 @@ export const useAppStore = defineStore(
       collapsed,
       showTabs,
       showBreadcrumb,
-      showFooter,
+      showCopyright,
       contentWidth,
       colorWeak,
       grayMode,
-      setTitle,
       setLayoutMode,
       setThemeMode,
       toggleTheme,
@@ -127,10 +122,13 @@ export const useAppStore = defineStore(
       pick: [
         "layoutMode",
         "themeMode",
+        "transitionName",
         "primaryColor",
         "locale",
+        "collapsed",
         "showTabs",
         "showBreadcrumb",
+        "showCopyright",
         "contentWidth",
         "colorWeak",
         "grayMode"

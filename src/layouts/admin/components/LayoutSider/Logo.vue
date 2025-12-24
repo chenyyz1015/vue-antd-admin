@@ -40,7 +40,7 @@ const goHome = () => {
   .logo-title {
     font-size: 18px;
     font-weight: 600;
-    color: #1890ff;
+    color: var(--primary-color);
     white-space: nowrap;
   }
 }

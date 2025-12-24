@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showFooter }">
+  <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showCopyright }">
     <div class="content-wrapper">
       <router-view v-slot="{ Component, route }">
         <transition :name="appStore.transitionName" mode="out-in">

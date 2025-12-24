@@ -78,7 +78,7 @@ html[data-theme="dark"] {
       transition: color 0.3s;
 
       &:hover {
-        color: #1890ff;
+        color: var(--primary-color);
       }
     }
   }

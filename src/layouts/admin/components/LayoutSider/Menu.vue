@@ -33,6 +33,7 @@ const generateMenuItems = (routes: RouteRecordRaw[]): ItemType[] => {
     .filter((route) => {
       return route.meta?.title && route.meta?.hidden !== true;
     })
+    .sort((a, b) => (a.meta?.sort || 1) - (b.meta?.sort || 1))
     .map((route) => {
       const item: ItemType = {
         key: route.path,
