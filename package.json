@@ -6,23 +6,31 @@
   "description": "A modern vue admin panel built with Vue3, Ant Design Vue, Vite, TypeScript, and Monorepo. It's fast!",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "build:test": "vite build --mode test",
+    "build:staging": "vite build --mode staging",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview",
-    "prepare": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier . --write"
+    "format": "prettier --write .",
+    "type-check": "vue-tsc --noEmit",
+    "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,ts,vue}": [
-      "npm run lint:fix",
-      "npm run format"
+    "*.{js,ts,tsx,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{ts,tsx,vue}": [
+      "vue-tsc --noEmit --pretty false"
     ],
     "*.{css,scss,less,sass}": [
-      "npm run format"
+      "prettier --write"
     ],
     "*.{md,json}": [
-      "npm run format"
+      "prettier --write"
     ]
   },
   "dependencies": {
