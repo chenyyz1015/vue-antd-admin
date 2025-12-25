@@ -23,9 +23,6 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{ts,tsx,vue}": [
-      "vue-tsc --noEmit --pretty false"
-    ],
     "*.{css,scss,less,sass}": [
       "prettier --write"
     ],
