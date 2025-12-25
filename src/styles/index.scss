@@ -1,6 +1,7 @@
 @use "./reset.scss" as *;
 @use "./transition.scss" as *;
 @use "./antdv/index.scss" as *;
+@use "./common/index.scss" as *;
 
 // 主题色变量
 :root {
@@ -29,36 +30,4 @@ html[data-theme="dark"] {
 .content-width-fixed {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-// 标准列表布局
-.table-page-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .table-search {
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-
-    .search-form {
-      flex: 1 1 auto;
-      width: 0;
-      height: auto;
-
-      .ant-select {
-        width: 100% !important;
-      }
-    }
-  }
-
-  .table-toolbar {
-    width: 100%;
-    height: auto;
-    margin-bottom: 15px;
-  }
 }
