@@ -1,6 +1,6 @@
 <template>
   <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showCopyright }">
-    <div class="content-wrapper">
+    <div class="content-wrapper" :class="{ 'content-width-fixed': appStore.contentWidth === 'fixed' }">
       <router-view v-slot="{ Component, route }">
         <transition :name="appStore.transitionName" mode="out-in">
           <keep-alive :include="cachedViews">
