@@ -292,6 +292,7 @@ const handleResetSettings = () => {
   Modal.confirm({
     title: "提示",
     content: "确定要重置所有设置吗？",
+    centered: true,
     onOk: () => {
       appStore.setLayoutMode("side");
       appStore.setThemeMode("light");

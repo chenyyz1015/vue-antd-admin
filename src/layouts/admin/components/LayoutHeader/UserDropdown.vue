@@ -44,6 +44,7 @@ const handleLogout = () => {
   Modal.confirm({
     title: "提示",
     content: "确定要退出登录吗？",
+    centered: true,
     onOk: async () => {
       await userStore.logout();
       router.push("/auth/login");

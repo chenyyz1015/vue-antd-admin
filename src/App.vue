@@ -2,7 +2,6 @@
 import { ConfigProvider } from "ant-design-vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import zhCN from "ant-design-vue/es/locale/zh_CN";
-import { watch } from "vue";
 import { useAppStore } from "./stores/modules/app";
 
 const appStore = useAppStore();
@@ -36,14 +35,21 @@ watch(
   { immediate: true }
 );
 
+const appRef = ref<HTMLElement>();
 // 计算缩放比例（基于高度）
 const calculateScale = () => {
   const scale = window.innerHeight / 1080;
-  document.body.style.width = `${100 / scale}%`;
-  document.body.style.height = `${100 / scale}%`;
-  document.body.style.transform = `scale(${scale})`;
-  document.body.style.transformOrigin = "left top";
-  document.body.style.transition = "transform 0.3s ease";
+
+  if (appRef.value) {
+    // 全局缩放document.body时会导致select、dropdown等组件下拉菜单位置偏移
+    appRef.value.style.width = `${100 / scale}%`;
+    appRef.value.style.height = `${100 / scale}%`;
+    appRef.value.style.transform = `scale(${scale})`;
+    appRef.value.style.transformOrigin = "left top";
+    appRef.value.style.transition = "transform 0.3s ease";
+    // 同步全局popup容器内容缩放比例
+    document.documentElement.style.setProperty("--scale-ratio", scale.toString());
+  }
 };
 
 const debouncedFn = useDebounceFn(calculateScale, 500);
@@ -56,8 +62,63 @@ onMounted(() => {
 
 <template>
   <a-config-provider :locale="locale" :theme="theme">
-    <RouterView />
+    <div ref="appRef" class="app-container">
+      <RouterView />
+    </div>
   </a-config-provider>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+/** 全局配置popup容器内容缩放比例 */
+.ant-drawer,
+.ant-modal-wrap,
+.ant-dropdown-menu,
+.ant-message {
+  width: calc(100% / var(--scale-ratio));
+  height: calc(100% / var(--scale-ratio));
+  transform: scale(var(--scale-ratio)) !important;
+  transform-origin: left top;
+}
+
+.ant-message {
+  transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+}
+
+.ant-tooltip,
+.ant-popover {
+  transform: scale(var(--scale-ratio)) !important;
+}
+
+.ant-notification {
+  transform: scale(var(--scale-ratio));
+
+  &.ant-notification-topLeft,
+  &.ant-notification-bottomLeft {
+    transform-origin: left top;
+  }
+
+  &.ant-notification-topRight,
+  &.ant-notification-bottomRight {
+    transform-origin: right top;
+  }
+
+  &.ant-notification-top,
+  &.ant-notification-bottom {
+    transform-origin: top;
+    transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+  }
+}
+
+.ant-select-dropdown {
+  transform: scale(var(--scale-ratio)) !important;
+  transform-origin: left top;
+}
+</style>
+
+<style lang="scss" scoped>
+.app-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+</style>
