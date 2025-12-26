@@ -15,17 +15,16 @@
       <div class="header-right">
         <HeaderActions
           :is-fullscreen="isFullscreen"
-          :is-mobile="isMobile"
           @toggle-fullscreen="$emit('toggle-fullscreen')"
           @open-settings="$emit('open-settings')"
         />
-        <UserDropdown :is-mobile="isMobile" />
+        <UserDropdown />
       </div>
     </a-layout-header>
 
     <a-layout>
       <!-- 标签页 -->
-      <LayoutTabs :is-mobile="isMobile" />
+      <LayoutTabs />
 
       <!-- 内容区 -->
       <LayoutContent :cached-views="cachedViews" />
@@ -41,7 +40,6 @@ import { useAppStore } from "@/stores";
 
 interface Props {
   isFullscreen: boolean;
-  isMobile: boolean;
   cachedViews: string[];
 }
 

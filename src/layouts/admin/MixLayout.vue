@@ -22,11 +22,10 @@
       <div class="header-right">
         <HeaderActions
           :is-fullscreen="isFullscreen"
-          :is-mobile="isMobile"
           @toggle-fullscreen="$emit('toggle-fullscreen')"
           @open-settings="$emit('open-settings')"
         />
-        <UserDropdown :is-mobile="isMobile" />
+        <UserDropdown />
       </div>
     </a-layout-header>
 
@@ -39,7 +38,6 @@
         collapsible
         :width="220"
         :theme="appStore.themeMode"
-        :collapsed-width="isMobile ? 0 : 80"
       >
         <a-menu
           v-model:selected-keys="selectedKeys"
@@ -53,7 +51,7 @@
 
       <a-layout>
         <!-- 标签页 -->
-        <LayoutTabs :is-mobile="isMobile" />
+        <LayoutTabs />
 
         <!-- 内容区 -->
         <LayoutContent :cached-views="cachedViews" />
@@ -74,7 +72,6 @@ import SvgIcon from "~virtual/svg-component";
 
 interface Props {
   isFullscreen: boolean;
-  isMobile: boolean;
   cachedViews: string[];
 }
 
@@ -100,11 +97,14 @@ const topMenuItems = computed(() => {
   return permissionStore.addRoutes
     .filter((route) => route.meta?.title && route.meta?.hidden !== true)
     .sort((a, b) => (a.meta?.sort || 1) - (b.meta?.sort || 1))
-    .map((route) => ({
-      key: route.path,
-      label: route.meta?.title,
-      icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
-    }));
+    .map((route) => {
+      return {
+        key: route.path,
+        label: route.meta?.title,
+        title: route.meta?.title,
+        icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
+      };
+    });
 });
 
 // 生成侧边菜单（二级菜单）

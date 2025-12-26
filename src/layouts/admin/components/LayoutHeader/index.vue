@@ -3,17 +3,16 @@
     <div class="header-left">
       <menu-unfold-outlined v-if="appStore.collapsed" class="trigger" @click="appStore.toggleCollapsed" />
       <menu-fold-outlined v-else class="trigger" @click="appStore.toggleCollapsed" />
-      <Breadcrumb v-if="!isMobile && appStore.showBreadcrumb" />
+      <Breadcrumb v-if="appStore.showBreadcrumb" />
     </div>
 
     <div class="header-right">
       <HeaderActions
         :is-fullscreen="isFullscreen"
-        :is-mobile="isMobile"
         @toggle-fullscreen="$emit('toggle-fullscreen')"
         @open-settings="$emit('open-settings')"
       />
-      <UserDropdown :is-mobile="isMobile" />
+      <UserDropdown />
     </div>
   </a-layout-header>
 </template>
@@ -23,7 +22,6 @@ import { useAppStore } from "@/stores";
 
 interface Props {
   isFullscreen: boolean;
-  isMobile?: boolean;
 }
 
 interface Emits {
@@ -31,10 +29,7 @@ interface Emits {
   (e: "open-settings"): void;
 }
 
-withDefaults(defineProps<Props>(), {
-  isMobile: false
-});
-
+defineProps<Props>();
 defineEmits<Emits>();
 
 const appStore = useAppStore();

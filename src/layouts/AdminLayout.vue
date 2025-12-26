@@ -2,7 +2,6 @@
   <component
     :is="currentLayout"
     :is-fullscreen="isFullscreen"
-    :is-mobile="isMobile"
     :cached-views="cachedViews"
     @toggle-fullscreen="toggleFullscreen"
     @open-settings="settingsVisible = true"
@@ -23,7 +22,6 @@ const appStore = useAppStore();
 
 // 状态
 const isFullscreen = ref(false);
-const isMobile = ref(false);
 const cachedViews = ref<string[]>([]);
 const settingsVisible = ref(false);
 
@@ -37,12 +35,9 @@ const currentLayout = computed<AdminLayout>(() => {
   return layouts[appStore.layoutMode || "side"];
 });
 
-// 检测移动端
-const checkMobile = () => {
-  isMobile.value = window.innerWidth < 768;
-  if (isMobile.value && !appStore.collapsed) {
-    appStore.toggleCollapsed();
-  }
+// 自动收起侧边栏
+const autoCollapsedSider = () => {
+  appStore.setCollapsed(window.innerWidth < 768);
 };
 
 // 全屏切换
@@ -79,17 +74,8 @@ watch(
   { immediate: true }
 );
 
-// 生命周期
-onMounted(() => {
-  checkMobile();
-  window.addEventListener("resize", checkMobile);
-  document.addEventListener("fullscreenchange", handleFullscreenChange);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", checkMobile);
-  document.removeEventListener("fullscreenchange", handleFullscreenChange);
-});
+useEventListener(window, "resize", autoCollapsedSider);
+useEventListener(document, "fullscreenchange", handleFullscreenChange);
 </script>
 
 <style lang="scss" scoped></style>

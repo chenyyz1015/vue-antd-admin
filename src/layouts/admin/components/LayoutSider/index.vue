@@ -1,12 +1,11 @@
 <template>
   <a-layout-sider
     v-model:collapsed="appStore.collapsed"
-    :trigger="null"
     collapsible
     :width="220"
-    class="layout-sider"
     :theme="appStore.themeMode"
-    :collapsed-width="isMobile ? 0 : 80"
+    :trigger="null"
+    class="layout-sider"
   >
     <Logo />
     <Menu mode="inline" />
@@ -15,14 +14,6 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/stores";
-
-interface Props {
-  isMobile?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-  isMobile: false
-});
 
 const appStore = useAppStore();
 </script>

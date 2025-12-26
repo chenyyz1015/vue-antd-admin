@@ -4,7 +4,7 @@
       <a-avatar :src="userInfo.avatar || DefaultAvatar" :size="32">
         {{ userInfo.nickname?.charAt(0) }}
       </a-avatar>
-      <span v-if="!isMobile" class="user-name">{{ userInfo.nickname }}</span>
+      <span class="user-name">{{ userInfo.nickname }}</span>
     </div>
     <template #overlay>
       <a-menu>
@@ -30,14 +30,6 @@
 import DefaultAvatar from "@/assets/images/avatar.svg";
 import { useUserStore } from "@/stores";
 import { Modal } from "ant-design-vue";
-
-interface Props {
-  isMobile?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-  isMobile: false
-});
 
 const router = useRouter();
 const userStore = useUserStore();

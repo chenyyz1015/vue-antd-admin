@@ -9,7 +9,7 @@
     </a-tooltip>
 
     <!-- 语言切换 -->
-    <a-dropdown v-if="!isMobile">
+    <a-dropdown>
       <span class="header-action">
         <global-outlined />
       </span>
@@ -26,7 +26,7 @@
     </a-dropdown>
 
     <!-- 全屏切换 -->
-    <a-tooltip v-if="!isMobile" title="全屏">
+    <a-tooltip title="全屏">
       <span class="header-action" @click="$emit('toggle-fullscreen')">
         <fullscreen-outlined v-if="!isFullscreen" />
         <fullscreen-exit-outlined v-else />
@@ -48,7 +48,6 @@ import type { MenuInfo } from "ant-design-vue/es/menu/src/interface";
 
 interface Props {
   isFullscreen: boolean;
-  isMobile?: boolean;
 }
 
 interface Emits {
@@ -56,10 +55,7 @@ interface Emits {
   (e: "open-settings"): void;
 }
 
-withDefaults(defineProps<Props>(), {
-  isMobile: false
-});
-
+defineProps<Props>();
 defineEmits<Emits>();
 
 const { locale } = useI18n();

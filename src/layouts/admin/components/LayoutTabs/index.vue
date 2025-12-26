@@ -1,5 +1,5 @@
 <template>
-  <div v-if="appStore.showTabs && !isMobile" class="layout-tabs">
+  <div v-if="appStore.showTabs" class="layout-tabs">
     <a-tabs
       :active-key="tabsStore.activeTab"
       type="editable-card"
@@ -34,14 +34,6 @@
 import { useAppStore, useTabsStore } from "@/stores";
 import type { Key } from "ant-design-vue/es/_util/type";
 import TabsDropdown from "./TabsDropdown.vue";
-
-interface Props {
-  isMobile?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-  isMobile: false
-});
 
 const route = useRoute();
 const router = useRouter();

@@ -1,19 +1,18 @@
 <template>
   <a-layout class="side-layout">
     <!-- 侧边栏 -->
-    <LayoutSider :is-mobile="isMobile" />
+    <LayoutSider />
 
     <a-layout>
       <!-- 顶部栏 -->
       <LayoutHeader
         :is-fullscreen="isFullscreen"
-        :is-mobile="isMobile"
         @toggle-fullscreen="$emit('toggle-fullscreen')"
         @open-settings="$emit('open-settings')"
       />
 
       <!-- 标签页 -->
-      <LayoutTabs :is-mobile="isMobile" />
+      <LayoutTabs />
 
       <!-- 内容区 -->
       <LayoutContent :cached-views="cachedViews" />
@@ -29,7 +28,6 @@ import { useAppStore } from "@/stores";
 
 interface Props {
   isFullscreen: boolean;
-  isMobile: boolean;
   cachedViews: string[];
 }
 

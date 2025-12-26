@@ -35,10 +35,29 @@ watch(
   },
   { immediate: true }
 );
+
+// 计算缩放比例（基于高度）
+const calculateScale = () => {
+  const scale = window.innerHeight / 1080;
+  document.body.style.width = `${100 / scale}%`;
+  document.body.style.height = `${100 / scale}%`;
+  document.body.style.transform = `scale(${scale})`;
+  document.body.style.transformOrigin = "left top";
+  document.body.style.transition = "transform 0.3s ease";
+};
+
+const debouncedFn = useDebounceFn(calculateScale, 500);
+useEventListener(window, "resize", debouncedFn);
+
+onMounted(() => {
+  calculateScale();
+});
 </script>
 
 <template>
   <a-config-provider :locale="locale" :theme="theme">
-    <router-view />
+    <RouterView />
   </a-config-provider>
 </template>
+
+<style lang="scss" scoped></style>
