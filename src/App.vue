@@ -72,7 +72,6 @@ onMounted(() => {
 /** 全局配置popup容器内容缩放比例 */
 .ant-drawer,
 .ant-modal-wrap,
-.ant-dropdown-menu,
 .ant-message {
   width: calc(100% / var(--scale-ratio));
   height: calc(100% / var(--scale-ratio));
@@ -92,20 +91,37 @@ onMounted(() => {
 .ant-notification {
   transform: scale(var(--scale-ratio));
 
-  &.ant-notification-topLeft,
-  &.ant-notification-bottomLeft {
+  &.ant-notification-topLeft {
     transform-origin: left top;
   }
 
-  &.ant-notification-topRight,
-  &.ant-notification-bottomRight {
+  &.ant-notification-bottomLeft {
+    transform-origin: left bottom;
+  }
+
+  &.ant-notification-topRight {
     transform-origin: right top;
   }
 
-  &.ant-notification-top,
-  &.ant-notification-bottom {
+  &.ant-notification-bottomRight {
+    transform-origin: right bottom;
+  }
+
+  &.ant-notification-top {
     transform-origin: top;
     transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+  }
+
+  &.ant-notification-bottom {
+    transform-origin: bottom;
+    transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+  }
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    transform: scale(var(--scale-ratio)) !important;
+    transform-origin: left top;
   }
 }
 

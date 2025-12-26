@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown>
+  <a-dropdown placement="bottom">
     <div class="user-info">
       <a-avatar :src="userInfo.avatar || DefaultAvatar" :size="32">
         {{ userInfo.nickname?.charAt(0) }}
@@ -10,16 +10,16 @@
       <a-menu>
         <a-menu-item key="profile" class="action-item" @click="goAccountProfile">
           <user-outlined />
-          <span>个人中心</span>
+          <span class="label">个人中心</span>
         </a-menu-item>
         <a-menu-item key="settings" class="action-item" @click="goAccountSetting">
           <setting-outlined />
-          <span>个人设置</span>
+          <span class="label">个人设置</span>
         </a-menu-item>
         <a-menu-divider />
         <a-menu-item key="logout" class="action-item" @click="handleLogout">
           <logout-outlined />
-          <span>退出登录</span>
+          <span class="label">退出登录</span>
         </a-menu-item>
       </a-menu>
     </template>
@@ -77,12 +77,10 @@ const handleLogout = () => {
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-}
 
-:deep([data-theme="dark"]) {
-  .user-info:hover {
-    background: rgba(255, 255, 255, 0.08);
+    .label {
+      flex-shrink: 0;
+    }
   }
 }
 </style>

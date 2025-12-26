@@ -37,7 +37,9 @@ const currentLayout = computed<AdminLayout>(() => {
 
 // 自动收起侧边栏
 const autoCollapsedSider = () => {
-  appStore.setCollapsed(window.innerWidth < 768);
+  if (!appStore.collapsed && window.innerWidth < 768) {
+    appStore.toggleCollapsed();
+  }
 };
 
 // 全屏切换
