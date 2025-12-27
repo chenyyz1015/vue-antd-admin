@@ -1,0 +1,96 @@
+/** 全局配置popup容器内容缩放比例 */
+.ant-drawer,
+.ant-modal-wrap,
+.ant-message {
+  width: calc(100% / var(--scale-ratio));
+  height: calc(100% / var(--scale-ratio));
+  transform: scale(var(--scale-ratio)) !important;
+  transform-origin: left top;
+}
+
+.ant-message {
+  transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+}
+
+.ant-tooltip,
+.ant-popover {
+  transform: scale(var(--scale-ratio)) !important;
+}
+
+.ant-notification {
+  transform: scale(var(--scale-ratio));
+
+  &.ant-notification-topLeft {
+    transform-origin: left top;
+  }
+
+  &.ant-notification-bottomLeft {
+    transform-origin: left bottom;
+  }
+
+  &.ant-notification-topRight {
+    transform-origin: right top;
+  }
+
+  &.ant-notification-bottomRight {
+    transform-origin: right bottom;
+  }
+
+  &.ant-notification-top {
+    transform-origin: top;
+    transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+  }
+
+  &.ant-notification-bottom {
+    transform-origin: bottom;
+    transform: scale(var(--scale-ratio)) translateX(-50%) !important;
+  }
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    transform: scale(var(--scale-ratio)) !important;
+  }
+
+  &.ant-dropdown-placement-topLeft {
+    .ant-dropdown-menu {
+      transform-origin: left bottom;
+    }
+  }
+
+  &.ant-dropdown-placement-bottomLeft {
+    .ant-dropdown-menu {
+      transform-origin: left top;
+    }
+  }
+
+  &.ant-dropdown-placement-topRight {
+    .ant-dropdown-menu {
+      transform-origin: right bottom;
+    }
+  }
+
+  &.ant-dropdown-placement-bottomRight {
+    .ant-dropdown-menu {
+      transform-origin: right top;
+    }
+  }
+
+  &.ant-dropdown-placement-bottom {
+    .ant-dropdown-menu {
+      transform-origin: top;
+    }
+  }
+
+  &.ant-dropdown-placement-top {
+    .ant-dropdown-menu {
+      transform-origin: bottom;
+    }
+  }
+}
+
+.ant-select-dropdown,
+.ant-menu-submenu-popup {
+  transform: scale(var(--scale-ratio)) !important;
+  transform-origin: left top;
+}

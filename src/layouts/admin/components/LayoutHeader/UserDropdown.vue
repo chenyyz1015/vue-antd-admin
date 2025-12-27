@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown placement="bottom">
+  <a-dropdown placement="bottomRight">
     <div class="user-info">
       <a-avatar :src="userInfo.avatar || DefaultAvatar" :size="32">
         {{ userInfo.nickname?.charAt(0) }}
