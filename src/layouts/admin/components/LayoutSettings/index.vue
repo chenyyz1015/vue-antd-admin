@@ -86,7 +86,7 @@
           <span>显示标签页</span>
           <span class="switch-desc">开启后显示多标签页</span>
         </div>
-        <a-switch :checked="appStore.showTabs" @change="handleShowTabsChange" />
+        <a-switch v-model:checked="appStore.showTabs" />
       </div>
 
       <div class="setting-item switch-item">
@@ -94,7 +94,7 @@
           <span>显示底栏</span>
           <span class="switch-desc">显示底部版权信息</span>
         </div>
-        <a-switch :checked="appStore.showCopyright" @change="handleShowFooterChange" />
+        <a-switch v-model:checked="appStore.showCopyright" />
       </div>
 
       <div class="setting-item switch-item">
@@ -102,11 +102,7 @@
           <span>显示面包屑</span>
           <span class="switch-desc">显示页面路径导航（仅侧边布局支持）</span>
         </div>
-        <a-switch
-          :checked="appStore.showBreadcrumb"
-          :disabled="appStore.layoutMode !== 'side'"
-          @change="handleShowBreadcrumbChange"
-        />
+        <a-switch v-model:checked="appStore.showBreadcrumb" :disabled="appStore.layoutMode !== 'side'" />
       </div>
 
       <div class="setting-item switch-item">
@@ -114,11 +110,7 @@
           <span>侧栏收起</span>
           <span class="switch-desc">默认展开侧边栏（顶部布局不支持）</span>
         </div>
-        <a-switch
-          :checked="appStore.collapsed"
-          :disabled="appStore.layoutMode === 'top'"
-          @change="handleCollapsedChange"
-        />
+        <a-switch v-model:checked="appStore.collapsed" :disabled="appStore.layoutMode === 'top'" />
       </div>
 
       <div class="setting-item switch-item">
@@ -126,7 +118,7 @@
           <span>色弱模式</span>
           <span class="switch-desc">开启色弱模式</span>
         </div>
-        <a-switch :checked="appStore.colorWeak" @change="handleColorWeakChange" />
+        <a-switch v-model:checked="appStore.colorWeak" />
       </div>
 
       <div class="setting-item switch-item">
@@ -134,7 +126,7 @@
           <span>灰色模式</span>
           <span class="switch-desc">开启灰度模式</span>
         </div>
-        <a-switch :checked="appStore.grayMode" @change="handleGrayModeChange" />
+        <a-switch v-model:checked="appStore.grayMode" />
       </div>
 
       <!-- 其他设置 -->
@@ -155,9 +147,37 @@
       </div>
 
       <div class="setting-item">
+        <div class="setting-title">字体大小</div>
+        <a-slider
+          v-model:value="appStore.fontSize"
+          :marks="fontSizeMarks"
+          :min="12"
+          :max="20"
+          :step="null"
+          :tip-formatter="(value) => `${value}px`"
+          style="margin: 20px"
+        >
+        </a-slider>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-title">圆角大小</div>
+        <a-slider
+          v-model:value="appStore.borderRadius"
+          :marks="borderRadiusMarks"
+          :min="0"
+          :max="10"
+          :step="null"
+          :tip-formatter="(value) => `${value}px`"
+          style="margin: 20px"
+        >
+        </a-slider>
+      </div>
+
+      <div class="setting-item">
         <div class="setting-title">内容区域宽度</div>
         <a-segmented
-          :value="appStore.contentWidth"
+          :value="appStore.contentWidthMode"
           :options="[
             { label: '流式', value: 'fluid' },
             { label: '定宽', value: 'fixed' }
@@ -165,6 +185,17 @@
           block
           @change="handleContentWidthChange"
         />
+        <a-slider
+          v-if="appStore.contentWidthMode === 'fixed'"
+          v-model:value="appStore.contentWidth"
+          :marks="contentWidthMarks"
+          :min="50"
+          :max="100"
+          :step="null"
+          :tip-formatter="(value) => `${value}%`"
+          style="margin: 20px"
+        >
+        </a-slider>
       </div>
 
       <!-- 操作按钮 -->
@@ -190,13 +221,12 @@
 </template>
 
 <script setup lang="ts">
-import type { ContentWidth, LayoutMode, ThemeMode } from "@/stores";
+import type { ContentWidthMode, LayoutMode, ThemeMode } from "@/stores";
 import { useAppStore } from "@/stores";
 import { Modal, message } from "ant-design-vue";
 import type { SegmentedValue } from "ant-design-vue/es/segmented/src/segmented";
 import type { SelectValue } from "ant-design-vue/es/select";
-
-type CheckedType = boolean | string | number;
+import type { SliderMarks } from "ant-design-vue/es/slider";
 
 interface LayoutModeItem {
   label: string;
@@ -232,6 +262,12 @@ const presetColors: PresetColorItem[] = [
   { label: "酱紫", value: "#722ed1" }
 ];
 
+const fontSizeMarks: SliderMarks = { 12: "12", 14: "14", 16: "16", 18: "18", 20: "20" };
+
+const borderRadiusMarks: SliderMarks = { 0: "0", 2: "2", 4: "4", 6: "6", 8: "8", 10: "10" };
+
+const contentWidthMarks: SliderMarks = { 50: "50", 60: "60", 70: "70", 80: "80", 90: "90", 100: "100" };
+
 // 布局模式切换
 const handleLayoutModeChange = (mode: LayoutMode) => {
   appStore.setLayoutMode(mode);
@@ -247,36 +283,6 @@ const handlePrimaryColorChange = (value: string) => {
   appStore.setPrimaryColor(value);
 };
 
-// 显示标签页
-const handleShowTabsChange = (checked: CheckedType) => {
-  appStore.showTabs = checked as boolean;
-};
-
-// 显示面包屑
-const handleShowBreadcrumbChange = (checked: CheckedType) => {
-  appStore.showBreadcrumb = checked as boolean;
-};
-
-// 显示底栏
-const handleShowFooterChange = (checked: CheckedType) => {
-  appStore.showCopyright = checked as boolean;
-};
-
-// 侧栏展开
-const handleCollapsedChange = (checked: CheckedType) => {
-  appStore.setCollapsed(checked as boolean);
-};
-
-// 色弱模式
-const handleColorWeakChange = (checked: CheckedType) => {
-  appStore.setColorWeak(checked as boolean);
-};
-
-// 灰色模式
-const handleGrayModeChange = (checked: CheckedType) => {
-  appStore.setGrayMode(checked as boolean);
-};
-
 // 语言切换
 const handleLocaleChange = (value: SelectValue) => {
   appStore.setLocale(value?.toString() || "zh-CN");
@@ -284,7 +290,7 @@ const handleLocaleChange = (value: SelectValue) => {
 
 // 内容区域宽度
 const handleContentWidthChange = (value: SegmentedValue) => {
-  appStore.setContentWidth(value as ContentWidth);
+  appStore.setContentWidthMode(value as ContentWidthMode);
 };
 
 // 重置设置
@@ -301,7 +307,7 @@ const handleResetSettings = () => {
       appStore.showTabs = true;
       appStore.showBreadcrumb = true;
       appStore.showCopyright = true;
-      appStore.setContentWidth("fluid");
+      appStore.setContentWidthMode("fluid");
       appStore.setColorWeak(false);
       appStore.setGrayMode(false);
       locale.value = "zh-CN";
@@ -322,7 +328,7 @@ const handleCopySettings = () => {
     showTabs: appStore.showTabs,
     showBreadcrumb: appStore.showBreadcrumb,
     showCopyright: appStore.showCopyright,
-    contentWidth: appStore.contentWidth,
+    contentWidthMode: appStore.contentWidthMode,
     colorWeak: appStore.colorWeak,
     grayMode: appStore.grayMode
   };
@@ -347,6 +353,7 @@ const handleCopySettings = () => {
 
   .setting-item {
     margin-bottom: 24px;
+    overflow: hidden;
 
     .setting-title {
       margin-bottom: 12px;

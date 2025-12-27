@@ -13,5 +13,9 @@
   .ant-menu-item {
     display: flex;
     align-items: center;
+
+    .ant-menu-item-icon {
+      min-width: 18px;
+    }
   }
 }

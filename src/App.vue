@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ConfigProvider } from "ant-design-vue";
+import type { ThemeConfig } from "ant-design-vue/es/config-provider/context";
 import enUS from "ant-design-vue/es/locale/en_US";
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { useAppStore } from "./stores/modules/app";
@@ -10,9 +11,11 @@ const locale = computed(() => {
   return appStore.locale === "zh-CN" ? zhCN : enUS;
 });
 
-const theme = computed(() => ({
+const theme = computed<ThemeConfig>(() => ({
   token: {
-    colorPrimary: appStore.primaryColor
+    colorPrimary: appStore.primaryColor,
+    fontSize: appStore.fontSize,
+    borderRadius: appStore.borderRadius
   },
   algorithm:
     appStore.themeMode === "dark" ? ConfigProvider.theme?.darkAlgorithm : ConfigProvider.theme?.defaultAlgorithm
@@ -31,6 +34,30 @@ watch(
   () => appStore.primaryColor,
   (color) => {
     document.documentElement.style.setProperty("--primary-color", color);
+  },
+  { immediate: true }
+);
+
+watch(
+  () => appStore.fontSize,
+  (size) => {
+    document.documentElement.style.setProperty("--font-size", `${size}px`);
+  },
+  { immediate: true }
+);
+
+watch(
+  () => appStore.borderRadius,
+  (radius) => {
+    document.documentElement.style.setProperty("--border-radius", `${radius}px`);
+  },
+  { immediate: true }
+);
+
+watch(
+  () => appStore.contentWidth,
+  (width) => {
+    document.documentElement.style.setProperty("--content-width", `${width}%`);
   },
   { immediate: true }
 );

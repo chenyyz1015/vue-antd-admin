@@ -4,7 +4,7 @@
     <a-layout-header class="layout-header">
       <div class="header-left">
         <!-- Logo -->
-        <Logo />
+        <Logo :collapsible="false" />
 
         <!-- 顶部菜单 -->
         <div class="header-menu">

@@ -1,7 +1,7 @@
 export type LayoutMode = "side" | "top" | "mix";
 export type ThemeMode = "light" | "dark";
 export type TransitionName = "fade" | "fade-slide";
-export type ContentWidth = "fluid" | "fixed";
+export type ContentWidthMode = "fluid" | "fixed";
 
 export const useAppStore = defineStore(
   "app",
@@ -19,7 +19,10 @@ export const useAppStore = defineStore(
     const showTabs = ref(true);
     const showBreadcrumb = ref(true);
     const showCopyright = ref(true);
-    const contentWidth = ref<ContentWidth>("fluid");
+    const fontSize = ref<number>(14);
+    const borderRadius = ref<number>(6);
+    const contentWidth = ref<number>(100);
+    const contentWidthMode = ref<ContentWidthMode>("fluid");
 
     // 特殊模式
     const colorWeak = ref(false);
@@ -68,8 +71,20 @@ export const useAppStore = defineStore(
       collapsed.value = !collapsed.value;
     };
 
-    const setContentWidth = (width: ContentWidth) => {
+    const setFontSize = (size: number) => {
+      fontSize.value = size;
+    };
+
+    const setBorderRadius = (radius: number) => {
+      borderRadius.value = radius;
+    };
+
+    const setContentWidth = (width: number) => {
       contentWidth.value = width;
+    };
+
+    const setContentWidthMode = (mode: ContentWidthMode) => {
+      contentWidthMode.value = mode;
     };
 
     const setColorWeak = (weak: boolean) => {
@@ -101,7 +116,10 @@ export const useAppStore = defineStore(
       showTabs,
       showBreadcrumb,
       showCopyright,
+      fontSize,
+      borderRadius,
       contentWidth,
+      contentWidthMode,
       colorWeak,
       grayMode,
       setLayoutMode,
@@ -112,7 +130,10 @@ export const useAppStore = defineStore(
       setLocale,
       setCollapsed,
       toggleCollapsed,
+      setFontSize,
+      setBorderRadius,
       setContentWidth,
+      setContentWidthMode,
       setColorWeak,
       setGrayMode
     };
@@ -129,7 +150,10 @@ export const useAppStore = defineStore(
         "showTabs",
         "showBreadcrumb",
         "showCopyright",
+        "fontSize",
+        "borderRadius",
         "contentWidth",
+        "contentWidthMode",
         "colorWeak",
         "grayMode"
       ]

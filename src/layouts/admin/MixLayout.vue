@@ -34,7 +34,6 @@
       <a-layout-sider
         v-if="sideMenuItems.length > 0"
         v-model:collapsed="appStore.collapsed"
-        :trigger="null"
         collapsible
         :width="220"
         :theme="appStore.themeMode"
@@ -47,6 +46,11 @@
           :theme="appStore.themeMode"
           @click="handleSideMenuClick"
         />
+        <template #trigger>
+          <!-- 收起/展开 -->
+          <menu-unfold-outlined v-if="appStore.collapsed" class="trigger" @click.stop="appStore.toggleCollapsed" />
+          <menu-fold-outlined v-else class="trigger" @click.stop="appStore.toggleCollapsed" />
+        </template>
       </a-layout-sider>
 
       <a-layout>
@@ -221,6 +225,16 @@ html[data-theme="dark"] {
       display: flex;
       align-items: center;
       gap: 15px;
+    }
+  }
+
+  .trigger {
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: var(--primary-color);
     }
   }
 }

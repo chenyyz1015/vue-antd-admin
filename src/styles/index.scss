@@ -3,9 +3,12 @@
 @use "./antdv/index.scss" as *;
 @use "./common/index.scss" as *;
 
-// 主题色变量
+// 自定义变量
 :root {
   --primary-color: #2f54eb;
+  --font-size: 14px;
+  --border-radius: 6px;
+  --content-width: 100%;
 }
 
 // 色弱模式
@@ -24,10 +27,4 @@ html[data-theme="light"] {
 
 html[data-theme="dark"] {
   color: #ffffff;
-}
-
-// 定宽内容
-.content-width-fixed {
-  max-width: 1200px;
-  margin: 0 auto;
 }

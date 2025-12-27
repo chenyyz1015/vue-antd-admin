@@ -1,6 +1,6 @@
 <template>
   <a-layout-content class="layout-content" :class="{ 'has-footer': appStore.showCopyright }">
-    <div class="content-wrapper" :class="{ 'content-width-fixed': appStore.contentWidth === 'fixed' }">
+    <div class="content-wrapper" :class="{ 'content-width-fixed': appStore.contentWidthMode === 'fixed' }">
       <router-view v-slot="{ Component, route }">
         <transition :name="appStore.transitionName" mode="out-in">
           <keep-alive :include="cachedViews">
@@ -40,6 +40,12 @@ const appStore = useAppStore();
     padding: 20px;
     background: #ffffff;
     border-radius: 5px;
+
+    // 定宽内容
+    &.content-width-fixed {
+      max-width: var(--content-width);
+      margin: 0 auto;
+    }
   }
 }
 </style>
