@@ -17,6 +17,16 @@ interface ImportMetaEnv {
   readonly VITE_APP_ICP: string;
 
   /**
+   * 最小缩放比例
+   */
+  readonly VITE_APP_MIN_SCALE: string;
+
+  /**
+   * 最大缩放比例
+   */
+  readonly VITE_APP_MAX_SCALE: string;
+
+  /**
    * 部署路径
    */
   readonly VITE_APP_BASE_URL: string;
