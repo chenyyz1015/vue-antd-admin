@@ -454,7 +454,8 @@ const handleCopySettings = () => {
     .color-picker-wrapper {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
+      margin: 5px;
 
       .color-block {
         width: 44px;
