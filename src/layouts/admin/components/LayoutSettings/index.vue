@@ -307,6 +307,9 @@ const handleResetSettings = () => {
       appStore.showTabs = true;
       appStore.showBreadcrumb = true;
       appStore.showCopyright = true;
+      appStore.setFontSize(14);
+      appStore.setBorderRadius(6);
+      appStore.setContentWidth(100);
       appStore.setContentWidthMode("fluid");
       appStore.setColorWeak(false);
       appStore.setGrayMode(false);
@@ -328,6 +331,9 @@ const handleCopySettings = () => {
     showTabs: appStore.showTabs,
     showBreadcrumb: appStore.showBreadcrumb,
     showCopyright: appStore.showCopyright,
+    fontSize: appStore.fontSize,
+    borderRadius: appStore.borderRadius,
+    contentWidth: appStore.contentWidth,
     contentWidthMode: appStore.contentWidthMode,
     colorWeak: appStore.colorWeak,
     grayMode: appStore.grayMode
