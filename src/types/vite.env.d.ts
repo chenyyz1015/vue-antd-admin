@@ -7,6 +7,11 @@ interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
 
   /**
+   * 水印
+   */
+  readonly VITE_APP_WATERMARK: string;
+
+  /**
    * 版权所有
    */
   readonly VITE_APP_COPYRIGHT: string;

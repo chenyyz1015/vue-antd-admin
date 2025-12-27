@@ -5,6 +5,8 @@ import enUS from "ant-design-vue/es/locale/en_US";
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import { useAppStore } from "./stores/modules/app";
 
+const watermarkContent = (import.meta.env.VITE_APP_WATERMARK ?? "").split(",");
+
 const appStore = useAppStore();
 
 const locale = computed(() => {
@@ -94,7 +96,9 @@ onMounted(() => {
 <template>
   <a-config-provider :locale="locale" :theme="theme">
     <div ref="appRef" class="app-container">
-      <RouterView />
+      <a-watermark :content="watermarkContent" class="watermark-wrapper">
+        <RouterView />
+      </a-watermark>
     </div>
   </a-config-provider>
 </template>
@@ -104,5 +108,10 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  .watermark-wrapper {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

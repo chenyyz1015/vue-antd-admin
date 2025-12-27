@@ -1,5 +1,5 @@
 <template>
-  <a-drawer v-model:open="visible" title="布局设置" placement="right" :width="320" :body-style="{ padding: '16px' }">
+  <a-drawer v-model:open="visible" title="布局设置" placement="right" :width="360" :body-style="{ padding: '16px' }">
     <div class="settings-content">
       <!-- 布局模式 -->
       <a-divider orientation="left">
