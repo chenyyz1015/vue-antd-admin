@@ -15,14 +15,10 @@ export const useUserStore = defineStore("user", () => {
   const roles = ref<string[]>([]);
 
   const login = async (data: LoginParams) => {
-    try {
-      const res = await userApi.login(data);
-      setToken(res.token);
-      message.success("登录成功");
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await userApi.login(data);
+    setToken(res.token);
+    message.success("登录成功");
+    router.push("/");
   };
 
   const getInfo = async () => {
@@ -30,7 +26,6 @@ export const useUserStore = defineStore("user", () => {
     userInfo.value = res.user;
     permissions.value = res.permissions || ["*:*:*"];
     roles.value = res.roles || ["admin"];
-    return res;
   };
 
   const logout = async (api?: boolean) => {

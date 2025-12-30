@@ -42,8 +42,8 @@ const formData = ref<LoginParams>({
 });
 
 const handleLogin = async () => {
-  loading.value = true;
   try {
+    loading.value = true;
     await userStore.login(formData.value);
   } catch (error) {
     console.error("error", error);
