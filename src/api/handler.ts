@@ -1,5 +1,4 @@
 import i18n from "@/locales";
-import router from "@/router";
 import { useUserStore } from "@/stores";
 import { message } from "ant-design-vue";
 import { HTTP_STATUS_MAP } from "./constant";
@@ -27,6 +26,5 @@ export const handleErrorMessage = (status: string | number, customMsg?: string):
 export const handleUnauthorized = (): void => {
   message.error(t(HTTP_STATUS_MAP[401]));
   const userStore = useUserStore();
-  userStore.logout();
-  router.push("/login");
+  userStore.logout(false);
 };

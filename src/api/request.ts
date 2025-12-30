@@ -1,5 +1,5 @@
 import i18n from "@/locales";
-import { useUserStore } from "@/stores/modules/user";
+import { getToken } from "@/utils/auth";
 import { message } from "ant-design-vue";
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
@@ -20,9 +20,9 @@ const request: AxiosInstance = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const userStore = useUserStore();
-    if (userStore.token) {
-      config.headers.Authorization = `Bearer ${userStore.token}`;
+    const accessToken = getToken();
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     return config;
   },

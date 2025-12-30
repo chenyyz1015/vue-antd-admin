@@ -28,15 +28,15 @@
 </template>
 
 <script setup lang="ts">
+import type { LoginParams } from "@/api";
 import { useAppStore, useUserStore } from "@/stores";
 import { message } from "ant-design-vue";
 
-const router = useRouter();
 const appStore = useAppStore();
 const userStore = useUserStore();
 
 const loading = ref(false);
-const formData = reactive({
+const formData = ref<LoginParams>({
   username: "admin",
   password: "123456"
 });
@@ -44,9 +44,7 @@ const formData = reactive({
 const handleLogin = async () => {
   loading.value = true;
   try {
-    await userStore.login(formData);
-    message.success("登录成功");
-    router.push("/");
+    await userStore.login(formData.value);
   } catch (error) {
     console.error("error", error);
     message.error("登录失败");

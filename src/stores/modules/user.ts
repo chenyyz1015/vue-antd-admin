@@ -1,66 +1,67 @@
+import type { LoginParams, UserInfo } from "@/api";
 import * as userApi from "@/api/modules/user";
 import router from "@/router";
 import { removeToken, setToken } from "@/utils/auth";
+import { message } from "ant-design-vue";
 
-export interface UserInfo {
-  id: string;
-  username: string;
-  nickname: string;
-  avatar?: string;
-}
+export const useUserStore = defineStore("user", () => {
+  const userInfo = ref<UserInfo>({
+    id: "",
+    username: "",
+    nickname: "",
+    avatar: ""
+  });
+  const permissions = ref<string[]>([]);
+  const roles = ref<string[]>([]);
 
-export const useUserStore = defineStore(
-  "user",
-  () => {
-    const token = ref("");
-    const userInfo = ref<UserInfo>({} as UserInfo);
-    const permissions = ref<string[]>([]);
-    const roles = ref<string[]>([]);
-
-    const login = async (data: { username: string; password: string }) => {
+  const login = async (data: LoginParams) => {
+    try {
       const res = await userApi.login(data);
-      token.value = res.token;
       setToken(res.token);
-      return res;
-    };
+      message.success("登录成功");
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const getInfo = async () => {
-      const res = await userApi.getUserInfo();
-      userInfo.value = res.user;
-      permissions.value = res.permissions || [];
-      roles.value = res.roles || [];
-      return res;
-    };
+  const getInfo = async () => {
+    const res = await userApi.getUserInfo();
+    userInfo.value = res.user;
+    permissions.value = res.permissions || ["*:*:*"];
+    roles.value = res.roles || ["admin"];
+    return res;
+  };
 
-    const logout = async () => {
+  const logout = async (api?: boolean) => {
+    if (api) {
       try {
         await userApi.logout();
-      } finally {
-        token.value = "";
-        userInfo.value = {} as UserInfo;
-        permissions.value = [];
-        roles.value = [];
-        removeToken();
-        router.push({ path: "/auth/login" });
+      } catch (error) {
+        console.error(error);
       }
-    };
-
-    return {
-      token,
-      userInfo,
-      permissions,
-      roles,
-      login,
-      getInfo,
-      logout
-    };
-  },
-  {
-    persist: {
-      pick: ["token"]
     }
-  }
-);
+    userInfo.value = {
+      id: "",
+      username: "",
+      nickname: "",
+      avatar: ""
+    };
+    permissions.value = [];
+    roles.value = [];
+    removeToken();
+    router.push({ path: "/auth/login" });
+  };
+
+  return {
+    userInfo,
+    permissions,
+    roles,
+    login,
+    getInfo,
+    logout
+  };
+});
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));
