@@ -87,6 +87,7 @@ interface Emits {
 defineProps<Props>();
 defineEmits<Emits>();
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
@@ -104,8 +105,8 @@ const topMenuItems = computed(() => {
     .map((route) => {
       return {
         key: route.path,
-        label: route.meta?.title,
-        title: route.meta?.title,
+        label: t(route.meta?.title ?? ""),
+        title: t(route.meta?.title ?? ""),
         icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
       };
     });
@@ -126,8 +127,8 @@ const sideMenuItems = computed<ItemType[]>(() => {
       .map((route) => {
         const item: ItemType = {
           key: route.path,
-          label: route.meta?.title,
-          title: route.meta?.title,
+          label: t(route.meta?.title ?? ""),
+          title: t(route.meta?.title ?? ""),
           icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
         };
 

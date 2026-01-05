@@ -7,6 +7,8 @@ import { useAppStore } from "./stores/modules/app";
 
 const watermarkContent = (import.meta.env.VITE_APP_WATERMARK ?? "").split(",");
 
+const { t } = useI18n();
+const route = useRoute();
 const appStore = useAppStore();
 
 const locale = computed(() => {
@@ -22,6 +24,15 @@ const theme = computed<ThemeConfig>(() => ({
   algorithm:
     appStore.themeMode === "dark" ? ConfigProvider.theme?.darkAlgorithm : ConfigProvider.theme?.defaultAlgorithm
 }));
+
+watch(
+  () => appStore.locale,
+  () => {
+    const appTitle = import.meta.env.VITE_APP_TITLE;
+    document.title = route.meta.title ? `${t(route.meta.title)} - ${appTitle}` : appTitle;
+  },
+  { immediate: true }
+);
 
 // 初始化主题
 watch(

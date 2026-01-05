@@ -14,7 +14,7 @@
       >
         <template #tab>
           <svg-icon v-if="tab.icon" :name="tab.icon" :size="18" style="font-size: 18px" />
-          <span>{{ tab.title }}</span>
+          <span>{{ t(tab.title) }}</span>
         </template>
       </a-tab-pane>
     </a-tabs>
@@ -35,6 +35,7 @@ import { useAppStore, useTabsStore } from "@/stores";
 import type { Key } from "ant-design-vue/es/_util/type";
 import TabsDropdown from "./TabsDropdown.vue";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();

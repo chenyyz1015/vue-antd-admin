@@ -86,8 +86,11 @@ vue-antd-admin/
 │   ├── commit-msg
 │   └── pre-commit
 ├── .vscode/                            # vscode项目配置
+│   └── ...
 ├── build/                              # 打包配置
+│   └── ...
 ├── public/                             # 公共目录
+│   └── favicon.ico
 ├── src/
 │   ├── api/                            # API接口
 │   │   ├── modules/

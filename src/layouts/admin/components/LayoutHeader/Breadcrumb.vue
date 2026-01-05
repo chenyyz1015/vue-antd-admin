@@ -2,14 +2,15 @@
   <a-breadcrumb class="layout-breadcrumb">
     <a-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
       <router-link v-if="item.path" :to="item.path">
-        {{ item.meta?.title }}
+        {{ t(item.meta?.title ?? "") }}
       </router-link>
-      <span v-else>{{ item.meta?.title }}</span>
+      <span v-else>{{ t(item.meta?.title ?? "") }}</span>
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
 const route = useRoute();
 
 const breadcrumbs = computed(() => {

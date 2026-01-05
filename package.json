@@ -1,5 +1,5 @@
 {
-  "name": "vue-antd-admin",
+  "name": "lalp-admin-ui",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -31,14 +31,18 @@
     ]
   },
   "dependencies": {
+    "@ant-design/colors": "^7.2.1",
     "@vueuse/core": "^14.1.0",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",
     "lodash-es": "^4.17.21",
+    "maptalks-gl": "^0.118.1",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
+    "ts-md5": "^2.0.1",
+    "uuid": "^13.0.0",
     "vue": "^3.5.24",
     "vue-i18n": "^11.2.2",
     "vue-router": "^4.6.3"

@@ -16,6 +16,7 @@ import type { MenuInfo, SubMenuType } from "ant-design-vue/es/menu/src/interface
 import type { RouteRecordRaw } from "vue-router";
 import SvgIcon from "~virtual/svg-component";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
@@ -37,8 +38,8 @@ const generateMenuItems = (routes: RouteRecordRaw[]): ItemType[] => {
     .map((route) => {
       const item: ItemType = {
         key: route.path,
-        label: route.meta?.title,
-        title: route.meta?.title,
+        label: t(route.meta?.title ?? ""),
+        title: t(route.meta?.title ?? ""),
         icon: route.meta?.icon ? h(SvgIcon, { name: route.meta.icon, style: { fontSize: "18px" } }) : undefined
       };
 

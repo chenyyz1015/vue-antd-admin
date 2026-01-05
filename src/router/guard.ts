@@ -1,3 +1,4 @@
+import i18n from "@/locales";
 import { usePermissionStore, useUserStore } from "@/stores";
 import { getToken } from "@/utils/auth";
 import { message } from "ant-design-vue";
@@ -30,6 +31,7 @@ router.beforeEach(async (to, from, next) => {
           console.error("router beforeEach error", error);
           message.error("获取用户信息失败");
           await userStore.logout();
+          next();
         }
       } else {
         next();
@@ -46,6 +48,9 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach((to) => {
   NProgress.done();
+
+  const { t } = i18n.global;
+
   const appTitle = import.meta.env.VITE_APP_TITLE;
-  document.title = to.meta.title ? `${to.meta.title} - ${appTitle}` : appTitle;
+  document.title = to.meta.title ? `${t(to.meta.title)} - ${appTitle}` : appTitle;
 });

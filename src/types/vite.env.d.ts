@@ -2,9 +2,14 @@
 
 interface ImportMetaEnv {
   /**
-   * 项目标题
+   * 标题
    */
   readonly VITE_APP_TITLE: string;
+
+  /**
+   * 全标题
+   */
+  readonly VITE_APP_FULL_TITLE: string;
 
   /**
    * 水印

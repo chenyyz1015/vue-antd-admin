@@ -31,7 +31,6 @@ import DefaultAvatar from "@/assets/images/avatar.svg";
 import { useUserStore } from "@/stores";
 import { Modal } from "ant-design-vue";
 
-const router = useRouter();
 const userStore = useUserStore();
 
 const userInfo = computed(() => userStore.userInfo);
@@ -47,7 +46,6 @@ const handleLogout = () => {
     centered: true,
     onOk: async () => {
       await userStore.logout();
-      router.push("/auth/login");
     }
   });
 };

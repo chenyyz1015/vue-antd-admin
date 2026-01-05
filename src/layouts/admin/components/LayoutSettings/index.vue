@@ -308,7 +308,7 @@ const handleResetSettings = () => {
       appStore.showBreadcrumb = true;
       appStore.showCopyright = true;
       appStore.setFontSize(14);
-      appStore.setBorderRadius(6);
+      appStore.setBorderRadius(0);
       appStore.setContentWidth(100);
       appStore.setContentWidthMode("fluid");
       appStore.setColorWeak(false);

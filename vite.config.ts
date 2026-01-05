@@ -1,4 +1,4 @@
-import vue from "@vitejs/plugin-vue";
+import Vue from "@vitejs/plugin-vue";
 import path from "path";
 import UnoCSS from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
   } = env;
   return {
     plugins: [
-      vue(),
+      Vue(),
       UnoCSS(),
       AutoImport({
         imports: ["vue", "vue-router", "pinia", "vue-i18n", "@vueuse/core"],

@@ -5,7 +5,7 @@
   width: calc(100% / var(--scale-ratio));
   height: calc(100% / var(--scale-ratio));
   transform: scale(var(--scale-ratio)) !important;
-  transform-origin: left top;
+  transform-origin: left top !important;
 }
 
 .ant-message {
@@ -92,5 +92,5 @@
 .ant-select-dropdown,
 .ant-menu-submenu-popup {
   transform: scale(var(--scale-ratio)) !important;
-  transform-origin: left top;
+  transform-origin: left top !important;
 }
