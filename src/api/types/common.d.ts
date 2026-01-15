@@ -1,6 +1,6 @@
 export interface ResponseData<T = any> {
   code: number;
-  message: string;
+  msg: string;
   data: T;
 }
 
@@ -33,13 +33,14 @@ export interface HttpStatusMap {
 }
 
 export interface PageParams {
-  page: number;
-  size: number;
+  pageNum: number;
+  pageSize: number;
 }
 
 export interface PageResult<T> {
   records: T[];
   total: number;
-  page: number;
+  current: number;
   size: number;
+  pages: number;
 }

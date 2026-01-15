@@ -6,6 +6,7 @@ pinia.use(piniaPluginPersistedstate);
 export default pinia;
 
 export * from "./modules/app";
+export * from "./modules/download";
 export * from "./modules/permission";
 export * from "./modules/tabs";
 export * from "./modules/user";

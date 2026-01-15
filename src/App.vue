@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import { useMapGlobalState } from "@/map";
 import { ConfigProvider } from "ant-design-vue";
 import type { ThemeConfig } from "ant-design-vue/es/config-provider/context";
 import enUS from "ant-design-vue/es/locale/en_US";
 import zhCN from "ant-design-vue/es/locale/zh_CN";
-import { useAppStore } from "./stores/modules/app";
+import { useAppStore, useDownloadStore } from "./stores";
 
-const watermarkContent = (import.meta.env.VITE_APP_WATERMARK ?? "").split(",");
+onMounted(() => {
+  calculateScale();
+  mapState.init();
+});
+
+const watermark = import.meta.env.VITE_APP_WATERMARK;
+const watermarkEnable = import.meta.env.VITE_APP_WATERMARK_ENABLE === "true";
+const watermarkContent = watermarkEnable ? (watermark ?? "").split(",").filter((i) => i) : [];
 
 const { t } = useI18n();
 const route = useRoute();
 const appStore = useAppStore();
+const mapState = useMapGlobalState();
+const downloadStore = useDownloadStore();
 
 const locale = computed(() => {
   return appStore.locale === "zh-CN" ? zhCN : enUS;
@@ -75,41 +85,36 @@ watch(
   { immediate: true }
 );
 
-const appRef = ref<HTMLElement>();
+const appStyle = computed<Record<string, string | number>>(() => {
+  return {
+    width: `${100 / appStore.scaleRatio}%`,
+    height: `${100 / appStore.scaleRatio}%`,
+    transform: `scale(${appStore.scaleRatio})`
+  };
+});
 // 计算缩放比例（基于高度）
 const calculateScale = () => {
   const currentScale = window.innerHeight / 1080;
-  const minScale = Number(import.meta.env.VITE_APP_MIN_SCALE ?? 0.7);
+  const minScale = Number(import.meta.env.VITE_APP_MIN_SCALE ?? 0.5);
   const maxScale = Number(import.meta.env.VITE_APP_MAX_SCALE ?? 2);
 
-  const scale = currentScale > 1 ? Math.min(currentScale, maxScale) : Math.max(currentScale, minScale);
-
-  if (appRef.value) {
-    // 全局缩放document.body时会导致select、dropdown等组件下拉菜单位置偏移
-    appRef.value.style.width = `${100 / scale}%`;
-    appRef.value.style.height = `${100 / scale}%`;
-    appRef.value.style.transform = `scale(${scale})`;
-    appRef.value.style.transformOrigin = "left top";
-    appRef.value.style.transition = "transform 0.3s ease";
-    // 同步全局popup容器内容缩放比例
-    document.documentElement.style.setProperty("--scale-ratio", scale.toString());
-  }
+  appStore.scaleRatio = currentScale > 1 ? Math.min(currentScale, maxScale) : Math.max(currentScale, minScale);
+  // 全局缩放document.body时会导致select、dropdown等组件下拉菜单位置偏移
+  // 同步全局popup容器内容缩放比例
+  document.documentElement.style.setProperty("--scale-ratio", appStore.scaleRatio.toString());
 };
 
 const debouncedFn = useDebounceFn(calculateScale, 500);
 useEventListener(window, "resize", debouncedFn);
-
-onMounted(() => {
-  calculateScale();
-});
 </script>
 
 <template>
   <a-config-provider :locale="locale" :theme="theme">
-    <div ref="appRef" class="app-container">
+    <div :style="appStyle" class="app-container">
       <a-watermark :content="watermarkContent" class="watermark-wrapper">
         <RouterView />
       </a-watermark>
+      <ComSpin :loading="downloadStore.loading" :tip="downloadStore.tip" />
     </div>
   </a-config-provider>
 </template>
@@ -119,6 +124,8 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transform-origin: left top;
+  transition: transform 0.3s ease;
 
   .watermark-wrapper {
     width: 100%;

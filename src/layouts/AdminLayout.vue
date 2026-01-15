@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { useFullscreen } from "@/composables";
 import type { LayoutMode } from "@/stores";
 import { useAppStore } from "@/stores";
 import { MixLayout, SideLayout, TopLayout } from "./admin";
@@ -19,9 +20,9 @@ import { MixLayout, SideLayout, TopLayout } from "./admin";
 type AdminLayout = typeof SideLayout | typeof TopLayout | typeof MixLayout;
 
 const appStore = useAppStore();
+const { isFullscreen, toggleFullscreen } = useFullscreen();
 
 // 状态
-const isFullscreen = ref(false);
 const cachedViews = ref<string[]>([]);
 const settingsVisible = ref(false);
 
@@ -41,22 +42,7 @@ const autoCollapsedSider = () => {
     appStore.toggleCollapsed();
   }
 };
-
-// 全屏切换
-const toggleFullscreen = () => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-    isFullscreen.value = true;
-  } else {
-    document.exitFullscreen();
-    isFullscreen.value = false;
-  }
-};
-
-// 监听全屏变化
-const handleFullscreenChange = () => {
-  isFullscreen.value = !!document.fullscreenElement;
-};
+useEventListener(window, "resize", autoCollapsedSider);
 
 // 监听色弱模式
 watch(
@@ -75,9 +61,6 @@ watch(
   },
   { immediate: true }
 );
-
-useEventListener(window, "resize", autoCollapsedSider);
-useEventListener(document, "fullscreenchange", handleFullscreenChange);
 </script>
 
 <style lang="scss" scoped></style>

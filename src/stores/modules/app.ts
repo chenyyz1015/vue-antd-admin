@@ -8,8 +8,10 @@ export type ContentWidthMode = "fluid" | "fixed";
 export const useAppStore = defineStore(
   "app",
   () => {
-    // 基础配置
     const title = ref<string>(import.meta.env.VITE_APP_TITLE);
+    const scaleRatio = ref<number>(1);
+
+    // 基础配置
     const layoutMode = ref<LayoutMode>("side");
     const themeMode = ref<ThemeMode>("light");
     const transitionName = ref<TransitionName>("fade-slide");
@@ -109,6 +111,7 @@ export const useAppStore = defineStore(
 
     return {
       title,
+      scaleRatio,
       layoutMode,
       themeMode,
       transitionName,

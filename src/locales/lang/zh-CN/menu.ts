@@ -8,8 +8,9 @@ export default {
   "menu.dashboard": "仪表盘",
   "menu.dashboard.workplace": "工作台",
   "menu.dashboard.analysis": "分析页",
+  "menu.user": "用户管理",
+  "menu.user.list": "用户中心",
+  "menu.user.role": "角色管理",
   "menu.system": "系统管理",
-  "menu.system.user": "用户管理",
-  "menu.system.role": "角色管理",
   "menu.system.maptalks-gl": "MaptalksGL"
 };

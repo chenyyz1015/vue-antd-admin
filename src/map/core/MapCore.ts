@@ -2,19 +2,22 @@ import type { TileLayerOptionsType } from "maptalks";
 import { GroupTileLayer, Map as MaptalksGLMap, TileLayer, WMSTileLayer } from "maptalks-gl";
 import type { GroupTileLayerOptionsType } from "maptalks/dist/layer/tile/GroupTileLayer";
 import type { WMSTileLayerOptionsType } from "maptalks/dist/layer/tile/WMSTileLayer";
-import type { MapContainerType, MapCreateOptionsType } from "maptalks/dist/map/Map";
+import type { MapContainerType, MapCreateOptionsType, MapViewType } from "maptalks/dist/map/Map";
+import { DEFAULT_VIEW } from "../context";
 import type { GeometryLayer } from "../layers";
 
-type TileLayerMap = Map<string, TileLayer | WMSTileLayer | GroupTileLayer>;
+export type CoreZoomType = "plus" | "minus";
 
-export interface GroupTileLayerItem {
+export type CoreTileLayerMap = Map<string, TileLayer | WMSTileLayer | GroupTileLayer>;
+
+export interface CoreGroupTileLayer {
   id: string;
   type: "tile" | "wms";
   opts: TileLayerOptionsType | WMSTileLayerOptionsType;
 }
 
 export default class MapCore extends MaptalksGLMap {
-  private tileLayerMap: TileLayerMap = new Map([]);
+  private tileLayerMap: CoreTileLayerMap = new Map([]);
 
   constructor(container: MapContainerType, opts: MapCreateOptionsType) {
     super(container, { ...opts, attribution: false });
@@ -24,15 +27,10 @@ export default class MapCore extends MaptalksGLMap {
    * 添加基础瓦片图层
    * @param {string} id
    * @param {TileLayerOptionsType} opts
-   * @returns {TileLayer}
+   * @returns {TileLayer} layer
    */
   addTileLayer(id: string, opts: TileLayerOptionsType): TileLayer {
-    const layer = new TileLayer(id, {
-      urlTemplate: opts.urlTemplate,
-      subdomains: opts.subdomains || [],
-      maxAvailableZoom: opts.maxAvailableZoom,
-      spatialReference: opts.spatialReference
-    });
+    const layer = new TileLayer(id, opts);
     this.tileLayerMap.set(id, layer);
     return layer;
   }
@@ -41,19 +39,10 @@ export default class MapCore extends MaptalksGLMap {
    * 添加WMS瓦片图层
    * @param {string} id
    * @param {WMSTileLayerOptionsType} opts
-   * @returns {WMSTileLayer}
+   * @returns {WMSTileLayer} layer
    */
   addWMSTileLayer(id: string, opts: WMSTileLayerOptionsType): WMSTileLayer {
-    const layer = new WMSTileLayer(id, {
-      urlTemplate: opts.urlTemplate,
-      crs: opts.crs,
-      layers: opts.layers,
-      styles: opts.styles || "default",
-      version: opts.version || "1.0.0",
-      format: opts.format || "tiles",
-      transparent: opts.transparent !== false,
-      uppercase: true
-    });
+    const layer = new WMSTileLayer(id, opts);
     this.tileLayerMap.set(id, layer);
     return layer;
   }
@@ -61,12 +50,12 @@ export default class MapCore extends MaptalksGLMap {
   /**
    * 添加组合瓦片图层
    * @param {string} id
-   * @param {GroupTileLayerItem} layers
+   * @param {CoreGroupTileLayer[]} layers
    * @param {GroupTileLayerOptionsType} groupOpts
-   * @returns {GroupTileLayer}
+   * @returns {GroupTileLayer} groupLayer
    */
-  addGroupTileLayer(id: string, layers: GroupTileLayerItem[], groupOpts: GroupTileLayerOptionsType): GroupTileLayer {
-    const tileLayers: TileLayer[] | WMSTileLayer[] = layers.map((l) => {
+  addGroupTileLayer(id: string, layers: CoreGroupTileLayer[], groupOpts: GroupTileLayerOptionsType): GroupTileLayer {
+    const tileLayers: (TileLayer | WMSTileLayer)[] = layers.map((l) => {
       switch (l.type) {
         case "tile":
           return this.addTileLayer(l.id, l.opts);
@@ -91,6 +80,53 @@ export default class MapCore extends MaptalksGLMap {
       throw new Error(`Layer ${id} 未加载`);
     }
     this.setBaseLayer(baseLayer);
+  }
+
+  /**
+   * 切换zoom
+   * @param {CoreZoomType} type
+   * @returns {number} zoom
+   */
+  zoomTo(type: CoreZoomType): number {
+    let zoom = this.getZoom();
+    zoom = type === "plus" ? zoom + 1 : zoom - 1;
+    zoom = zoom > 18 ? 18 : zoom < 0 ? 0 : zoom;
+    this.flyTo({ zoom }, { duration: 1000, easing: "inAndOut" });
+    return zoom;
+  }
+
+  /**
+   * 切换旋转角度
+   * @param {number|undefined} bearing
+   * @returns {number} bearing
+   */
+  bearingTo(bearing?: number): number {
+    if (typeof bearing !== "number") {
+      bearing = this.getBearing() ? 0 : 180;
+    }
+    this.flyTo({ bearing }, { duration: 1000, easing: "inAndOut" });
+    return bearing;
+  }
+
+  /**
+   * 切换倾斜角度
+   * @param {number|undefined} pitch
+   * @returns {number} pitch
+   */
+  pitchTo(pitch?: number): number {
+    if (typeof pitch !== "number") {
+      pitch = this.getPitch() ? 0 : 60;
+    }
+    this.flyTo({ pitch }, { duration: 1000, easing: "inAndOut" });
+    return pitch;
+  }
+
+  /**
+   * 重置视角
+   * @param {MapViewType} view
+   */
+  resetView(view: MapViewType = DEFAULT_VIEW) {
+    this.flyTo(view, { duration: 1000, easing: "inAndOut" });
   }
 
   /**

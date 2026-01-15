@@ -1,3 +1,5 @@
+import type { VueMapPluginOptions } from "@/map";
+import { VueMapPlugin } from "@/map";
 import Antd from "ant-design-vue";
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -18,6 +20,10 @@ app.use(pinia);
 app.use(router);
 app.use(i18n);
 app.use(Antd);
+app.use<VueMapPluginOptions>(VueMapPlugin, {
+  tk: import.meta.env.VITE_TDT_MAP_KEY,
+  gk: import.meta.env.VITE_GOOGLE_MAP_KEY
+});
 app.use(setupVuePlugins);
 
 app.mount("#app");

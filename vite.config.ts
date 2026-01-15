@@ -7,7 +7,6 @@ import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
 import { viteMockServe as MockServe } from "vite-plugin-mock";
-import rolldownOptions from "./build/rolldown.config";
 
 export default defineConfig(({ mode }) => {
   // 读取 .env.* 文件中的变量
@@ -71,12 +70,37 @@ export default defineConfig(({ mode }) => {
     },
     base: VITE_APP_BASE_URL,
     build: {
-      target: "es2015",
       cssCodeSplit: true,
       sourcemap: false,
-      rolldownOptions: {
-        ...rolldownOptions,
+      rollupOptions: {
         output: {
+          manualChunks(id) {
+            if (!id.includes("node_modules")) return;
+
+            // Vue 核心
+            if (
+              id.includes("vue") ||
+              id.includes("vue-router") ||
+              id.includes("pinia") ||
+              id.includes("vue-i18n") ||
+              id.includes("@vueuse")
+            ) {
+              return "core";
+            }
+
+            // UI 框架
+            if (id.includes("ant-design-vue")) {
+              return "ui";
+            }
+
+            // 常用工具库
+            if (id.includes("axios") || id.includes("lodash-es") || id.includes("dayjs")) {
+              return "libs";
+            }
+
+            // 第三方
+            return "vendor";
+          },
           minify: {
             compress: {
               dropConsole: VITE_DROP_CONSOLE === "true",

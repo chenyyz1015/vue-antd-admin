@@ -85,10 +85,10 @@ const handleLocaleChange = ({ key }: MenuInfo) => {
     justify-content: center;
     width: 32px;
     height: 32px;
-    font-size: 18px;
+    font-size: var(--font-size-larger);
     cursor: pointer;
     transition: all 0.3s;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
 
     &:hover {
       background: rgba(0, 0, 0, 0.025);

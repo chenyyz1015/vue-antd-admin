@@ -230,7 +230,7 @@ html[data-theme="dark"] {
   }
 
   .trigger {
-    font-size: 18px;
+    font-size: var(--font-size-larger);
     cursor: pointer;
     transition: color 0.3s;
 

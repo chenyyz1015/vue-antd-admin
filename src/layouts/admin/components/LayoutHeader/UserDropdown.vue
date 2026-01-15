@@ -8,7 +8,7 @@
     </div>
     <template #overlay>
       <a-menu>
-        <a-menu-item key="profile" class="action-item" @click="goAccountProfile">
+        <!-- <a-menu-item key="profile" class="action-item" @click="goAccountProfile">
           <user-outlined />
           <span class="label">个人中心</span>
         </a-menu-item>
@@ -16,7 +16,7 @@
           <setting-outlined />
           <span class="label">个人设置</span>
         </a-menu-item>
-        <a-menu-divider />
+        <a-menu-divider /> -->
         <a-menu-item key="logout" class="action-item" @click="handleLogout">
           <logout-outlined />
           <span class="label">退出登录</span>
@@ -35,9 +35,9 @@ const userStore = useUserStore();
 
 const userInfo = computed(() => userStore.userInfo);
 
-const goAccountProfile = () => {};
+// const goAccountProfile = () => {};
 
-const goAccountSetting = () => {};
+// const goAccountSetting = () => {};
 
 const handleLogout = () => {
   Modal.confirm({
@@ -58,7 +58,7 @@ const handleLogout = () => {
   gap: 8px;
   padding: 4px 8px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   transition: all 0.3s;
 
   &:hover {
@@ -66,7 +66,7 @@ const handleLogout = () => {
   }
 
   .user-name {
-    font-size: 14px;
+    font-size: var(--font-size);
   }
 }
 

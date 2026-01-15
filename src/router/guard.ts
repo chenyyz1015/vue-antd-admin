@@ -1,7 +1,6 @@
 import i18n from "@/locales";
 import { usePermissionStore, useUserStore } from "@/stores";
 import { getToken } from "@/utils/auth";
-import { message } from "ant-design-vue";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import router from "./index";
@@ -29,8 +28,8 @@ router.beforeEach(async (to, from, next) => {
           next({ ...to, replace: true });
         } catch (error) {
           console.error("router beforeEach error", error);
-          message.error("获取用户信息失败");
-          await userStore.logout();
+          const hasToken = !!getToken();
+          await userStore.logout(hasToken);
           next();
         }
       } else {

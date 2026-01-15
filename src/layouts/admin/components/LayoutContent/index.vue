@@ -39,7 +39,7 @@ const appStore = useAppStore();
     height: 100%;
     padding: 20px;
     background: #ffffff;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
 
     // 定宽内容
     &.content-width-fixed {

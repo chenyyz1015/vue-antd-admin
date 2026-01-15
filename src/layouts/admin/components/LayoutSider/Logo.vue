@@ -41,11 +41,11 @@ const goHome = () => {
   }
 
   .logo-icon {
-    font-size: 20px;
+    font-size: var(--font-size-largest);
   }
 
   .logo-title {
-    font-size: 18px;
+    font-size: var(--font-size-larger);
     font-weight: 600;
     color: var(--primary-color);
     white-space: nowrap;

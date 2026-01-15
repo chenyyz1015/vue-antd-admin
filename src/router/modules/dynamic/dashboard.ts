@@ -9,7 +9,6 @@ const dashboardRoutes: RouteRecordRaw[] = [
     meta: {
       title: "menu.dashboard",
       icon: "menu/dashboard",
-      sort: 1,
       roles: ["admin"],
       requiresAuth: true
     },

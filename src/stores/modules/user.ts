@@ -14,21 +14,21 @@ export const useUserStore = defineStore("user", () => {
   const permissions = ref<string[]>([]);
   const roles = ref<string[]>([]);
 
-  const login = async (data: LoginParams) => {
-    const res = await userApi.login(data);
+  const login = async (params: LoginParams) => {
+    const res = await userApi.login(params);
     setToken(res.token);
     message.success("登录成功");
     router.push("/");
   };
 
   const getInfo = async () => {
-    const res = await userApi.getUserInfo();
-    userInfo.value = res.user;
-    permissions.value = res.permissions || ["*:*:*"];
-    roles.value = res.roles || ["admin"];
+    const result = await userApi.getUserInfo();
+    userInfo.value = result.user;
+    permissions.value = result.permissions || ["*:*:*"];
+    roles.value = result.roles || ["admin"];
   };
 
-  const logout = async (api?: boolean) => {
+  const logout = async (api: boolean = true) => {
     if (api) {
       try {
         await userApi.logout();
@@ -36,6 +36,7 @@ export const useUserStore = defineStore("user", () => {
         console.error(error);
       }
     }
+    removeToken();
     userInfo.value = {
       id: "",
       username: "",
@@ -44,7 +45,6 @@ export const useUserStore = defineStore("user", () => {
     };
     permissions.value = [];
     roles.value = [];
-    removeToken();
     router.push({ path: "/auth/login" });
   };
 

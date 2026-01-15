@@ -36,16 +36,19 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: AxiosResponse<ResponseData>) => {
-    const { code, data, message } = response.data;
+    const isBlob = response.config.responseType === "blob";
+    const { code, data, msg } = response.data;
     // 业务状态码处理
     if (code === 200) {
       return data;
     } else if (code === 401) {
       handleUnauthorized();
-      return Promise.reject(new Error(message || t(HTTP_STATUS_MAP[401])));
+      return Promise.reject(new Error(msg || t(HTTP_STATUS_MAP[401])));
+    } else if (isBlob) {
+      return response.data;
     } else {
-      handleErrorMessage(code, message);
-      return Promise.reject(new Error(message || t(HTTP_STATUS_MAP.unknown)));
+      handleErrorMessage(code, msg);
+      return Promise.reject(new Error(msg || t(HTTP_STATUS_MAP.unknown)));
     }
   },
   (error) => {
@@ -56,7 +59,7 @@ request.interceptors.response.use(
         // 401状态码特殊处理
         handleUnauthorized();
       } else {
-        handleErrorMessage(status, data.message || data.msg);
+        handleErrorMessage(status, data.msg || data.message);
       }
     } else if (error.request) {
       // 请求已发出,但没有收到响应

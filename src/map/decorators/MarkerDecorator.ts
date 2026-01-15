@@ -1,40 +1,21 @@
 import { Marker } from "maptalks-gl";
+import type { MarkerCoordinatesType, MarkerOptionsType } from "maptalks/dist/geometry/Marker";
 import type { MarkerLayer } from "../layers";
+import type { GeometryDecoratorOptions } from "./GeometryDecorator";
+import GeomeDecorator, { GeometryDecoratorType } from "./GeometryDecorator";
 
-const MarkerDecoratorType = {
-  PROJECT: "project"
-};
-
-export type MarkerDecoratorType = (typeof MarkerDecoratorType)[keyof typeof MarkerDecoratorType];
-
-export interface MarkerDecoratorOptions {
-  type: MarkerDecoratorType;
-  id: string;
-  lng: number;
-  lat: number;
+export interface MarkerDecoratorOptions extends GeometryDecoratorOptions {
+  geo: typeof GeometryDecoratorType.MARKER;
+  coordinates: MarkerCoordinatesType;
+  options: MarkerOptionsType;
 }
 
-export default class MarkerDecorator {
-  protected opts: MarkerDecoratorOptions;
-  protected layer: MarkerLayer;
-  protected marker: Marker;
+export default class MarkerDecorator extends GeomeDecorator {
+  declare protected opts: MarkerDecoratorOptions;
+  declare protected layer: MarkerLayer;
+  declare protected geometry: Marker;
 
   constructor(opts: MarkerDecoratorOptions, layer: MarkerLayer) {
-    const { id, lng, lat } = opts;
-    this.opts = opts;
-    this.layer = layer;
-    this.marker = new Marker([lng, lat], { id });
-  }
-
-  addTo() {
-    this.layer.addGeometry(this.marker);
-  }
-
-  remove() {
-    this.layer.removeGeometry(this.marker);
-  }
-
-  getProperties() {
-    return this.marker.getProperties();
+    super(opts, layer);
   }
 }

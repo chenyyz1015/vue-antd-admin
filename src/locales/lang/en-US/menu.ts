@@ -9,8 +9,9 @@ export default {
   "menu.dashboard": "Dashboard",
   "menu.dashboard.workplace": "Workplace",
   "menu.dashboard.analysis": "Analysis",
+  "menu.user": "User Manage",
+  "menu.user.list": "User Center",
+  "menu.user.role": "Role Manage",
   "menu.system": "System Manage",
-  "menu.system.user": "User Manage",
-  "menu.system.role": "Role Manage",
   "menu.system.maptalks-gl": "MaptalksGL"
 };

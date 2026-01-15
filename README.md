@@ -89,15 +89,14 @@ vue-antd-admin/
 │   └── ...
 ├── build/                              # 打包配置
 │   └── ...
-├── public/                             # 公共目录
+├── public/
 │   └── favicon.ico
 ├── src/
 │   ├── api/                            # API接口
 │   │   ├── modules/
 │   │   │   ├── user.ts
-│   │   │   ├── system.ts
 │   │   │   └── ...
-│   │   ├── types/                      # 接口类型定义
+│   │   ├── types/
 │   │   └── index.ts
 │   ├── assets/                         # 静态资源
 │   │   ├── svgs/                       # SVG图标
