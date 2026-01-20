@@ -7,6 +7,7 @@ import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 import Components from "unplugin-vue-components/vite";
 import { defineConfig, loadEnv } from "vite";
 import { viteMockServe as MockServe } from "vite-plugin-mock";
+import VueDevTools from "vite-plugin-vue-devtools";
 
 export default defineConfig(({ mode }) => {
   // 读取 .env.* 文件中的变量
@@ -48,7 +49,8 @@ export default defineConfig(({ mode }) => {
         mockPath: "src/mock",
         enable: VITE_APP_USE_MOCK === "true",
         logger: VITE_APP_USE_MOCK === "true"
-      })
+      }),
+      VueDevTools()
     ],
     resolve: {
       alias: {
